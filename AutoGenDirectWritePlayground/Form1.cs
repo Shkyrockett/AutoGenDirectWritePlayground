@@ -162,7 +162,7 @@ namespace AutoGenDirectWritePlayground
         {
             var black = Color.Black.ToD2D1_COLOR_F();
             RenderTarget?.CreateSolidColorBrush(&black, null, out blackBrush);
-            var text = "Hello World 🌎 From ... DirectWrite!";
+            var text = "Hello c# World 🌎 From ... DirectWrite!";
             textLayout = DirectWriteFactory?.CreateTextLayout(text, textFormat, RenderTarget?.GetSize() ?? default);
 
             var textTypographyRange = new DWRITE_TEXT_RANGE() { startPosition = 0u, length = (uint)text.Length };
@@ -170,8 +170,8 @@ namespace AutoGenDirectWritePlayground
             typography?.AddFontFeature(new DWRITE_FONT_FEATURE() { nameTag = DWRITE_FONT_FEATURE_TAG.DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_7, parameter = 1 });
             textLayout?.SetTypography(typography, textTypographyRange);
 
-            // (24, 12) is the range around "DirectWrite!"
-            var textDirectWriteRange = new DWRITE_TEXT_RANGE() { startPosition = 24u, length = 12u };
+            // (27, 12) is the text range around "DirectWrite!"
+            var textDirectWriteRange = new DWRITE_TEXT_RANGE() { startPosition = 27u, length = 12u };
             textLayout?.SetFontSize(100, textDirectWriteRange);
             textLayout?.SetUnderline(true, textDirectWriteRange);
             textLayout?.SetFontWeight(DWRITE_FONT_WEIGHT.DWRITE_FONT_WEIGHT_BOLD, textDirectWriteRange);
