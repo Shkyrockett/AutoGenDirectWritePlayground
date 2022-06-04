@@ -11,6 +11,7 @@
 		<Platforms>AnyCPU;x86;x64;ARM32;ARM64</Platforms>
 		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
 		<DocumentationFile>$(OutputPath)$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NeutralLanguage>en-US</NeutralLanguage>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Platform)'=='AnyCPU'">

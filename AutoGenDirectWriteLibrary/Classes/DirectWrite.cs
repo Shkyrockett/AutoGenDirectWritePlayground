@@ -1,5 +1,5 @@
 ﻿// <copyright file="DirectWrite.cs" company="Shkyrockett" >
-//     Copyright © 2020 Shkyrockett. All rights reserved.
+//     Copyright © 2020 - 2022 Shkyrockett. All rights reserved.
 // </copyright>
 // <author id="shkyrockett">Shkyrockett</author>
 // <license>
@@ -28,7 +28,7 @@ namespace AutoGenDirectWriteLibrary
         {
             return PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory).GUID, out var factory) switch
             {
-                HRESULT h when h == PInvoke.S_OK => factory as IDWriteFactory,
+                HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory,
                 _ => throw new Exception("Unspecified Error")
             };
         }

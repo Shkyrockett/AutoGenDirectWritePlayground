@@ -1,5 +1,5 @@
 ﻿// <copyright file="Direct2d.cs" company="Shkyrockett" >
-//     Copyright © 2020 Shkyrockett. All rights reserved.
+//     Copyright © 2020 - 2022 Shkyrockett. All rights reserved.
 // </copyright>
 // <author id="shkyrockett">Shkyrockett</author>
 // <license>
@@ -32,7 +32,7 @@ namespace AutoGenDirectWriteLibrary
         {
             return PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory).GUID, new D2D1_FACTORY_OPTIONS() { debugLevel = debugLevel }, out var factory) switch
             {
-                HRESULT h when h == PInvoke.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory,
+                HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory,
                 _ => throw new Exception("Unspecified Error")
             };
         }
