@@ -1,4 +1,14 @@
-﻿using System.Runtime.InteropServices;
+﻿// <copyright file="ID2D1HwndRenderTarget.cs" company="Shkyrockett" >
+//     Copyright © 2020 - 2022 Shkyrockett. All rights reserved.
+// </copyright>
+// <author id="shkyrockett">Shkyrockett</author>
+// <license>
+//     Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// </license>
+// <summary></summary>
+// <remarks></remarks>
+
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.Direct2D.Common;
@@ -607,6 +617,7 @@ namespace Windows.Win32
             //new D2D_SIZE_F GetSize();
             unsafe new HRESULT GetSize(out D2D_SIZE_F size);
 
+            // This seems to be the correct implementation rather than what the AutoGen creates.
             /// <summary>Returns the size of the render target in device pixels.</summary>
             /// <returns>
             /// <para>Type: <b><a href="/windows/win32/Direct2D/d2d1-size-u">D2D1_SIZE_U</a></b> The size of the render target in device pixels.</para>

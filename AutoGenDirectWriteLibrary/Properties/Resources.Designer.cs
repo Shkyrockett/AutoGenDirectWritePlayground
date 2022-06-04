@@ -27,7 +27,10 @@ namespace AutoGenDirectWriteLibrary.Properties {
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Resources"/> class.
+        /// </summary>
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
