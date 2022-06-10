@@ -8,7 +8,7 @@
 // <summary></summary>
 // <remarks></remarks>
 
-using AutoGenDirectWriteLibrary;
+using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.Direct2D;
@@ -16,235 +16,213 @@ using Windows.Win32.Graphics.Direct2D.Common;
 using Windows.Win32.Graphics.DirectWrite;
 using Windows.Win32.Graphics.Dxgi.Common;
 
-namespace AutoGenDirectWritePlayground
+namespace AutoGenDirectWritePlayground;
+
+/// <summary>
+/// The form1.
+/// </summary>
+/// <seealso cref="Form" />
+public partial class Form1
+    : Form
 {
+    #region Fields
     /// <summary>
-    /// The form1.
+    /// The text format
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.Form" />
-    public partial class Form1
-        : Form
+    protected IDWriteTextFormat? textFormat;
+
+    /// <summary>
+    /// The text layout
+    /// </summary>
+    protected IDWriteTextLayout? textLayout;
+
+    /// <summary>
+    /// The typography
+    /// </summary>
+    protected IDWriteTypography? typography;
+
+    /// <summary>
+    /// The black brush
+    /// </summary>
+    protected ID2D1SolidColorBrush? blackBrush;
+
+    /// <summary>
+    /// The resources valid
+    /// </summary>
+    private bool resourcesValid;
+
+    /// <summary>
+    /// The render target
+    /// </summary>
+    private ID2D1DCRenderTarget? dcRenderTarget;
+    #endregion
+
+    #region Constructors
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Form1"/> class.
+    /// </summary>
+    public Form1()
     {
-        #region Fields
-        /// <summary>
-        /// The text format
-        /// </summary>
-        protected IDWriteTextFormat? textFormat;
+        InitializeComponent();
+        dcRenderTarget ??= InitializeDirect2DResources();
+        DoSizeLayout(Size);
+    }
+    #endregion
 
-        /// <summary>
-        /// The text layout
-        /// </summary>
-        protected IDWriteTextLayout? textLayout;
+    #region Properties
+    /// <summary>
+    /// Gets the direct2d factory.
+    /// </summary>
+    /// <value>
+    /// The direct2d factory.
+    /// </value>
+    protected static ID2D1Factory7? Direct2dFactory { get; } = Direct2d.CreateFactory7();
 
-        /// <summary>
-        /// The typography
-        /// </summary>
-        protected IDWriteTypography? typography;
+    /// <summary>
+    /// Gets the direct write factory.
+    /// </summary>
+    /// <value>
+    /// The direct write factory.
+    /// </value>
+    protected static IDWriteFactory7? DirectWriteFactory { get; } = DirectWrite.CreateFactory7();
 
-        /// <summary>
-        /// The black brush
-        /// </summary>
-        protected ID2D1SolidColorBrush? blackBrush;
+    /// <summary>
+    /// Gets the render target.
+    /// </summary>
+    /// <value>
+    /// The render target.
+    /// </value>
+    protected ID2D1RenderTarget? RenderTarget => dcRenderTarget;
+    #endregion
 
-        /// <summary>
-        /// The resources valid
-        /// </summary>
-        private bool resourcesValid;
+    /// <summary>
+    /// Form resize event.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The e.</param>
+    private void Form1_Resize(object sender, EventArgs e) => DoSizeLayout((sender as Control)!.Size!);
 
-        /// <summary>
-        /// The render target
-        /// </summary>
-        private ID2D1DCRenderTarget? dcRenderTarget;
+    /// <summary>
+    /// Applied resizing to the text layout area.
+    /// </summary>
+    /// <param name="size">The size.</param>
+    private void DoSizeLayout(Size size)
+    {
+        textLayout?.SetMaxSize(size);
+        Invalidate();
+    }
 
-        /// <summary>
-        /// The render target
-        /// </summary>
-        private ID2D1HwndRenderTarget? handleRenderTarget;
-        #endregion
+    /// <summary>
+    /// Paints the form.
+    /// </summary>
+    /// <param name="e">The e.</param>
+    protected unsafe override void OnPaint(PaintEventArgs e)
+    {
+        dcRenderTarget ??= InitializeDirect2DResources(); // recreate resources if they have become invalid.
+        dcRenderTarget?.BindDC(e.Graphics, e.ClipRectangle);
+        RenderTarget?.BeginDraw();
+        DoDrawing(RenderTarget!);
+        var result = RenderTarget?.EndDraw();
+        Validate();
 
-        #region Constructors
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Form1"/> class.
-        /// </summary>
-        public Form1()
+        if (result == HRESULT.D2DERR_RECREATE_TARGET)
         {
-            InitializeComponent();
-            textFormat = DirectWriteFactory?.CreateTextFormat("Gabriola", fontSize: 64);
-            textFormat?.SetTextAlignment(DWRITE_TEXT_ALIGNMENT.DWRITE_TEXT_ALIGNMENT_CENTER);
-            textFormat?.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT.DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
-            InitializeDirect2D();
-            DoSize(Size);
-        }
-        #endregion
-
-        #region Properties
-        /// <summary>
-        /// Gets the direct2d factory.
-        /// </summary>
-        /// <value>
-        /// The direct2d factory.
-        /// </value>
-        protected static ID2D1Factory? Direct2dFactory { get; } = Direct2d.CreateFactory();
-
-        /// <summary>
-        /// Gets the direct write factory.
-        /// </summary>
-        /// <value>
-        /// The direct write factory.
-        /// </value>
-        protected static IDWriteFactory? DirectWriteFactory { get; } = DirectWrite.CreateFactory();
-
-        /// <summary>
-        /// Gets the render target.
-        /// </summary>
-        /// <value>
-        /// The render target.
-        /// </value>
-        protected ID2D1RenderTarget? RenderTarget => dcRenderTarget;
-        #endregion
-
-        /// <summary>
-        /// Form resize event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The e.</param>
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            var s = (Control)sender;
-            InitializeDirect2D();
-            DoSize(s!.Size!);
+            DiscardDirect2DResources();
         }
 
-        /// <summary>
-        /// Applied resizing to the text layout area.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        private void DoSize(Size size)
+        base.OnPaint(e);
+    }
+
+    ///// <summary>
+    ///// Ons the paint background.
+    ///// </summary>
+    ///// <param name="e">The e.</param>
+    //protected unsafe override void OnPaintBackground(PaintEventArgs e)
+    //{
+    //    dcRenderTarget ??= InitializeDirect2DResources(); // recreate resources if they have become invalid.
+    //    dcRenderTarget?.BindDC(e.Graphics, e.ClipRectangle);
+    //    RenderTarget?.BeginDraw();
+    //    RenderTarget?.Clear(this.BackColor);
+    //    var result = RenderTarget?.EndDraw();
+    //    Validate();
+
+    //    if (result == HRESULT.D2DERR_RECREATE_TARGET)
+    //    {
+    //        DiscardDirect2DResources();
+    //    }
+
+    //    //base.OnPaintBackground(e);
+    //}
+
+    /// <summary>
+    /// Does the drawing.
+    /// </summary>
+    private void DoDrawing(ID2D1RenderTarget renderTarget)
+    {
+        renderTarget?.SetTransform();
+        //renderTarget?.Clear(Color.CornflowerBlue);
+        renderTarget?.DrawTextLayout(default, textLayout!, blackBrush!, D2D1_DRAW_TEXT_OPTIONS.D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT);
+        //renderTarget?.FillRectangle(new D2D_RECT_F(50f, 50f, 100f, 100f), blackBrush!);
+        //renderTarget?.DrawRectangle(new D2D_RECT_F(50f, 50f, 100f, 100f), blackBrush!, 1f, default!);
+        //renderTarget?.FillEllipse(new D2D1_ELLIPSE(new D2D_POINT_2F(100f, 100f), 50f, 100f), blackBrush!);
+        //renderTarget?.DrawEllipse(new D2D1_ELLIPSE(new D2D_POINT_2F(100f, 100f), 50f, 100f), blackBrush!, 1f, default!);
+        //renderTarget?.FillRoundedRectangle(new D2D1_ROUNDED_RECT(new D2D_RECT_F(50f, 50f, 150f, 150f), 10f, 10f), blackBrush!);
+        //renderTarget?.DrawRoundedRectangle(new D2D1_ROUNDED_RECT(new D2D_RECT_F(50f, 50f, 150f, 150f), 10f, 10f), blackBrush!, 1f, default!);
+        //renderTarget?.DrawLine(new D2D_POINT_2F(50f, 50f), new D2D_POINT_2F(100f, 100f), blackBrush!, 1f, default!);
+    }
+
+    /// <summary>
+    /// Discards the device resources.
+    /// </summary>
+    private unsafe void DiscardDirect2DResources()
+    {
+        Marshal.ReleaseComObject(dcRenderTarget!);
+        Marshal.ReleaseComObject(blackBrush!);
+        Marshal.ReleaseComObject(textFormat!);
+        Marshal.ReleaseComObject(textLayout!);
+        Marshal.ReleaseComObject(typography!);
+        dcRenderTarget = null;
+        resourcesValid = false;
+    }
+
+    /// <summary>
+    /// Initializes Direct2D for use with a GDI DC.
+    /// </summary>
+    private unsafe ID2D1DCRenderTarget? InitializeDirect2DResources()
+    {
+        if (!resourcesValid)
         {
-            textLayout?.SetMaxSize(size);
-            Invalidate();
+            var renderTargetProperties = new D2D1_RENDER_TARGET_PROPERTIES(D2D1_RENDER_TARGET_TYPE.D2D1_RENDER_TARGET_TYPE_DEFAULT, new D2D1_PIXEL_FORMAT(DXGI_FORMAT.DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE.D2D1_ALPHA_MODE_IGNORE), 0, 0, 0, 0);
+            dcRenderTarget = Direct2dFactory?.CreateDCRenderTarget(renderTargetProperties);
+            CreateResources(dcRenderTarget);
+            resourcesValid = true;
         }
+        return dcRenderTarget;
+    }
 
-        /// <summary>
-        /// Paints the form.
-        /// </summary>
-        /// <param name="e">The e.</param>
-        protected unsafe override void OnPaint(PaintEventArgs e)
-        {
-            InitializeDirect2D(e.Graphics, e.ClipRectangle);
-            RenderTarget?.BeginDraw();
-            DoDrawing();
-            var result = RenderTarget?.EndDraw();
-            Validate();
+    /// <summary>
+    /// Initializes Direct2D for use with a GDI DC.
+    /// </summary>
+    private unsafe void CreateResources(ID2D1RenderTarget? renderTarget)
+    {
+        var text = "Hello c# World 🌎 From ... DirectWrite!";
+        blackBrush = renderTarget?.CreateSolidColorBrush(Color.Black);
 
-            if (result == HRESULT.D2DERR_RECREATE_TARGET)
-            {
-                resourcesValid = false;
-            }
+        textFormat = DirectWriteFactory?.CreateTextFormat("Gabriola", fontSize: 64);
+        textFormat?.SetTextAlignment(DWRITE_TEXT_ALIGNMENT.DWRITE_TEXT_ALIGNMENT_CENTER);
+        textFormat?.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT.DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
-            base.OnPaint(e);
-        }
+        textLayout = DirectWriteFactory?.CreateTextLayout(text, textFormat, renderTarget?.GetSize() ?? default);
 
-        /// <summary>
-        /// Does the drawing.
-        /// </summary>
-        private void DoDrawing()
-        {
-            RenderTarget?.SetTransform();
-            RenderTarget?.Clear(Color.CornflowerBlue);
-            RenderTarget?.DrawTextLayout(default, textLayout!, blackBrush!, D2D1_DRAW_TEXT_OPTIONS.D2D1_DRAW_TEXT_OPTIONS_ENABLE_COLOR_FONT);
-        }
+        var textTypographyRange = new DWRITE_TEXT_RANGE(0u, (uint)text.Length);
+        typography = DirectWriteFactory?.CreateTypography();
+        typography?.AddFontFeature(new DWRITE_FONT_FEATURE(DWRITE_FONT_FEATURE_TAG.DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_7, 1));
+        textLayout?.SetTypography(typography, textTypographyRange);
 
-        /// <summary>
-        /// Initializes Direct2D for use with a GDI DC.
-        /// </summary>
-        private unsafe void CreateResources()
-        {
-            var black = Color.Black.ToD2D1_COLOR_F();
-            RenderTarget?.CreateSolidColorBrush(&black, null, out blackBrush);
-            var text = "Hello c# World 🌎 From ... DirectWrite!";
-            textLayout = DirectWriteFactory?.CreateTextLayout(text, textFormat, RenderTarget?.GetSize() ?? default);
-
-            var textTypographyRange = new DWRITE_TEXT_RANGE() { startPosition = 0u, length = (uint)text.Length };
-            typography = DirectWriteFactory?.CreateTypography();
-            typography?.AddFontFeature(new DWRITE_FONT_FEATURE() { nameTag = DWRITE_FONT_FEATURE_TAG.DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_7, parameter = 1 });
-            textLayout?.SetTypography(typography, textTypographyRange);
-
-            // (27, 12) is the text range around "DirectWrite!"
-            var textDirectWriteRange = new DWRITE_TEXT_RANGE() { startPosition = 27u, length = 12u };
-            textLayout?.SetFontSize(100, textDirectWriteRange);
-            textLayout?.SetUnderline(true, textDirectWriteRange);
-            textLayout?.SetFontWeight(DWRITE_FONT_WEIGHT.DWRITE_FONT_WEIGHT_BOLD, textDirectWriteRange);
-        }
-
-        /// <summary>
-        /// Initializes Direct2D for use with a GDI DC.
-        /// </summary>
-        private unsafe void InitializeDirect2D()
-        {
-            if (!resourcesValid)
-            {
-                var renderTargetProperties = new D2D1_RENDER_TARGET_PROPERTIES()
-                {
-                    type = D2D1_RENDER_TARGET_TYPE.D2D1_RENDER_TARGET_TYPE_DEFAULT,
-                    dpiX = 0,
-                    dpiY = 0,
-                    minLevel = 0,
-                    pixelFormat = new D2D1_PIXEL_FORMAT
-                    {
-                        format = DXGI_FORMAT.DXGI_FORMAT_B8G8R8A8_UNORM,
-                        alphaMode = D2D1_ALPHA_MODE.D2D1_ALPHA_MODE_IGNORE
-                    },
-                };
-                dcRenderTarget = Direct2dFactory?.CreateDCRenderTarget(renderTargetProperties);
-                CreateResources();
-                resourcesValid = true;
-            }
-        }
-
-        /// <summary>
-        /// Initializes Direct2D.
-        /// </summary>
-        /// <param name="graphics">The graphics.</param>
-        /// <param name="rectangle"></param>
-        private unsafe void InitializeDirect2D(Graphics graphics, Rectangle rectangle)
-        {
-            InitializeDirect2D();
-            dcRenderTarget?.BindDC(graphics, rectangle);
-        }
-
-        /// <summary>
-        /// Initializes Direct2D using a Window handle.
-        /// </summary>
-        /// <param name="window">The window.</param>
-        private unsafe void InitializeDirect2D(IntPtr window)
-        {
-            if (!resourcesValid)
-            {
-                handleRenderTarget = Direct2dFactory?.CreateHwndRenderTarget(default, new D2D1_HWND_RENDER_TARGET_PROPERTIES() { hwnd = (HWND)window, pixelSize = new D2D_SIZE_U() { width = (uint)ClientRectangle.Size.Width, height = (uint)ClientRectangle.Size.Height }, presentOptions = D2D1_PRESENT_OPTIONS.D2D1_PRESENT_OPTIONS_NONE });
-                CreateResources();
-                resourcesValid = true;
-            }
-        }
-
-        /// <summary>
-        /// Initializes Direct2D using a Window handle.
-        /// </summary>
-        /// <param name="window">The window.</param>
-        /// <param name="size">The size.</param>
-        private unsafe void InitializeDirect2D(IntPtr window, Size size)
-        {
-            if (!resourcesValid)
-            {
-                handleRenderTarget = Direct2dFactory?.CreateHwndRenderTarget(default, new D2D1_HWND_RENDER_TARGET_PROPERTIES() { hwnd = (HWND)window, pixelSize = new D2D_SIZE_U() { width = (uint)size.Width, height = (uint)size.Height }, presentOptions = D2D1_PRESENT_OPTIONS.D2D1_PRESENT_OPTIONS_NONE });
-                CreateResources();
-                resourcesValid = true;
-            }
-            else
-            {
-                var s = size.ToD2D_SIZE_U();
-                handleRenderTarget?.Resize(&s);
-            }
-        }
+        // (27, 12) is the text range around "DirectWrite!"
+        var textDirectWriteRange = new DWRITE_TEXT_RANGE(27u, 12u);
+        textLayout?.SetFontSize(100, textDirectWriteRange);
+        textLayout?.SetUnderline(true, textDirectWriteRange);
+        textLayout?.SetFontWeight(DWRITE_FONT_WEIGHT.DWRITE_FONT_WEIGHT_BOLD, textDirectWriteRange);
     }
 }

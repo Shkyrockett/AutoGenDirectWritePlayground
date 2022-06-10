@@ -10,12 +10,10 @@
 
 using System.Numerics;
 using System.Runtime.InteropServices;
-using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.Direct2D;
-using Windows.Win32.Graphics.Direct2D.Common;
 
-namespace AutoGenDirectWriteLibrary
+namespace Windows.Win32
 {
     /// <summary>
     /// Class for calling Direct2D API.
@@ -28,40 +26,95 @@ namespace AutoGenDirectWriteLibrary
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
-        public unsafe static ID2D1Factory? CreateFactory(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE)
+        public unsafe static ID2D1Factory? CreateFactory(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            return PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory).GUID, new D2D1_FACTORY_OPTIONS() { debugLevel = debugLevel }, out var factory) switch
-            {
-                HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory,
-                _ => throw new Exception("Unspecified Error")
-            };
-        }
+            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory,
+            _ => throw new Exception("Unspecified Error")
+        };
 
         /// <summary>
-        /// Inverts the matrix.
+        /// Creates the factory.
         /// </summary>
-        /// <param name="matrix">The matrix.</param>
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
-        public static bool InvertMatrix(ref Matrix3x2 matrix)
+        public unsafe static ID2D1Factory1? CreateFactory1(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory1).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            var m = matrix.ToD2D_MATRIX_3X2_F();
-            var t = PInvoke.D2D1InvertMatrix(ref m);
-            matrix = m.ToMatrix3x2();
-            return t;
-        }
+            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory1,
+            _ => throw new Exception("Unspecified Error")
+        };
 
         /// <summary>
-        /// Determines whether [is matrix invertible] [the specified matrix].
+        /// Creates the factory.
         /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>
-        ///   <see langword="true" /> if [is matrix invertible] [the specified matrix]; otherwise, <see langword="false" />.
-        /// </returns>
-        public static bool IsMatrixInvertible(ref Matrix3x2 matrix)
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <param name="debugLevel">The debug level.</param>
+        /// <returns></returns>
+        public unsafe static ID2D1Factory2? CreateFactory2(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory2).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            var m = matrix.ToD2D_MATRIX_3X2_F();
-            return PInvoke.D2D1IsMatrixInvertible(m);
-        }
+            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory2,
+            _ => throw new Exception("Unspecified Error")
+        };
+
+        /// <summary>
+        /// Creates the factory.
+        /// </summary>
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <param name="debugLevel">The debug level.</param>
+        /// <returns></returns>
+        public unsafe static ID2D1Factory3? CreateFactory3(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory3).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
+        {
+            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory3,
+            _ => throw new Exception("Unspecified Error")
+        };
+
+        /// <summary>
+        /// Creates the factory.
+        /// </summary>
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <param name="debugLevel">The debug level.</param>
+        /// <returns></returns>
+        public unsafe static ID2D1Factory4? CreateFactory4(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory4).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
+        {
+            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory4,
+            _ => throw new Exception("Unspecified Error")
+        };
+
+        /// <summary>
+        /// Creates the factory.
+        /// </summary>
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <param name="debugLevel">The debug level.</param>
+        /// <returns></returns>
+        public unsafe static ID2D1Factory5? CreateFactory5(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory5).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
+        {
+            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory5,
+            _ => throw new Exception("Unspecified Error")
+        };
+
+        /// <summary>
+        /// Creates the factory.
+        /// </summary>
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <param name="debugLevel">The debug level.</param>
+        /// <returns></returns>
+        public unsafe static ID2D1Factory6? CreateFactory6(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory6).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
+        {
+            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory6,
+            _ => throw new Exception("Unspecified Error")
+        };
+
+        /// <summary>
+        /// Creates the factory.
+        /// </summary>
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <param name="debugLevel">The debug level.</param>
+        /// <returns></returns>
+        public unsafe static ID2D1Factory7? CreateFactory7(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory7).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
+        {
+            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory7,
+            _ => throw new Exception("Unspecified Error")
+        };
 
         /// <summary>
         /// Makes a rotation matrix.
@@ -71,7 +124,7 @@ namespace AutoGenDirectWriteLibrary
         /// <returns></returns>
         public static Matrix3x2 MakeRotateMatrix(float angle, PointF center)
         {
-            PInvoke.D2D1MakeRotateMatrix(angle, new D2D_POINT_2F() { x = center.X, y = center.Y }, out var matrix);
+            PInvoke.D2D1MakeRotateMatrix(angle, center.ToD2D_POINT_2F(), out var matrix);
             return matrix.ToMatrix3x2();
         }
 

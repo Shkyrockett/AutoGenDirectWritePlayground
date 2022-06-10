@@ -9,22 +9,21 @@
 // <remarks>
 // </remarks>
 
-namespace AutoGenDirectWritePlayground
+namespace AutoGenDirectWritePlayground;
+
+/// <summary>
+/// The program.
+/// </summary>
+internal static class Program
 {
     /// <summary>
-    /// The program.
+    ///  The main entry point for the application.
     /// </summary>
-    internal static class Program
+    [STAThread]
+    private static void Main()
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main()
-        {
-            ApplicationConfiguration.Initialize();
-            using var mainForm = new Form1();
-            Application.Run(mainForm);
-        }
+        ApplicationConfiguration.Initialize();
+        using var mainForm = new Form1();
+        Application.Run(mainForm);
     }
 }
