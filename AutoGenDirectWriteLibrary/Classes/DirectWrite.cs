@@ -8,6 +8,7 @@
 // <summary></summary>
 // <remarks></remarks>
 
+using System.Runtime.CompilerServices;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.DirectWrite;
 
@@ -23,6 +24,7 @@ namespace Windows.Win32
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static IDWriteFactory? CreateFactory(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory).GUID, out var factory) switch
         {
             HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory,
@@ -34,6 +36,7 @@ namespace Windows.Win32
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static IDWriteFactory1? CreateFactory1(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory1).GUID, out var factory) switch
         {
             HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory1,
@@ -45,6 +48,7 @@ namespace Windows.Win32
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static IDWriteFactory2? CreateFactory2(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory2).GUID, out var factory) switch
         {
             HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory2,
@@ -56,6 +60,7 @@ namespace Windows.Win32
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static IDWriteFactory3? CreateFactory3(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory3).GUID, out var factory) switch
         {
             HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory3,
@@ -67,6 +72,7 @@ namespace Windows.Win32
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static IDWriteFactory4? CreateFactory4(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory4).GUID, out var factory) switch
         {
             HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory4,
@@ -78,6 +84,7 @@ namespace Windows.Win32
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static IDWriteFactory5? CreateFactory5(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory5).GUID, out var factory) switch
         {
             HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory5,
@@ -89,6 +96,7 @@ namespace Windows.Win32
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static IDWriteFactory6? CreateFactory6(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory6).GUID, out var factory) switch
         {
             HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory6,
@@ -100,6 +108,7 @@ namespace Windows.Win32
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static IDWriteFactory7? CreateFactory7(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED) => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactory7).GUID, out var factory) switch
         {
             HRESULT h when h == HRESULT.S_OK => factory as IDWriteFactory7,

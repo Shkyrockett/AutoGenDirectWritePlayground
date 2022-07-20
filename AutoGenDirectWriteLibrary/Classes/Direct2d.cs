@@ -9,7 +9,7 @@
 // <remarks></remarks>
 
 using System.Numerics;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.Direct2D;
 
@@ -26,9 +26,10 @@ namespace Windows.Win32
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public unsafe static ID2D1Factory? CreateFactory(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory,
+            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory,
             _ => throw new Exception("Unspecified Error")
         };
 
@@ -38,9 +39,10 @@ namespace Windows.Win32
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public unsafe static ID2D1Factory1? CreateFactory1(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory1).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory1,
+            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory1,
             _ => throw new Exception("Unspecified Error")
         };
 
@@ -50,9 +52,10 @@ namespace Windows.Win32
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public unsafe static ID2D1Factory2? CreateFactory2(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory2).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory2,
+            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory2,
             _ => throw new Exception("Unspecified Error")
         };
 
@@ -62,9 +65,10 @@ namespace Windows.Win32
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public unsafe static ID2D1Factory3? CreateFactory3(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory3).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory3,
+            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory3,
             _ => throw new Exception("Unspecified Error")
         };
 
@@ -74,9 +78,10 @@ namespace Windows.Win32
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public unsafe static ID2D1Factory4? CreateFactory4(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory4).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory4,
+            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory4,
             _ => throw new Exception("Unspecified Error")
         };
 
@@ -86,9 +91,10 @@ namespace Windows.Win32
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public unsafe static ID2D1Factory5? CreateFactory5(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory5).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory5,
+            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory5,
             _ => throw new Exception("Unspecified Error")
         };
 
@@ -98,9 +104,10 @@ namespace Windows.Win32
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public unsafe static ID2D1Factory6? CreateFactory6(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory6).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory6,
+            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory6,
             _ => throw new Exception("Unspecified Error")
         };
 
@@ -110,9 +117,10 @@ namespace Windows.Win32
         /// <param name="factoryType">Type of the factory.</param>
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public unsafe static ID2D1Factory7? CreateFactory7(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory7).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
         {
-            HRESULT h when h == HRESULT.S_OK => Marshal.GetObjectForIUnknown(new IntPtr(factory)) as ID2D1Factory7,
+            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory7,
             _ => throw new Exception("Unspecified Error")
         };
 
@@ -122,6 +130,7 @@ namespace Windows.Win32
         /// <param name="angle">The angle.</param>
         /// <param name="center">The center.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static Matrix3x2 MakeRotateMatrix(float angle, PointF center)
         {
             PInvoke.D2D1MakeRotateMatrix(angle, center.ToD2D_POINT_2F(), out var matrix);
@@ -135,6 +144,7 @@ namespace Windows.Win32
         /// <param name="angleY">The angle y.</param>
         /// <param name="center">The center.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static Matrix3x2 MakeSkewMatrix(float angleX, float angleY, PointF center)
         {
             var center1 = center.ToD2D_POINT_2F();
