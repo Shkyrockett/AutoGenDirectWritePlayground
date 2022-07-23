@@ -2,21 +2,25 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
+		<VersionPrefix>0.0.0.1</VersionPrefix>
 		<TargetFramework>net7.0-windows</TargetFramework>
+		<Platforms>AnyCPU;x86;x64;ARM32;ARM64</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<VersionPrefix>0.0.0.1</VersionPrefix>
-		<Platforms>AnyCPU;x86;x64;ARM32;ARM64</Platforms>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Authors>Shkyrockett</Authors>
+		<Copyright>Copyright (c) 2021 - 2022 $(Authors)</Copyright>
+		<Description>Playground for experimenting with auto generating interop API for working with Direct Write.</Description>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/Shkyrockett/AutoGenDirectWritePlayground</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Shkyrockett/AutoGenDirectWritePlayground</PackageProjectUrl>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
 		<DocumentationFile>$(OutputPath)$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-		<NeutralLanguage>en-US</NeutralLanguage>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Platform)'=='AnyCPU'">
-		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -27,8 +31,36 @@
 		<Optimize>true</Optimize>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Platform)'=='AnyCPU'">
+		<PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Platform)'=='x64'">
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Platform)'=='x86'">
+		<PlatformTarget>x86</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Platform)'=='ARM64'">
+		<PlatformTarget>ARM64</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Platform)'=='ARM32'">
+		<PlatformTarget>ARM32</PlatformTarget>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link="Properties\.editorconfig" />
+		<None Include="..\LICENSE.md" Link="Properties\LICENSE.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\README.md" Link="Properties\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

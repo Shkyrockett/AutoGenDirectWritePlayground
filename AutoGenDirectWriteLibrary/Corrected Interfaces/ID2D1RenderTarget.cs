@@ -543,7 +543,11 @@ namespace Windows.Win32
             [PreserveSig]
             void BeginDraw();
 
-            // The AutoGen for this omits the HRESULT which is needed in the drawing code.
+            // The AutoGen for this omits the HRESULT which is very useful in the drawing code to tell
+            // if the draw failed and DirectX needs to be reinitialized because the display reset.
+            // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
+            // Incorrect generated code:
+            //unsafe void EndDraw([Optional] ulong* tag1, [Optional] ulong* tag2);
             /// <summary>Ends drawing operations on the render target and indicates the current error state and associated tags.</summary>
             /// <param name="tag1">
             /// <para>Type: <b><a href="https://docs.microsoft.com/windows/win32/Direct2D/d2d1-tag">D2D1_TAG</a>*</b> When this method returns, contains the tag for drawing operations that caused errors or 0 if there were no errors. This parameter is passed uninitialized.</para>
@@ -559,7 +563,6 @@ namespace Windows.Win32
             /// <remarks>
             /// <para><see href="https://docs.microsoft.com/windows/win32/api//d2d1/nf-d2d1-id2d1rendertarget-enddraw">Learn more about this API from docs.microsoft.com</see>.</para>
             /// </remarks>
-			//unsafe void EndDraw([Optional] ulong* tag1, [Optional] ulong* tag2);
             [PreserveSig]
             unsafe HRESULT EndDraw([Optional] ulong* tag1, [Optional] ulong* tag2);
 
@@ -605,7 +608,10 @@ namespace Windows.Win32
             [PreserveSig]
             unsafe void GetDpi(float* dpiX, float* dpiY);
 
-            // The AutoGen for this this throws an access violation when called. This version works.
+            // The AutoGen for GetSize throws an access violation when called. The version here with the HRESULT works correctly, and should use an extension to return the struct.
+            // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
+            // Incorrect generated code:
+            //D2D_SIZE_F GetSize();
             /// <summary>Returns the size of the render target in device-independent pixels.</summary>
             /// <returns>
             /// <para>Type: <b><a href="/windows/win32/Direct2D/d2d1-size-f">D2D1_SIZE_F</a></b> The current size of the render target in device-independent pixels.</para>
@@ -614,10 +620,12 @@ namespace Windows.Win32
             /// <para><see href="https://docs.microsoft.com/windows/win32/api//d2d1/nf-d2d1-id2d1rendertarget-getsize">Learn more about this API from docs.microsoft.com</see>.</para>
             /// </remarks>
             [PreserveSig]
-            //D2D_SIZE_F GetSize();
             HRESULT GetSize(out D2D_SIZE_F size);
 
-            // This seems to be the correct implementation rather than what the AutoGen creates.
+            // The AutoGen for GetPixelSize throws an access violation when called. The version here with the HRESULT works correctly, and should use an extension to return the struct.
+            // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
+            // Incorrect generated code:
+            //D2D_SIZE_U GetPixelSize();
             /// <summary>Returns the size of the render target in device pixels.</summary>
             /// <returns>
             /// <para>Type: <b><a href="/windows/win32/Direct2D/d2d1-size-u">D2D1_SIZE_U</a></b> The size of the render target in device pixels.</para>
@@ -626,7 +634,6 @@ namespace Windows.Win32
             /// <para><see href="https://docs.microsoft.com/windows/win32/api//d2d1/nf-d2d1-id2d1rendertarget-getpixelsize">Learn more about this API from docs.microsoft.com</see>.</para>
             /// </remarks>
             [PreserveSig]
-            //D2D_SIZE_U GetPixelSize();
             HRESULT GetPixelSize(out D2D_SIZE_U pixelSize);
 
             /// <summary>Gets the maximum size, in device-dependent units (pixels), of any one bitmap dimension supported by the render target.</summary>

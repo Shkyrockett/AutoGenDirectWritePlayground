@@ -25,7 +25,7 @@ namespace Windows.Win32
     {
         #region Factory Shims
         /// <summary>
-        /// Creates the d c render target.
+        /// Creates a render target for interacting with a device context.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="renderTargetProperties">The render target properties.</param>
@@ -41,7 +41,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Creates the hwnd render target.
+        /// Creates a render target for interacting with a windows handle.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="renderTargetProperties">The render target properties.</param>
@@ -59,7 +59,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Creates the stroke style.
+        /// Creates a stroke style.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="strokeStyleProperties">The stroke style properties.</param>
@@ -75,7 +75,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Creates the text format.
+        /// Creates a text format.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="fontFamilyName">The font family name.</param>
@@ -93,7 +93,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Creates the text layout.
+        /// Creates a text layout.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="text">The text.</param>
@@ -111,7 +111,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Creates the text layout.
+        /// Creates a text layout.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="text">The text.</param>
@@ -129,7 +129,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Creates the typography.
+        /// Creates a typography.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <returns>An IDWriteTypography.</returns>
@@ -143,7 +143,7 @@ namespace Windows.Win32
 
         #region RenderTarget Shims
         /// <summary>
-        /// Binds the d c.
+        /// Binds a renter target to a specified device context.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="graphics">The graphics.</param>
@@ -152,7 +152,7 @@ namespace Windows.Win32
         public unsafe static void BindDC(this ID2D1DCRenderTarget renderTarget, global::System.Drawing.Graphics graphics, Rectangle rectangle) => BindDC(renderTarget, graphics, rectangle.ToD2D_RECT());
 
         /// <summary>
-        /// Binds the d c.
+        /// Binds a renter target to a specified device context.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="graphics">The graphics.</param>
@@ -172,7 +172,7 @@ namespace Windows.Win32
         public unsafe static void Clear(this ID2D1RenderTarget renderTarget) => renderTarget.Clear(null);
 
         /// <summary>
-        /// Clears the specified color.
+        /// Clears the specified render target with a color.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="color">The color.</param>
@@ -180,7 +180,7 @@ namespace Windows.Win32
         public unsafe static void Clear(this ID2D1RenderTarget renderTarget, in Color color) => Clear(renderTarget, color.ToD2D1_COLOR_F());
 
         /// <summary>
-        /// Clears the specified color.
+        /// Clears the specified render target with a color.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="color">The color.</param>
@@ -191,7 +191,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Creates the solid color brush.
+        /// Creates a solid color brush with a specified color.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="color">The color.</param>
@@ -200,7 +200,7 @@ namespace Windows.Win32
         public unsafe static ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget renderTarget, in Color color) => CreateSolidColorBrush(renderTarget, color.ToD2D1_COLOR_F());
 
         /// <summary>
-        /// Creates the solid color brush.
+        /// Creates a solid color brush with a specified color.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="color">The color.</param>
@@ -216,7 +216,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Creates the solid color brush.
+        /// Creates a solid color brush with a specified color and properties.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="color">The color.</param>
@@ -226,7 +226,7 @@ namespace Windows.Win32
         public unsafe static ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget renderTarget, in Color color, in D2D1_BRUSH_PROPERTIES properties) => CreateSolidColorBrush(renderTarget, color.ToD2D1_COLOR_F(), properties);
 
         /// <summary>
-        /// Creates the solid color brush.
+        /// Creates a solid color brush with a specified color and properties.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="color">The color.</param>
@@ -244,7 +244,79 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Draws the ellipse.
+        /// Creates the radial gradient brush.
+        /// </summary>
+        /// <param name="renderTarget">The render target.</param>
+        /// <param name="radialBrushProperties">The radial brush properties.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <returns>An ID2D1Brush.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public unsafe static ID2D1Brush CreateRadialGradientBrush(this ID2D1RenderTarget renderTarget, in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialBrushProperties, ID2D1GradientStopCollection gradientStops)
+        {
+            fixed (D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES* r = &radialBrushProperties)
+            {
+                renderTarget.CreateRadialGradientBrush(r, null, gradientStops, out var gradientBrush);
+                return gradientBrush;
+            }
+        }
+
+        /// <summary>
+        /// Creates the radial gradient brush.
+        /// </summary>
+        /// <param name="renderTarget">The render target.</param>
+        /// <param name="radialBrushProperties">The radial brush properties.</param>
+        /// <param name="brushProperties"></param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <returns>An ID2D1Brush.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public unsafe static ID2D1Brush CreateRadialGradientBrush(this ID2D1RenderTarget renderTarget, in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialBrushProperties, in D2D1_BRUSH_PROPERTIES brushProperties, ID2D1GradientStopCollection gradientStops)
+        {
+            fixed (D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES* r = &radialBrushProperties)
+            fixed (D2D1_BRUSH_PROPERTIES* b = &brushProperties)
+            {
+                renderTarget.CreateRadialGradientBrush(r, b, gradientStops, out var gradientBrush);
+                return gradientBrush;
+            }
+        }
+
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="renderTarget">The render target.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <returns>An ID2D1GradientStopCollection.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public unsafe static ID2D1GradientStopCollection CreateGradientStopCollection(this ID2D1RenderTarget renderTarget, in D2D1_GRADIENT_STOP[] gradientStops, D2D1_GAMMA colorInterpolationGamma = D2D1_GAMMA.D2D1_GAMMA_2_2, D2D1_EXTEND_MODE extendMode = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP)
+        {
+            fixed (D2D1_GRADIENT_STOP* s = gradientStops)
+            {
+                renderTarget.CreateGradientStopCollection(s, (uint)gradientStops.Length, colorInterpolationGamma, extendMode, out var gradientStopCollection);
+                return gradientStopCollection;
+            }
+        }
+
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="renderTarget">The render target.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <returns>An ID2D1GradientStopCollection.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public unsafe static ID2D1GradientStopCollection CreateGradientStopCollection(this ID2D1RenderTarget renderTarget, in ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma = D2D1_GAMMA.D2D1_GAMMA_2_2, D2D1_EXTEND_MODE extendMode = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP)
+        {
+            fixed (D2D1_GRADIENT_STOP* s = gradientStops)
+            {
+                renderTarget.CreateGradientStopCollection(s, (uint)gradientStops.Length, colorInterpolationGamma, extendMode, out var gradientStopCollection);
+                return gradientStopCollection;
+            }
+        }
+
+        /// <summary>
+        /// Draws an ellipse.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="ellipse">The ellipse.</param>
@@ -255,7 +327,7 @@ namespace Windows.Win32
         public unsafe static void DrawEllipse(this ID2D1RenderTarget renderTarget, D2D1_ELLIPSE ellipse, ID2D1Brush brush, float strokeWidth, ID2D1StrokeStyle strokeStyle) => renderTarget?.DrawEllipse(&ellipse, brush, strokeWidth, strokeStyle);
 
         /// <summary>
-        /// Draws the rectangle.
+        /// Draws a rectangle.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="rect">The rect.</param>
@@ -272,7 +344,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Draws the rounded rectangle.
+        /// Draws a rounded rectangle.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="roundedRect">The rounded rect.</param>
@@ -289,7 +361,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Draws the text layout.
+        /// Draws text with a specified layout.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="origin">The origin.</param>
@@ -300,7 +372,7 @@ namespace Windows.Win32
         public unsafe static void DrawTextLayout(this ID2D1RenderTarget renderTarget, PointF origin, IDWriteTextLayout textLayout, ID2D1Brush defaultFillBrush, D2D1_DRAW_TEXT_OPTIONS options = D2D1_DRAW_TEXT_OPTIONS.D2D1_DRAW_TEXT_OPTIONS_NONE) => renderTarget.DrawTextLayout(origin.ToD2D_POINT_2F(), textLayout, defaultFillBrush, options);
 
         /// <summary>
-        /// Fills the ellipse.
+        /// Fills an ellipse.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="ellipse">The ellipse.</param>
@@ -315,7 +387,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Fills the rectangle.
+        /// Fills a rectangle.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="rect">The rect.</param>
@@ -330,7 +402,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Fills the rounded rectangle.
+        /// Fills a rounded rectangle.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <param name="roundedRect">The rounded rect.</param>
@@ -345,7 +417,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Gets the size.
+        /// Gets the size of a render target.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         /// <returns></returns>
@@ -357,7 +429,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Set the transform to identity.
+        /// Sets the transform to the identity matrix.
         /// </summary>
         /// <param name="renderTarget">The render target.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -370,7 +442,7 @@ namespace Windows.Win32
 
         #region Other API Shims
         /// <summary>
-        /// Inverts the matrix.
+        /// Inverts a matrix.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns></returns>
@@ -384,7 +456,7 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Inverts the matrix.
+        /// Inverts a matrix.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns></returns>
@@ -396,11 +468,11 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Determines whether [is matrix invertible] [the specified matrix].
+        /// Determines whether the specified matrix is invertible.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns>
-        ///   <see langword="true" /> if [is matrix invertible] [the specified matrix]; otherwise, <see langword="false" />.
+        ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static bool IsMatrixInvertible(this ref Matrix3x2 matrix)
@@ -410,17 +482,17 @@ namespace Windows.Win32
         }
 
         /// <summary>
-        /// Determines whether [is matrix invertible] [the specified matrix].
+        /// Determines whether the specified matrix is invertible.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns>
-        ///   <see langword="true" /> if [is matrix invertible] [the specified matrix]; otherwise, <see langword="false" />.
+        ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static bool IsMatrixInvertible(this ref D2D_MATRIX_3X2_F matrix) => PInvoke.D2D1IsMatrixInvertible(matrix);
 
         /// <summary>
-        /// Sets the max size.
+        /// Sets the maximum size of a text layout.
         /// </summary>
         /// <param name="textLayout">The text layout.</param>
         /// <param name="maxSize">The max size.</param>
@@ -434,87 +506,97 @@ namespace Windows.Win32
 
         #region Type Conversion
         /// <summary>
-        /// Tos the d2 d_ p o i n t_ f.
+        /// Converts a Vector2 to a D2D_POINT_2F.
         /// </summary>
         /// <param name="vector">The vector.</param>
         /// <returns>A D2D_POINT_2F.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static D2D_POINT_2F ToD2D_POINT_F(this Vector2 vector) => Unsafe.As<Vector2, D2D_POINT_2F>(ref vector);
 
         /// <summary>
-        /// Tos the vector2.
+        /// Converts a D2D_POINT_2F to a Vector2.
         /// </summary>
         /// <param name="vector">The vector.</param>
         /// <returns>A Vector2.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static Vector2 ToVector2(this D2D_POINT_2F vector) => Unsafe.As<D2D_POINT_2F, Vector2>(ref vector);
 
         /// <summary>
-        /// Tos the d2 d_ p o i n t_2 f.
+        /// Converts a PointF to a D2D_POINT_2F.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>A D2D_POINT_2F.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static D2D_POINT_2F ToD2D_POINT_2F(this PointF point) => Unsafe.As<PointF, D2D_POINT_2F>(ref point);
 
         /// <summary>
-        /// Tos the point f.
+        /// Converts a D2D_POINT_2F to a PointF.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>A PointF.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static PointF ToPointF(this D2D_POINT_2F point) => Unsafe.As<D2D_POINT_2F, PointF>(ref point);
 
         /// <summary>
-        /// Tos the d2 d_ p o i n t_2 u.
+        /// Converts a Point to a D2D_POINT_2U.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>A D2D_POINT_2U.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static D2D_POINT_2U ToD2D_POINT_2U(this Point point) => Unsafe.As<Point, D2D_POINT_2U>(ref point);
 
         /// <summary>
-        /// Tos the point.
+        /// Converts a D2D_POINT_2U to a Point.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns>A Point.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static Point ToPoint(this D2D_POINT_2U point) => Unsafe.As<D2D_POINT_2U, Point>(ref point);
 
         /// <summary>
-        /// Tos the d2 d_ s i z e_ f.
+        /// Converts a SizeF to a D2D_SIZE_F.
         /// </summary>
         /// <param name="size">The size.</param>
         /// <returns>A D2D_SIZE_F.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static D2D_SIZE_F ToD2D_SIZE_F(this SizeF size) => Unsafe.As<SizeF, D2D_SIZE_F>(ref size);
 
         /// <summary>
-        /// Tos the size f.
+        /// Converts a D2D_SIZE_F to a SizeF.
         /// </summary>
         /// <param name="size">The size.</param>
         /// <returns>A SizeF.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static SizeF ToSizeF(this D2D_SIZE_F size) => Unsafe.As<D2D_SIZE_F, SizeF>(ref size);
 
         /// <summary>
-        /// Tos the d2 d_ s i z e_ u.
+        /// Converts a Size to a D2D_SIZE_U.
         /// </summary>
         /// <param name="size">The size.</param>
         /// <returns>A D2D_SIZE_U.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static D2D_SIZE_U ToD2D_SIZE_U(this Size size) => Unsafe.As<Size, D2D_SIZE_U>(ref size);
 
         /// <summary>
-        /// Tos the size.
+        /// Converts a D2D_SIZE_U to a Size.
         /// </summary>
         /// <param name="size">The size.</param>
         /// <returns>A Size.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static Size ToSize(this D2D_SIZE_U size) => Unsafe.As<D2D_SIZE_U, Size>(ref size);
 
         /// <summary>
-        /// Tos the d2 d1_ c o l o r_ f.
+        /// Converts a Color to a D2D1_COLOR_F.
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns>A D2D1_COLOR_F.</returns>
@@ -522,7 +604,7 @@ namespace Windows.Win32
         public static D2D1_COLOR_F ToD2D1_COLOR_F(this Color color) => new() { r = color.R / 255.0f, g = color.G / 255.0f, b = color.B / 255.0f, a = color.A / 255.0f };
 
         /// <summary>
-        /// Tos the color.
+        /// Converts a D2D1_COLOR_F to a Color.
         /// </summary>
         /// <param name="color">The color.</param>
         /// <returns>A Color.</returns>
@@ -530,7 +612,7 @@ namespace Windows.Win32
         public static Color ToColor(this D2D1_COLOR_F color) => Color.FromArgb((int)(color.a * 255), (int)(color.r * 255), (int)(color.g * 255), (int)(color.b * 255));
 
         /// <summary>
-        /// Tos the d2 d_ r e c t_ f.
+        /// Converts a RectangleF to a D2D_RECT_F.
         /// </summary>
         /// <param name="rect">The rect.</param>
         /// <returns>A D2D_RECT_F.</returns>
@@ -538,7 +620,7 @@ namespace Windows.Win32
         public static D2D_RECT_F ToD2D_RECT_F(this RectangleF rect) => new() { left = rect.Left, top = rect.Top, right = rect.Right, bottom = rect.Bottom };
 
         /// <summary>
-        /// Tos the d2 d_ r e c t_ f.
+        /// Converts a D2D_RECT_F to a RectangleF.
         /// </summary>
         /// <param name="rect">The rect.</param>
         /// <returns>A RectangleF.</returns>
@@ -546,7 +628,7 @@ namespace Windows.Win32
         public static RectangleF ToD2D_RECT_F(this D2D_RECT_F rect) => RectangleF.FromLTRB(rect.left, rect.top, rect.right, rect.bottom);
 
         /// <summary>
-        /// Tos the d2 d_ r e c t_ f.
+        /// Converts a Rectangle to a D2D_RECT_U.
         /// </summary>
         /// <param name="rect">The rect.</param>
         /// <returns>A D2D_RECT_U.</returns>
@@ -554,7 +636,7 @@ namespace Windows.Win32
         public static D2D_RECT_U ToD2D_RECT_F(this Rectangle rect) => new() { left = (uint)rect.Left, top = (uint)rect.Top, right = (uint)rect.Right, bottom = (uint)rect.Bottom };
 
         /// <summary>
-        /// Tos the d2 d_ r e c t_ u.
+        /// Converts a D2D_RECT_U to a Rectangle.
         /// </summary>
         /// <param name="rect">The rect.</param>
         /// <returns>A Rectangle.</returns>
@@ -562,7 +644,7 @@ namespace Windows.Win32
         public static Rectangle ToD2D_RECT_U(this D2D_RECT_U rect) => Rectangle.FromLTRB((int)rect.left, (int)rect.top, (int)rect.right, (int)rect.bottom);
 
         /// <summary>
-        /// Tos the d2 d_ r e c t.
+        /// Converts a Rectangle to a RECT.
         /// </summary>
         /// <param name="rect">The rect.</param>
         /// <returns>A Windows.Win32.Foundation.RECT.</returns>
@@ -570,51 +652,57 @@ namespace Windows.Win32
         public static Foundation.RECT ToD2D_RECT(this Rectangle rect) => new() { left = rect.Left, top = rect.Top, right = rect.Right, bottom = rect.Bottom };
 
         /// <summary>
-        /// Tos the matrix3x2.
+        /// Converts a D2D_MATRIX_3X2_F to a Matrix3x2.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns>A Matrix3x2.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static Matrix3x2 ToMatrix3x2(this D2D_MATRIX_3X2_F matrix) => Unsafe.As<D2D_MATRIX_3X2_F, Matrix3x2>(ref matrix);
 
         /// <summary>
-        /// Tos the d2 d_ m a t r i x_3 x2_ f.
+        /// Converts a Matrix3x2 to a D2D_MATRIX_3X2_F.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns>A D2D_MATRIX_3X2_F.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static D2D_MATRIX_3X2_F ToD2D_MATRIX_3X2_F(this Matrix3x2 matrix) => Unsafe.As<Matrix3x2, D2D_MATRIX_3X2_F>(ref matrix);
 
         /// <summary>
-        /// Tos the matrix3x2.
+        /// Converts a DWRITE_MATRIX to a Matrix3x2.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns>A Matrix3x2.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static Matrix3x2 ToMatrix3x2(this DWRITE_MATRIX matrix) => Unsafe.As<DWRITE_MATRIX, Matrix3x2>(ref matrix);
 
         /// <summary>
-        /// Tos the d w r i t e_ m a t r i x.
+        /// Converts a Matrix3x2 to a DWRITE_MATRIX.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns>A DWRITE_MATRIX.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static DWRITE_MATRIX ToDWRITE_MATRIX(this Matrix3x2 matrix) => Unsafe.As<Matrix3x2, DWRITE_MATRIX>(ref matrix);
 
         /// <summary>
-        /// Tos the d w r i t e_ m a t r i x.
+        /// Converts a D2D_MATRIX_3X2_F to a DWRITE_MATRIX.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns>A DWRITE_MATRIX.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static DWRITE_MATRIX ToDWRITE_MATRIX(this D2D_MATRIX_3X2_F matrix) => Unsafe.As<D2D_MATRIX_3X2_F, DWRITE_MATRIX>(ref matrix);
 
         /// <summary>
-        /// Tos the d2 d_ m a t r i x_3 x2_ f.
+        /// Converts a DWRITE_MATRIX to a D2D_MATRIX_3X2_F.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <returns>A D2D_MATRIX_3X2_F.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
         public static D2D_MATRIX_3X2_F ToD2D_MATRIX_3X2_F(this DWRITE_MATRIX matrix) => Unsafe.As<DWRITE_MATRIX, D2D_MATRIX_3X2_F>(ref matrix);
         #endregion
     }
