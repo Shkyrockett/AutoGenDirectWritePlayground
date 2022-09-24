@@ -21,6 +21,11 @@ namespace AutoGenDirectWritePlayground
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
+        /// The timer.
+        /// </summary>
+        private System.Timers.Timer timer;
+
+        /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -35,14 +40,20 @@ namespace AutoGenDirectWritePlayground
         }
 
         #region Windows Form Designer generated code
-
         /// <summary>
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
+            this.timer = new System.Timers.Timer();
             this.SuspendLayout();
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.SynchronizingObject = this;
+            this.timer.Elapsed += new System.Timers.ElapsedEventHandler(this.Timer_Tick);
             // 
             // Form1
             // 
@@ -50,13 +61,12 @@ namespace AutoGenDirectWritePlayground
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CornflowerBlue;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.DoubleBuffered = true;
             this.Name = "Form1";
-            this.Text = "Auto Generated DirectWrite  Playground";
+            this.Text = "Auto Generated DirectWrite Playground";
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.ResumeLayout(false);
-
         }
-
         #endregion
     }
 }

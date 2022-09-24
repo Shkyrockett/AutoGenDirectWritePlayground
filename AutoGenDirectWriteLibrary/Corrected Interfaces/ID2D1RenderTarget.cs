@@ -544,7 +544,7 @@ namespace Windows.Win32
             void BeginDraw();
 
             // The AutoGen for this omits the HRESULT which is very useful in the drawing code to tell
-            // if the draw failed and DirectX needs to be reinitialized because the display reset.
+            // if the draw failed and DirectX needs to be reinitialized because the display reset. See https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nn-d2d1-id2d1rendertarget#remarks
             // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
             // Incorrect generated code:
             //unsafe void EndDraw([Optional] ulong* tag1, [Optional] ulong* tag2);

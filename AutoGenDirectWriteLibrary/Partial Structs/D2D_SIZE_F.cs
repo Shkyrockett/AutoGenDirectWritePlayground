@@ -1,4 +1,4 @@
-﻿// <copyright file="D2D_RECT_F.cs" company="Shkyrockett" >
+﻿// <copyright file="D2D_SIZE_F.cs" company="Shkyrockett" >
 //     Copyright © 2020 - 2022 Shkyrockett. All rights reserved.
 // </copyright>
 // <author id="shkyrockett">Shkyrockett</author>
@@ -15,28 +15,24 @@ namespace Windows.Win32
     namespace Graphics.Direct2D.Common
     {
         [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
-        public partial struct D2D_RECT_F
+        public partial struct D2D_SIZE_F
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="D2D_RECT_F"/> class.
+            /// Initializes a new instance of the <see cref="D2D_SIZE_F"/> class.
             /// </summary>
-            /// <param name="left">The left.</param>
-            /// <param name="top">The top.</param>
-            /// <param name="right">The right.</param>
-            /// <param name="bottom">The bottom.</param>
-            public D2D_RECT_F(float left, float top, float right, float bottom)
+            /// <param name="width">The width.</param>
+            /// <param name="height">The height.</param>
+            public D2D_SIZE_F(float width, float height)
             {
-                this.left = left;
-                this.top = top;
-                this.right = right;
-                this.bottom = bottom;
+                this.width = width;
+                this.height = height;
             }
 
             /// <summary>
             /// 
             /// </summary>
-            /// <param name="rect"></param>
-            public static implicit operator D2D_RECT_F(RectangleF rect) => new(rect.Left, rect.Top, rect.Right, rect.Bottom);
+            /// <param name="size"></param>
+            public static implicit operator D2D_SIZE_F(SizeF size) => new(size.Width, size.Height);
 
             /// <summary>
             /// Gets the debugger display.
@@ -45,7 +41,7 @@ namespace Windows.Win32
             private string? GetDebuggerDisplay() => ToString();
 
             /// <inheritdoc/>
-            public override string? ToString() => $"{left}, {top}, {right}, {bottom}";
+            public override string? ToString() => $"{width}, {height}";
         }
     }
 }

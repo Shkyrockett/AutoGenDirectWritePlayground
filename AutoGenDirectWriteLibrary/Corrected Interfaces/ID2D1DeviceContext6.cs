@@ -556,7 +556,7 @@ namespace Windows.Win32
             new void BeginDraw();
 
             // The AutoGen for this omits the HRESULT which is very useful in the drawing code to tell
-            // if the draw failed and DirectX needs to be reinitialized because the display reset.
+            // if the draw failed and DirectX needs to be reinitialized because the display reset. See https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nn-d2d1-id2d1rendertarget#remarks
             // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
             // Incorrect generated code:
             //new unsafe void EndDraw([Optional] ulong* tag1, [Optional] ulong* tag2);
@@ -632,7 +632,7 @@ namespace Windows.Win32
             /// <para><see href="https://docs.microsoft.com/windows/win32/api//d2d1/nf-d2d1-id2d1rendertarget-getsize">Learn more about this API from docs.microsoft.com</see>.</para>
             /// </remarks>
             [PreserveSig]
-            unsafe new HRESULT GetSize(out D2D_SIZE_F size);
+            new unsafe HRESULT GetSize(out D2D_SIZE_F size);
 
             // The AutoGen for GetPixelSize throws an access violation when called. The version here with the HRESULT works correctly, and should use an extension to return the struct.
             // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
@@ -646,7 +646,7 @@ namespace Windows.Win32
             /// <para><see href="https://docs.microsoft.com/windows/win32/api//d2d1/nf-d2d1-id2d1rendertarget-getpixelsize">Learn more about this API from docs.microsoft.com</see>.</para>
             /// </remarks>
             [PreserveSig]
-            unsafe new HRESULT GetPixelSize(out D2D_SIZE_U pixelSize);
+            new unsafe HRESULT GetPixelSize(out D2D_SIZE_U pixelSize);
 
             /// <summary>Gets the maximum size, in device-dependent units (pixels), of any one bitmap dimension supported by the render target.</summary>
             /// <returns>
@@ -1782,7 +1782,7 @@ namespace Windows.Win32
             new unsafe void CreateColorContextFromSimpleColorProfile(D2D1_SIMPLE_COLOR_PROFILE* simpleProfile, out ID2D1ColorContext1 colorContext);
             #endregion
 
-            #region ID2D1DeviceContext5
+            #region ID2D1DeviceContext6
             /// <summary>Draws an image to the device context using the specified blend mode. Results are equivalent to using Direct2D's built-in Blend effect.</summary>
             /// <param name="image">
             /// <para>Type: <b>ID2D1Image*</b> The image to be drawn to the device context.</para>

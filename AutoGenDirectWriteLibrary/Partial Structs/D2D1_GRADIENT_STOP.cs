@@ -27,7 +27,7 @@ namespace Windows.Win32
             public D2D1_GRADIENT_STOP(float position, Color color)
             {
                 this.position = position;
-                this.color = color.ToD2D1_COLOR_F();
+                this.color = color;
             }
 
             /// <summary>

@@ -8,10 +8,15 @@
 // <summary></summary>
 // <remarks></remarks>
 
+using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+
 namespace Windows.Win32
 {
     namespace Graphics.Direct2D.Common
     {
+        [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
         public partial struct D2D_POINT_2F
         {
             /// <summary>
@@ -24,6 +29,27 @@ namespace Windows.Win32
                 this.x = x;
                 this.y = y;
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="value"></param>
+            public static implicit operator D2D_POINT_2F(PointF value) => Unsafe.As<PointF, D2D_POINT_2F>(ref value);
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="value"></param>
+            public static implicit operator D2D_POINT_2F(Vector2 value) => Unsafe.As<Vector2, D2D_POINT_2F>(ref value);
+
+            /// <summary>
+            /// Gets the debugger display.
+            /// </summary>
+            /// <returns>A string? .</returns>
+            private string? GetDebuggerDisplay() => ToString();
+
+            /// <inheritdoc/>
+            public override string? ToString() => $"{x}, {y}";
         }
     }
 }

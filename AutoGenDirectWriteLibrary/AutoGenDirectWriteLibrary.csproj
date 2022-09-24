@@ -4,7 +4,7 @@
 		<OutputType>Library</OutputType>
 		<VersionPrefix>0.0.0.1</VersionPrefix>
 		<TargetFramework>net7.0-windows</TargetFramework>
-		<Platforms>AnyCPU;x86;x64;ARM32;ARM64</Platforms>
+		<Platforms>AnyCPU;ARM32;ARM64;x64;x86</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>preview</LangVersion>
@@ -82,11 +82,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.10-beta">
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.63-beta">
 			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
 		</PackageReference>
-		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="24.0.1-preview" />
+		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="33.0.18-preview" />
 		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" />
 	</ItemGroup>
 

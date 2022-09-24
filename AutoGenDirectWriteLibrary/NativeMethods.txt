@@ -1,5 +1,4 @@
-﻿HWND
-BOOL
+﻿BOOL
 D2D_POINT_2F
 D2D_SIZE_U
 D2D_RECT_F
@@ -46,12 +45,20 @@ DWRITE_FACTORY_TYPE
 DWRITE_TEXT_RANGE
 DXGI_RGBA
 DXGI_FORMAT
+HWND
 ID2D1Bitmap
 ID2D1Bitmap1
 ID2D1BitmapBrush
 ID2D1BitmapBrush1
 ID2D1BitmapRenderTarget
 ID2D1DCRenderTarget
+ID2D1DeviceContext
+ID2D1DeviceContext1
+ID2D1DeviceContext2
+ID2D1DeviceContext3
+ID2D1DeviceContext4
+ID2D1DeviceContext5
+ID2D1DeviceContext6
 ID2D1GeometryRealization
 ID2D1GradientMesh
 ID2D1GradientStopCollection

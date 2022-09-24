@@ -4,7 +4,7 @@
 		<OutputType>WinExe</OutputType>
 		<VersionPrefix>0.0.0.1</VersionPrefix>
 		<TargetFramework>net7.0-windows</TargetFramework>
-		<Platforms>AnyCPU;x86;x64;ARM32;ARM64</Platforms>
+		<Platforms>AnyCPU;ARM32;ARM64;x64;x86</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>preview</LangVersion>
