@@ -133,7 +133,7 @@ namespace Windows.Win32
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static Matrix3x2 MakeRotateMatrix(float angle, PointF center)
         {
-            PInvoke.D2D1MakeRotateMatrix(angle, center.ToD2D_POINT_2F(), out var matrix);
+            PInvoke.D2D1MakeRotateMatrix(angle, center, out var matrix);
             return matrix.ToMatrix3x2();
         }
 
@@ -147,7 +147,7 @@ namespace Windows.Win32
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static Matrix3x2 MakeSkewMatrix(float angleX, float angleY, PointF center)
         {
-            var center1 = center.ToD2D_POINT_2F();
+            var center1 = center;
             PInvoke.D2D1MakeSkewMatrix(angleX, angleY, center1, out var matrix);
             return matrix.ToMatrix3x2();
         }

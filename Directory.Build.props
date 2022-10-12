@@ -1,0 +1,8 @@
+<Project>
+	
+    <PropertyGroup>
+		<!--Check whether HRETURNS have been fixed-->
+        <!--<DefineConstants>$(DefineConstants);GenerateRenderTarget</DefineConstants>-->
+    </PropertyGroup>
+	
+</Project>

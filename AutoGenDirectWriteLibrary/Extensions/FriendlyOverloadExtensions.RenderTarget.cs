@@ -1,4 +1,4 @@
-﻿// <copyright file="FriendlyOverloadExtensions.cs" company="Shkyrockett" >
+﻿// <copyright file="FriendlyOverloadExtensions.RenderTarget.cs" company="Shkyrockett" >
 //     Copyright © 2020 - 2022 Shkyrockett. All rights reserved.
 // </copyright>
 // <author id="shkyrockett">Shkyrockett</author>
@@ -8,8 +8,7 @@
 // <summary></summary>
 // <remarks></remarks>
 
-using System.Globalization;
-using System.Numerics;
+#if !GenerateRenderTarget
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -25,126 +24,8 @@ namespace Windows.Win32
     /// </summary>
     public static partial class FriendlyOverloadExtensions
     {
-        #region Factory Shims
-        /// <summary>
-        /// Creates a render target for interacting with a device context.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <param name="renderTargetProperties">The render target properties.</param>
-        /// <returns>An ID2D1DCRenderTarget.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1DCRenderTarget CreateDCRenderTarget(this ID2D1Factory factory, ref D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties)
-        {
-            fixed (D2D1_RENDER_TARGET_PROPERTIES* p = &renderTargetProperties)
-            {
-                factory.CreateDCRenderTarget(p, out var hwndRenderTarget);
-                return hwndRenderTarget;
-            }
-        }
-
-        /// <summary>
-        /// Creates a render target for interacting with a windows handle.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <param name="renderTargetProperties">The render target properties.</param>
-        /// <param name="hwndRenderTargetProperties">The hwnd render target properties.</param>
-        /// <returns>An ID2D1HwndRenderTarget.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1HwndRenderTarget CreateHwndRenderTarget(this ID2D1Factory factory, ref D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties, ref D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties)
-        {
-            fixed (D2D1_RENDER_TARGET_PROPERTIES* p = &renderTargetProperties)
-            fixed (D2D1_HWND_RENDER_TARGET_PROPERTIES* h = &hwndRenderTargetProperties)
-            {
-                factory.CreateHwndRenderTarget(p, h, out var hwndRenderTarget);
-                return hwndRenderTarget;
-            }
-        }
-
-        /// <summary>
-        /// Creates a stroke style.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <param name="strokeStyleProperties">The stroke style properties.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1StrokeStyle CreateStrokeStyle(this ID2D1Factory factory, in D2D1_STROKE_STYLE_PROPERTIES strokeStyleProperties)
-        {
-            fixed (D2D1_STROKE_STYLE_PROPERTIES* s = &strokeStyleProperties)
-            {
-                factory.CreateStrokeStyle(s, null, 0, out var strokeStyle);
-                return strokeStyle;
-            }
-        }
-
-        /// <summary>
-        /// Creates a text format.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <param name="fontFamilyName">The font family name.</param>
-        /// <param name="fontWeight">The font weight.</param>
-        /// <param name="fontStyle">The font style.</param>
-        /// <param name="fontStretch">The font stretch.</param>
-        /// <param name="fontSize">The font size.</param>
-        /// <param name="localeName">The locale name.</param>
-        /// <returns>An IDWriteTextFormat.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe IDWriteTextFormat CreateTextFormat(this IDWriteFactory factory, string fontFamilyName, DWRITE_FONT_WEIGHT fontWeight = DWRITE_FONT_WEIGHT.DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE fontStyle = DWRITE_FONT_STYLE.DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH fontStretch = DWRITE_FONT_STRETCH.DWRITE_FONT_STRETCH_NORMAL, float fontSize = 12.0f, string? localeName = null)
-        {
-            factory.CreateTextFormat(fontFamilyName, fontCollection: null, fontWeight, fontStyle, fontStretch, fontSize, localeName ?? CultureInfo.CurrentCulture.Name, out var textLayout);
-            return textLayout;
-        }
-
-        /// <summary>
-        /// Creates a text layout.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <param name="text">The text.</param>
-        /// <param name="textFormat">The text format.</param>
-        /// <param name="maxSize">The max size.</param>
-        /// <returns>An IDWriteTextLayout.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe IDWriteTextLayout CreateTextLayout(this IDWriteFactory factory, ReadOnlySpan<char> text, IDWriteTextFormat? textFormat, SizeF? maxSize)
-        {
-            fixed (char* c = &MemoryMarshal.GetReference(text))
-            {
-                factory.CreateTextLayout(c, (uint)text.Length, textFormat, maxSize?.Width ?? default, maxSize?.Height ?? default, out var textLayout);
-                return textLayout;
-            }
-        }
-
-        /// <summary>
-        /// Creates a text layout.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <param name="text">The text.</param>
-        /// <param name="textFormat">The text format.</param>
-        /// <param name="maxSize">The max size.</param>
-        /// <returns>An IDWriteTextLayout.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe IDWriteTextLayout CreateTextLayout(this IDWriteFactory factory, ReadOnlySpan<char> text, IDWriteTextFormat? textFormat, D2D_SIZE_F? maxSize)
-        {
-            fixed (char* c = &MemoryMarshal.GetReference(text))
-            {
-                factory.CreateTextLayout(c, (uint)text.Length, textFormat, maxSize?.width ?? default, maxSize?.height ?? default, out var textLayout);
-                return textLayout;
-            }
-        }
-
-        /// <summary>
-        /// Creates a typography.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <returns>An IDWriteTypography.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe IDWriteTypography CreateTypography(this IDWriteFactory factory)
-        {
-            factory.CreateTypography(out var typography);
-            return typography;
-        }
-        #endregion
-
-        #region RenderTarget Shims
-        #region BindDC
+#region RenderTarget Shims
+#region BindDC
         /// <inheritdoc cref="ID2D1DCRenderTarget.BindDC(HDC, Windows.Win32.Foundation.RECT*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -208,9 +89,9 @@ namespace Windows.Win32
             renderTarget.BindDC(dc, &rectangle);
             graphics.ReleaseHdc(dc); // Remember to clean up borrowed DC handle.
         }
-        #endregion
+#endregion
 
-        #region BlendImage
+#region BlendImage
         /// <inheritdoc cref="ID2D1DeviceContext6.BlendImage(ID2D1Image, D2D1_BLEND_MODE, Windows.Win32.Graphics.Direct2D.Common.D2D_POINT_2F*, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, D2D1_INTERPOLATION_MODE)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -220,125 +101,9 @@ namespace Windows.Win32
             var imageRectangleLocal = imageRectangle.HasValue ? imageRectangle.Value : default;
             @this.BlendImage(image, blendMode, targetOffset.HasValue ? &targetOffsetLocal : null, imageRectangle.HasValue ? &imageRectangleLocal : null, interpolationMode);
         }
-        #endregion
+#endregion
 
-        #region Clear
-        /// <summary>
-        /// Clears the specified render target.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1RenderTarget renderTarget) => renderTarget.Clear(null);
-
-        /// <summary>
-        /// Clears the specified render target with a color.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        /// <param name="color">The color.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1RenderTarget renderTarget, in Color color) => Clear(renderTarget, color.ToD2D1_COLOR_F());
-
-        /// <inheritdoc cref="ID2D1BitmapRenderTarget.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows6.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1BitmapRenderTarget @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1RenderTarget.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows6.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1RenderTarget @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1HwndRenderTarget.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows6.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1HwndRenderTarget @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1DCRenderTarget.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows6.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1DCRenderTarget @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows8.0")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1DeviceContext @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext1.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows8.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1DeviceContext1 @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext2.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1DeviceContext2 @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext3.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1DeviceContext3 @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext4.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1DeviceContext4 @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext5.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1DeviceContext5 @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext6.Clear(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*)" />
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void Clear(this ID2D1DeviceContext6 @this, D2D1_COLOR_F? clearColor)
-        {
-            var clearColorLocal = clearColor.HasValue ? clearColor.Value : default;
-            @this.Clear(clearColor.HasValue ? (&clearColorLocal) : null);
-        }
-        #endregion
-
-        #region CreateBitmap
+#region CreateBitmap
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateBitmap(D2D_SIZE_U, void*, uint, Windows.Win32.Graphics.Direct2D.D2D1_BITMAP_PROPERTIES*, out ID2D1Bitmap)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -459,9 +224,9 @@ namespace Windows.Win32
                 @this.CreateBitmap(size, srcData, pitch, bitmapPropertiesLocal, out bitmap);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateBitmapBrush
+#region CreateBitmapBrush
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateBitmapBrush(ID2D1Bitmap, Windows.Win32.Graphics.Direct2D.D2D1_BITMAP_BRUSH_PROPERTIES*, Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*, out ID2D1BitmapBrush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -571,9 +336,9 @@ namespace Windows.Win32
             var brushPropertiesLocal = brushProperties.HasValue ? brushProperties.Value : default;
             @this.CreateBitmapBrush(bitmap, bitmapBrushProperties.HasValue ? &bitmapBrushPropertiesLocal : null, brushProperties.HasValue ? &brushPropertiesLocal : null, out bitmapBrush);
         }
-        #endregion
+#endregion
 
-        #region CreateBitmapFromDxgiSurface
+#region CreateBitmapFromDxgiSurface
         /// <inheritdoc cref="ID2D1DeviceContext.CreateBitmapFromDxgiSurface(Graphics.Dxgi.IDXGISurface, in D2D1_BITMAP_PROPERTIES1, out ID2D1Bitmap1)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -636,9 +401,9 @@ namespace Windows.Win32
             var bitmapPropertiesLocal = bitmapProperties.HasValue ? bitmapProperties.Value : default;
             @this.CreateBitmapFromDxgiSurface(surface, bitmapProperties.HasValue ? bitmapPropertiesLocal : Unsafe.NullRef<D2D1_BITMAP_PROPERTIES1>(), out bitmap);
         }
-        #endregion
+#endregion
 
-        #region CreateBitmapFromWicBitmap
+#region CreateBitmapFromWicBitmap
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateBitmapFromWicBitmap(Graphics.Imaging.IWICBitmapSource, Windows.Win32.Graphics.Direct2D.D2D1_BITMAP_PROPERTIES*, out ID2D1Bitmap)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -737,9 +502,9 @@ namespace Windows.Win32
             var bitmapPropertiesLocal = bitmapProperties.HasValue ? bitmapProperties.Value : default;
             @this.CreateBitmapFromWicBitmap(wicBitmapSource, bitmapProperties.HasValue ? &bitmapPropertiesLocal : null, out bitmap);
         }
-        #endregion
+#endregion
 
-        #region CreateColorContext
+#region CreateColorContext
         /// <inheritdoc cref="ID2D1DeviceContext.CreateColorContext(D2D1_COLOR_SPACE, byte*, uint, out ID2D1ColorContext)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -816,9 +581,9 @@ namespace Windows.Win32
                 @this.CreateColorContext(space, profileLocal, (uint)profile.Length, out colorContext);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateColorContextFromFilename
+#region CreateColorContextFromFilename
         /// <inheritdoc cref="ID2D1DeviceContext.CreateColorContextFromFilename(Foundation.PCWSTR, out ID2D1ColorContext)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -895,9 +660,9 @@ namespace Windows.Win32
                 @this.CreateColorContextFromFilename(filenameLocal, out colorContext);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateColorContextFromSimpleColorProfile
+#region CreateColorContextFromSimpleColorProfile
         /// <inheritdoc cref="ID2D1DeviceContext5.CreateColorContextFromSimpleColorProfile(Windows.Win32.Graphics.Direct2D.D2D1_SIMPLE_COLOR_PROFILE*, out ID2D1ColorContext1)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -919,9 +684,9 @@ namespace Windows.Win32
                 @this.CreateColorContextFromSimpleColorProfile(simpleProfileLocal, out colorContext);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateCompatibleRenderTarget
+#region CreateCompatibleRenderTarget
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateCompatibleRenderTarget(Windows.Win32.Graphics.Direct2D.Common.D2D_SIZE_F*, Windows.Win32.Graphics.Direct2D.Common.D2D_SIZE_U*, Windows.Win32.Graphics.Direct2D.Common.D2D1_PIXEL_FORMAT*, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS, out ID2D1BitmapRenderTarget)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1042,9 +807,9 @@ namespace Windows.Win32
             var desiredFormatLocal = desiredFormat.HasValue ? desiredFormat.Value : default;
             @this.CreateCompatibleRenderTarget(desiredSize.HasValue ? &desiredSizeLocal : null, desiredPixelSize.HasValue ? &desiredPixelSizeLocal : null, desiredFormat.HasValue ? &desiredFormatLocal : null, options, out bitmapRenderTarget);
         }
-        #endregion
+#endregion
 
-        #region CreateEffect
+#region CreateEffect
         /// <inheritdoc cref="ID2D1DeviceContext.CreateEffect(global::System.Guid*, out ID2D1Effect)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1121,9 +886,9 @@ namespace Windows.Win32
                 @this.CreateEffect(effectIdLocal, out effect);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateInk
+#region CreateInk
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateInk(Windows.Win32.Graphics.Direct2D.D2D1_INK_POINT*, out ID2D1Ink)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1178,9 +943,9 @@ namespace Windows.Win32
                 @this.CreateInk(startPointLocal, out ink);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateInkStyle
+#region CreateInkStyle
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateInkStyle(Windows.Win32.Graphics.Direct2D.D2D1_INK_STYLE_PROPERTIES*, out ID2D1InkStyle)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1225,9 +990,9 @@ namespace Windows.Win32
             var inkStylePropertiesLocal = inkStyleProperties.HasValue ? inkStyleProperties.Value : default;
             @this.CreateInkStyle(inkStyleProperties.HasValue ? &inkStylePropertiesLocal : null, out inkStyle);
         }
-        #endregion
+#endregion
 
-        #region CreateImageSourceFromDxgi
+#region CreateImageSourceFromDxgi
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateImageSourceFromDxgi(Windows.Win32.Graphics.Dxgi.IDXGISurface[], uint, Graphics.Dxgi.Common.DXGI_COLOR_SPACE_TYPE, D2D1_IMAGE_SOURCE_FROM_DXGI_OPTIONS, out ID2D1ImageSource)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1252,9 +1017,9 @@ namespace Windows.Win32
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateImageSourceFromDxgi(this ID2D1DeviceContext6 @this, Graphics.Dxgi.IDXGISurface[] surfaces, Graphics.Dxgi.Common.DXGI_COLOR_SPACE_TYPE colorSpace, D2D1_IMAGE_SOURCE_FROM_DXGI_OPTIONS options, out ID2D1ImageSource imageSource) => @this.CreateImageSourceFromDxgi(surfaces, (uint)surfaces.Length, colorSpace, options, out imageSource);
-        #endregion
+#endregion
 
-        #region CreateGradientMesh
+#region CreateGradientMesh
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateGradientMesh(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_MESH_PATCH*, uint, out ID2D1GradientMesh)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1309,9 +1074,9 @@ namespace Windows.Win32
                 @this.CreateGradientMesh(patchesLocal, (uint)patches.Length, out gradientMesh);
             }
         }
-        #endregion
+#endregion
 
-        #region GetGradientMeshWorldBounds
+#region GetGradientMeshWorldBounds
         /// <inheritdoc cref="ID2D1DeviceContext2.GetGradientMeshWorldBounds(ID2D1GradientMesh, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1366,46 +1131,17 @@ namespace Windows.Win32
                 @this.GetGradientMeshWorldBounds(gradientMesh, pBoundsLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateGradientStopCollection
+#region CreateGradientStopCollection
         /// <summary>
         /// Creates the gradient stop collection.
         /// </summary>
-        /// <param name="renderTarget">The render target.</param>
+        /// <param name="this">The this.</param>
         /// <param name="gradientStops">The gradient stops.</param>
         /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
         /// <param name="extendMode">The extend mode.</param>
-        /// <returns>An ID2D1GradientStopCollection.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1GradientStopCollection CreateGradientStopCollection(this ID2D1RenderTarget renderTarget, in D2D1_GRADIENT_STOP[] gradientStops, D2D1_GAMMA colorInterpolationGamma = D2D1_GAMMA.D2D1_GAMMA_2_2, D2D1_EXTEND_MODE extendMode = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP)
-        {
-            fixed (D2D1_GRADIENT_STOP* s = gradientStops)
-            {
-                renderTarget.CreateGradientStopCollection(s, (uint)gradientStops.Length, colorInterpolationGamma, extendMode, out var gradientStopCollection);
-                return gradientStopCollection;
-            }
-        }
-
-        /// <summary>
-        /// Creates the gradient stop collection.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        /// <param name="gradientStops">The gradient stops.</param>
-        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
-        /// <param name="extendMode">The extend mode.</param>
-        /// <returns>An ID2D1GradientStopCollection.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1GradientStopCollection CreateGradientStopCollection(this ID2D1RenderTarget renderTarget, in ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma = D2D1_GAMMA.D2D1_GAMMA_2_2, D2D1_EXTEND_MODE extendMode = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP)
-        {
-            fixed (D2D1_GRADIENT_STOP* s = gradientStops)
-            {
-                renderTarget.CreateGradientStopCollection(s, (uint)gradientStops.Length, colorInterpolationGamma, extendMode, out var gradientStopCollection);
-                return gradientStopCollection;
-            }
-        }
-
-        /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1BitmapRenderTarget @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1416,7 +1152,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1RenderTarget.CreateGradientStopCollection(D2D1_GRADIENT_STOP*,UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1RenderTarget @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1427,7 +1170,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1HwndRenderTarget.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1HwndRenderTarget @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1438,7 +1188,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DCRenderTarget.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DCRenderTarget @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1449,7 +1206,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1460,7 +1224,17 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_COLOR_SPACE,D2D1_COLOR_SPACE,D2D1_BUFFER_PRECISION,D2D1_EXTEND_MODE,D2D1_COLOR_INTERPOLATION_MODE,ID2D1GradientStopCollection1)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="straightAlphaGradientStops">The straight alpha gradient stops.</param>
+        /// <param name="preInterpolationSpace">The pre interpolation space.</param>
+        /// <param name="postInterpolationSpace">The post interpolation space.</param>
+        /// <param name="bufferPrecision">The buffer precision.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="colorInterpolationMode">The color interpolation mode.</param>
+        /// <param name="gradientStopCollection1">The gradient stop collection1.</param>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext @this, ReadOnlySpan<D2D1_GRADIENT_STOP> straightAlphaGradientStops, D2D1_COLOR_SPACE preInterpolationSpace, D2D1_COLOR_SPACE postInterpolationSpace, D2D1_BUFFER_PRECISION bufferPrecision, D2D1_EXTEND_MODE extendMode, D2D1_COLOR_INTERPOLATION_MODE colorInterpolationMode, out ID2D1GradientStopCollection1 gradientStopCollection1)
@@ -1471,7 +1245,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext1.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows8.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext1 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1482,7 +1263,17 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext1.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_COLOR_SPACE,D2D1_COLOR_SPACE,D2D1_BUFFER_PRECISION,D2D1_EXTEND_MODE,D2D1_COLOR_INTERPOLATION_MODE,ID2D1GradientStopCollection1)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="straightAlphaGradientStops">The straight alpha gradient stops.</param>
+        /// <param name="preInterpolationSpace">The pre interpolation space.</param>
+        /// <param name="postInterpolationSpace">The post interpolation space.</param>
+        /// <param name="bufferPrecision">The buffer precision.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="colorInterpolationMode">The color interpolation mode.</param>
+        /// <param name="gradientStopCollection1">The gradient stop collection1.</param>
         [SupportedOSPlatform("windows8.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext1 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> straightAlphaGradientStops, D2D1_COLOR_SPACE preInterpolationSpace, D2D1_COLOR_SPACE postInterpolationSpace, D2D1_BUFFER_PRECISION bufferPrecision, D2D1_EXTEND_MODE extendMode, D2D1_COLOR_INTERPOLATION_MODE colorInterpolationMode, out ID2D1GradientStopCollection1 gradientStopCollection1)
@@ -1493,7 +1284,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext2.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext2 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
         {
@@ -1503,7 +1301,17 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext2.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_COLOR_SPACE,D2D1_COLOR_SPACE,D2D1_BUFFER_PRECISION,D2D1_EXTEND_MODE,D2D1_COLOR_INTERPOLATION_MODE,ID2D1GradientStopCollection1)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="straightAlphaGradientStops">The straight alpha gradient stops.</param>
+        /// <param name="preInterpolationSpace">The pre interpolation space.</param>
+        /// <param name="postInterpolationSpace">The post interpolation space.</param>
+        /// <param name="bufferPrecision">The buffer precision.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="colorInterpolationMode">The color interpolation mode.</param>
+        /// <param name="gradientStopCollection1">The gradient stop collection1.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext2 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> straightAlphaGradientStops, D2D1_COLOR_SPACE preInterpolationSpace, D2D1_COLOR_SPACE postInterpolationSpace, D2D1_BUFFER_PRECISION bufferPrecision, D2D1_EXTEND_MODE extendMode, D2D1_COLOR_INTERPOLATION_MODE colorInterpolationMode, out ID2D1GradientStopCollection1 gradientStopCollection1)
@@ -1514,7 +1322,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext3.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext3 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1525,7 +1340,17 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext3.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_COLOR_SPACE,D2D1_COLOR_SPACE,D2D1_BUFFER_PRECISION,D2D1_EXTEND_MODE,D2D1_COLOR_INTERPOLATION_MODE,ID2D1GradientStopCollection1)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="straightAlphaGradientStops">The straight alpha gradient stops.</param>
+        /// <param name="preInterpolationSpace">The pre interpolation space.</param>
+        /// <param name="postInterpolationSpace">The post interpolation space.</param>
+        /// <param name="bufferPrecision">The buffer precision.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="colorInterpolationMode">The color interpolation mode.</param>
+        /// <param name="gradientStopCollection1">The gradient stop collection1.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext3 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> straightAlphaGradientStops, D2D1_COLOR_SPACE preInterpolationSpace, D2D1_COLOR_SPACE postInterpolationSpace, D2D1_BUFFER_PRECISION bufferPrecision, D2D1_EXTEND_MODE extendMode, D2D1_COLOR_INTERPOLATION_MODE colorInterpolationMode, out ID2D1GradientStopCollection1 gradientStopCollection1)
@@ -1536,7 +1361,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext4.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext4 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1547,7 +1379,17 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext4.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_COLOR_SPACE,D2D1_COLOR_SPACE,D2D1_BUFFER_PRECISION,D2D1_EXTEND_MODE,D2D1_COLOR_INTERPOLATION_MODE,ID2D1GradientStopCollection1)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="straightAlphaGradientStops">The straight alpha gradient stops.</param>
+        /// <param name="preInterpolationSpace">The pre interpolation space.</param>
+        /// <param name="postInterpolationSpace">The post interpolation space.</param>
+        /// <param name="bufferPrecision">The buffer precision.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="colorInterpolationMode">The color interpolation mode.</param>
+        /// <param name="gradientStopCollection1">The gradient stop collection1.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext4 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> straightAlphaGradientStops, D2D1_COLOR_SPACE preInterpolationSpace, D2D1_COLOR_SPACE postInterpolationSpace, D2D1_BUFFER_PRECISION bufferPrecision, D2D1_EXTEND_MODE extendMode, D2D1_COLOR_INTERPOLATION_MODE colorInterpolationMode, out ID2D1GradientStopCollection1 gradientStopCollection1)
@@ -1558,7 +1400,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext5.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext5 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1569,7 +1418,17 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext5.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_COLOR_SPACE,D2D1_COLOR_SPACE,D2D1_BUFFER_PRECISION,D2D1_EXTEND_MODE,D2D1_COLOR_INTERPOLATION_MODE,ID2D1GradientStopCollection1)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="straightAlphaGradientStops">The straight alpha gradient stops.</param>
+        /// <param name="preInterpolationSpace">The pre interpolation space.</param>
+        /// <param name="postInterpolationSpace">The post interpolation space.</param>
+        /// <param name="bufferPrecision">The buffer precision.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="colorInterpolationMode">The color interpolation mode.</param>
+        /// <param name="gradientStopCollection1">The gradient stop collection1.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext5 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> straightAlphaGradientStops, D2D1_COLOR_SPACE preInterpolationSpace, D2D1_COLOR_SPACE postInterpolationSpace, D2D1_BUFFER_PRECISION bufferPrecision, D2D1_EXTEND_MODE extendMode, D2D1_COLOR_INTERPOLATION_MODE colorInterpolationMode, out ID2D1GradientStopCollection1 gradientStopCollection1)
@@ -1580,7 +1439,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext6.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_GAMMA,D2D1_EXTEND_MODE,ID2D1GradientStopCollection)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="gradientStops">The gradient stops.</param>
+        /// <param name="colorInterpolationGamma">The color interpolation gamma.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext6 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> gradientStops, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, out ID2D1GradientStopCollection gradientStopCollection)
@@ -1591,7 +1457,17 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext6.CreateGradientStopCollection(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_STOP*,System.UInt32,D2D1_COLOR_SPACE,D2D1_COLOR_SPACE,D2D1_BUFFER_PRECISION,D2D1_EXTEND_MODE,D2D1_COLOR_INTERPOLATION_MODE,ID2D1GradientStopCollection1)" />
+        /// <summary>
+        /// Creates the gradient stop collection.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="straightAlphaGradientStops">The straight alpha gradient stops.</param>
+        /// <param name="preInterpolationSpace">The pre interpolation space.</param>
+        /// <param name="postInterpolationSpace">The post interpolation space.</param>
+        /// <param name="bufferPrecision">The buffer precision.</param>
+        /// <param name="extendMode">The extend mode.</param>
+        /// <param name="colorInterpolationMode">The color interpolation mode.</param>
+        /// <param name="gradientStopCollection1">The gradient stop collection1.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateGradientStopCollection(this ID2D1DeviceContext6 @this, ReadOnlySpan<D2D1_GRADIENT_STOP> straightAlphaGradientStops, D2D1_COLOR_SPACE preInterpolationSpace, D2D1_COLOR_SPACE postInterpolationSpace, D2D1_BUFFER_PRECISION bufferPrecision, D2D1_EXTEND_MODE extendMode, D2D1_COLOR_INTERPOLATION_MODE colorInterpolationMode, out ID2D1GradientStopCollection1 gradientStopCollection1)
@@ -1601,9 +1477,9 @@ namespace Windows.Win32
                 @this.CreateGradientStopCollection(straightAlphaGradientStopsLocal, (uint)straightAlphaGradientStops.Length, preInterpolationSpace, postInterpolationSpace, bufferPrecision, extendMode, colorInterpolationMode, out gradientStopCollection1);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateImageBrush
+#region CreateImageBrush
         /// <inheritdoc cref="ID2D1DeviceContext.CreateImageBrush(ID2D1Image, Windows.Win32.Graphics.Direct2D.D2D1_IMAGE_BRUSH_PROPERTIES*, Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*, out ID2D1ImageBrush)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1686,9 +1562,9 @@ namespace Windows.Win32
                 @this.CreateImageBrush(image, imageBrushPropertiesLocal, brushProperties.HasValue ? &brushPropertiesLocal : null, out imageBrush);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateLayer
+#region CreateLayer
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateLayer(Windows.Win32.Graphics.Direct2D.Common.D2D_SIZE_F*, out ID2D1Layer)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1787,10 +1663,17 @@ namespace Windows.Win32
             var sizeLocal = size.HasValue ? size.Value : default;
             @this.CreateLayer(size.HasValue ? &sizeLocal : null, out layer);
         }
-        #endregion
+#endregion
 
-        #region CreateLinearGradientBrush
-        /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+#region CreateLinearGradientBrush
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1BitmapRenderTarget @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1802,7 +1685,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1RenderTarget.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1RenderTarget @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1814,7 +1704,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1HwndRenderTarget.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1HwndRenderTarget @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1826,7 +1723,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DCRenderTarget.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1DCRenderTarget @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1838,7 +1742,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1DeviceContext @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1850,7 +1761,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext1.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows8.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1DeviceContext1 @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1862,7 +1780,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext2.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1DeviceContext2 @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1874,7 +1799,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext3.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1DeviceContext3 @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1886,7 +1818,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext4.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1DeviceContext4 @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1898,7 +1837,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext5.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1DeviceContext5 @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1910,7 +1856,14 @@ namespace Windows.Win32
             }
         }
 
-        /// <inheritdoc cref="ID2D1DeviceContext6.CreateLinearGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*,Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*,ID2D1GradientStopCollection,ID2D1LinearGradientBrush)" />
+        /// <summary>
+        /// Creates the linear gradient brush.
+        /// </summary>
+        /// <param name="this">The this.</param>
+        /// <param name="linearGradientBrushProperties">The linear gradient brush properties.</param>
+        /// <param name="brushProperties">The brush properties.</param>
+        /// <param name="gradientStopCollection">The gradient stop collection.</param>
+        /// <param name="linearGradientBrush">The linear gradient brush.</param>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateLinearGradientBrush(this ID2D1DeviceContext6 @this, in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, D2D1_BRUSH_PROPERTIES? brushProperties, ID2D1GradientStopCollection gradientStopCollection, out ID2D1LinearGradientBrush linearGradientBrush)
@@ -1921,9 +1874,9 @@ namespace Windows.Win32
                 @this.CreateLinearGradientBrush(linearGradientBrushPropertiesLocal, brushProperties.HasValue ? (&brushPropertiesLocal) : null, gradientStopCollection, out linearGradientBrush);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateLookupTable3D
+#region CreateLookupTable3D
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateLookupTable3D(D2D1_BUFFER_PRECISION, uint*, byte*, uint, uint*, out ID2D1LookupTable3D)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2018,45 +1971,9 @@ namespace Windows.Win32
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region CreateRadialGradientBrush
-        /// <summary>
-        /// Creates the radial gradient brush.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        /// <param name="radialBrushProperties">The radial brush properties.</param>
-        /// <param name="gradientStops">The gradient stops.</param>
-        /// <returns>An ID2D1Brush.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Brush CreateRadialGradientBrush(this ID2D1RenderTarget renderTarget, in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialBrushProperties, ID2D1GradientStopCollection gradientStops)
-        {
-            fixed (D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES* r = &radialBrushProperties)
-            {
-                renderTarget.CreateRadialGradientBrush(r, null, gradientStops, out var gradientBrush);
-                return gradientBrush;
-            }
-        }
-
-        /// <summary>
-        /// Creates the radial gradient brush.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        /// <param name="radialBrushProperties">The radial brush properties.</param>
-        /// <param name="brushProperties"></param>
-        /// <param name="gradientStops">The gradient stops.</param>
-        /// <returns>An ID2D1Brush.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Brush CreateRadialGradientBrush(this ID2D1RenderTarget renderTarget, in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialBrushProperties, in D2D1_BRUSH_PROPERTIES brushProperties, ID2D1GradientStopCollection gradientStops)
-        {
-            fixed (D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES* r = &radialBrushProperties)
-            fixed (D2D1_BRUSH_PROPERTIES* b = &brushProperties)
-            {
-                renderTarget.CreateRadialGradientBrush(r, b, gradientStops, out var gradientBrush);
-                return gradientBrush;
-            }
-        }
-
+#region CreateRadialGradientBrush
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateRadialGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*, Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*, ID2D1GradientStopCollection, out ID2D1RadialGradientBrush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2188,9 +2105,9 @@ namespace Windows.Win32
                 @this.CreateRadialGradientBrush(radialGradientBrushPropertiesLocal, brushProperties.HasValue ? &brushPropertiesLocal : null, gradientStopCollection, out radialGradientBrush);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateSharedBitmap
+#region CreateSharedBitmap
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateSharedBitmap(global::System.Guid*, void*, Windows.Win32.Graphics.Direct2D.D2D1_BITMAP_PROPERTIES*, out ID2D1Bitmap)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2322,62 +2239,9 @@ namespace Windows.Win32
                 @this.CreateSharedBitmap(riidLocal, data, bitmapProperties.HasValue ? &bitmapPropertiesLocal : null, out bitmap);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateSolidColorBrush
-        /// <summary>
-        /// Creates a solid color brush with a specified color.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        /// <param name="color">The color.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget renderTarget, in Color color) => CreateSolidColorBrush(renderTarget, color.ToD2D1_COLOR_F());
-
-        /// <summary>
-        /// Creates a solid color brush with a specified color.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        /// <param name="color">The color.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget renderTarget, in D2D1_COLOR_F color)
-        {
-            fixed (D2D1_COLOR_F* c = &color)
-            {
-                renderTarget.CreateSolidColorBrush(c, null, out var solidColorBrush);
-                return solidColorBrush;
-            }
-        }
-
-        /// <summary>
-        /// Creates a solid color brush with a specified color and properties.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="properties">The properties.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget renderTarget, in Color color, in D2D1_BRUSH_PROPERTIES properties) => CreateSolidColorBrush(renderTarget, color.ToD2D1_COLOR_F(), properties);
-
-        /// <summary>
-        /// Creates a solid color brush with a specified color and properties.
-        /// </summary>
-        /// <param name="renderTarget">The render target.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="properties">The properties.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget renderTarget, in D2D1_COLOR_F color, in D2D1_BRUSH_PROPERTIES properties)
-        {
-            fixed (D2D1_COLOR_F* c = &color)
-            fixed (D2D1_BRUSH_PROPERTIES* p = &properties)
-            {
-                renderTarget.CreateSolidColorBrush(c, p, out var solidColorBrush);
-                return solidColorBrush;
-            }
-        }
-
+#region CreateSolidColorBrush
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateSolidColorBrush(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*, Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2509,9 +2373,9 @@ namespace Windows.Win32
                 @this.CreateSolidColorBrush(colorLocal, brushProperties.HasValue ? &brushPropertiesLocal : null, out solidColorBrush);
             }
         }
-        #endregion
+#endregion
 
-        #region CreateTransformedImageSource
+#region CreateTransformedImageSource
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateTransformedImageSource(ID2D1ImageSource, Windows.Win32.Graphics.Direct2D.D2D1_TRANSFORMED_IMAGE_SOURCE_PROPERTIES*, out ID2D1TransformedImageSource)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2566,9 +2430,9 @@ namespace Windows.Win32
                 @this.CreateTransformedImageSource(imageSource, propertiesLocal, out transformedImageSource);
             }
         }
-        #endregion
+#endregion
 
-        #region DrawBitmap
+#region DrawBitmap
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawBitmap(ID2D1Bitmap, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, float, D2D1_BITMAP_INTERPOLATION_MODE, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2678,9 +2542,9 @@ namespace Windows.Win32
             var sourceRectangleLocal = sourceRectangle.HasValue ? sourceRectangle.Value : default;
             @this.DrawBitmap(bitmap, destinationRectangle.HasValue ? &destinationRectangleLocal : null, opacity, interpolationMode, sourceRectangle.HasValue ? &sourceRectangleLocal : null);
         }
-        #endregion
+#endregion
 
-        #region DrawEllipse
+#region DrawEllipse
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawEllipse(Windows.Win32.Graphics.Direct2D.D2D1_ELLIPSE*, ID2D1Brush, float, ID2D1StrokeStyle)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2801,9 +2665,9 @@ namespace Windows.Win32
                 @this.DrawEllipse(ellipseLocal, brush, strokeWidth, strokeStyle);
             }
         }
-        #endregion
+#endregion
 
-        #region DrawGdiMetafile
+#region DrawGdiMetafile
         /// <inheritdoc cref="ID2D1DeviceContext.DrawGdiMetafile(ID2D1GdiMetafile, Windows.Win32.Graphics.Direct2D.Common.D2D_POINT_2F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2866,9 +2730,9 @@ namespace Windows.Win32
             var targetOffsetLocal = targetOffset.HasValue ? targetOffset.Value : default;
             @this.DrawGdiMetafile(gdiMetafile, targetOffset.HasValue ? &targetOffsetLocal : null);
         }
-        #endregion
+#endregion
 
-        #region DrawGdiMetafile
+#region DrawGdiMetafile
         /// <inheritdoc cref="ID2D1DeviceContext2.DrawGdiMetafile(ID2D1GdiMetafile, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2918,9 +2782,9 @@ namespace Windows.Win32
             var sourceRectangleLocal = sourceRectangle.HasValue ? sourceRectangle.Value : default;
             @this.DrawGdiMetafile(gdiMetafile, destinationRectangle.HasValue ? &destinationRectangleLocal : null, sourceRectangle.HasValue ? &sourceRectangleLocal : null);
         }
-        #endregion
+#endregion
 
-        #region DrawGlyphRun
+#region DrawGlyphRun
         /// <inheritdoc cref="ID2D1DeviceContext.DrawGlyphRun(D2D_POINT_2F, in DWRITE_GLYPH_RUN, Windows.Win32.Graphics.DirectWrite.DWRITE_GLYPH_RUN_DESCRIPTION*, ID2D1Brush, DWRITE_MEASURING_MODE)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2983,9 +2847,9 @@ namespace Windows.Win32
             var glyphRunDescriptionLocal = glyphRunDescription.HasValue ? glyphRunDescription.Value : default;
             @this.DrawGlyphRun(baselineOrigin, in glyphRun, glyphRunDescription.HasValue ? &glyphRunDescriptionLocal : null, foregroundBrush, measuringMode);
         }
-        #endregion
+#endregion
 
-        #region DrawImage
+#region DrawImage
         /// <inheritdoc cref="ID2D1DeviceContext.DrawImage(ID2D1Image, Windows.Win32.Graphics.Direct2D.Common.D2D_POINT_2F*, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, D2D1_INTERPOLATION_MODE, D2D1_COMPOSITE_MODE)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3055,9 +2919,9 @@ namespace Windows.Win32
             var imageRectangleLocal = imageRectangle.HasValue ? imageRectangle.Value : default;
             @this.DrawImage(image, targetOffset.HasValue ? &targetOffsetLocal : null, imageRectangle.HasValue ? &imageRectangleLocal : null, interpolationMode, compositeMode);
         }
-        #endregion
+#endregion
 
-        #region DrawRectangle
+#region DrawRectangle
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawRectangle(Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, ID2D1Brush, float, ID2D1StrokeStyle)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3178,9 +3042,9 @@ namespace Windows.Win32
                 @this.DrawRectangle(rectLocal, brush, strokeWidth, strokeStyle);
             }
         }
-        #endregion
+#endregion
 
-        #region DrawRoundedRectangle
+#region DrawRoundedRectangle
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawRoundedRectangle(Windows.Win32.Graphics.Direct2D.D2D1_ROUNDED_RECT*, ID2D1Brush, float, ID2D1StrokeStyle)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3301,9 +3165,9 @@ namespace Windows.Win32
                 @this.DrawRoundedRectangle(roundedRectLocal, brush, strokeWidth, strokeStyle);
             }
         }
-        #endregion
+#endregion
 
-        #region DrawText
+#region DrawText
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawText(Foundation.PCWSTR, uint, IDWriteTextFormat, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, ID2D1Brush, D2D1_DRAW_TEXT_OPTIONS, DWRITE_MEASURING_MODE)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3457,9 +3321,9 @@ namespace Windows.Win32
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region DrawTextLayout
+#region DrawTextLayout
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawTextLayout(D2D_POINT_2F, IDWriteTextLayout, ID2D1Brush, D2D1_DRAW_TEXT_OPTIONS)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3514,9 +3378,9 @@ namespace Windows.Win32
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void DrawTextLayout(this ID2D1DeviceContext6 @this, D2D_POINT_2F origin, IDWriteTextLayout textLayout, ID2D1Brush defaultFillBrush, D2D1_DRAW_TEXT_OPTIONS options = D2D1_DRAW_TEXT_OPTIONS.D2D1_DRAW_TEXT_OPTIONS_NONE) => @this.DrawTextLayout(origin, textLayout, defaultFillBrush, options);
-        #endregion
+#endregion
 
-        #region FillEllipse
+#region FillEllipse
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.FillEllipse(Windows.Win32.Graphics.Direct2D.D2D1_ELLIPSE*, ID2D1Brush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3637,9 +3501,9 @@ namespace Windows.Win32
                 @this.FillEllipse(ellipseLocal, brush);
             }
         }
-        #endregion
+#endregion
 
-        #region FillOpacityMask
+#region FillOpacityMask
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.FillOpacityMask(ID2D1Bitmap, ID2D1Brush, D2D1_OPACITY_MASK_CONTENT, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3749,9 +3613,9 @@ namespace Windows.Win32
             var sourceRectangleLocal = sourceRectangle.HasValue ? sourceRectangle.Value : default;
             @this.FillOpacityMask(opacityMask, brush, content, destinationRectangle.HasValue ? &destinationRectangleLocal : null, sourceRectangle.HasValue ? &sourceRectangleLocal : null);
         }
-        #endregion
+#endregion
 
-        #region FillRectangle
+#region FillRectangle
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.FillRectangle(Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*,ID2D1Brush)" />
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3872,9 +3736,9 @@ namespace Windows.Win32
                 @this.FillRectangle(rectLocal, brush);
             }
         }
-        #endregion
+#endregion
 
-        #region FillRoundedRectangle
+#region FillRoundedRectangle
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.FillRoundedRectangle(Windows.Win32.Graphics.Direct2D.D2D1_ROUNDED_RECT*, ID2D1Brush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3995,9 +3859,9 @@ namespace Windows.Win32
                 @this.FillRoundedRectangle(roundedRectLocal, brush);
             }
         }
-        #endregion
+#endregion
 
-        #region GetColorBitmapGlyphImage
+#region GetColorBitmapGlyphImage
         /// <inheritdoc cref="ID2D1DeviceContext4.GetColorBitmapGlyphImage(DWRITE_GLYPH_IMAGE_FORMATS, D2D_POINT_2F, IDWriteFontFace, float, ushort, Foundation.BOOL, Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*, float, float, Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*, out ID2D1Image)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4033,9 +3897,9 @@ namespace Windows.Win32
                 @this.GetColorBitmapGlyphImage(glyphImageFormat, glyphOrigin, fontFace, fontEmSize, glyphIndex, isSideways, worldTransform.HasValue ? &worldTransformLocal : null, dpiX, dpiY, glyphTransformLocal, out glyphImage);
             }
         }
-        #endregion
+#endregion
 
-        #region GetDpi
+#region GetDpi
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.GetDpi(float*, float*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4189,9 +4053,9 @@ namespace Windows.Win32
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region GetEffectInvalidRectangleCount
+#region GetEffectInvalidRectangleCount
         /// <inheritdoc cref="ID2D1DeviceContext.GetEffectInvalidRectangleCount(ID2D1Effect, uint*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4268,9 +4132,9 @@ namespace Windows.Win32
                 @this.GetEffectInvalidRectangleCount(effect, rectangleCountLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region GetEffectInvalidRectangles
+#region GetEffectInvalidRectangles
         /// <inheritdoc cref="ID2D1DeviceContext.GetEffectInvalidRectangles(ID2D1Effect, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, uint)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4347,9 +4211,9 @@ namespace Windows.Win32
                 @this.GetEffectInvalidRectangles(effect, rectanglesLocal, (uint)rectangles.Length);
             }
         }
-        #endregion
+#endregion
 
-        #region GetEffectRequiredInputRectangles
+#region GetEffectRequiredInputRectangles
         /// <inheritdoc cref="ID2D1DeviceContext.GetEffectRequiredInputRectangles(ID2D1Effect, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, Windows.Win32.Graphics.Direct2D.D2D1_EFFECT_INPUT_DESCRIPTION[], Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, uint)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4440,9 +4304,9 @@ namespace Windows.Win32
                 @this.GetEffectRequiredInputRectangles(renderEffect, renderImageRectangle.HasValue ? &renderImageRectangleLocal : null, inputDescriptions, requiredInputRectsLocal, (uint)requiredInputRects.Length);
             }
         }
-        #endregion
+#endregion
 
-        #region GetGlyphRunWorldBounds
+#region GetGlyphRunWorldBounds
         /// <inheritdoc cref="ID2D1DeviceContext.GetGlyphRunWorldBounds(D2D_POINT_2F, in DWRITE_GLYPH_RUN, DWRITE_MEASURING_MODE, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4519,9 +4383,9 @@ namespace Windows.Win32
                 @this.GetGlyphRunWorldBounds(baselineOrigin, in glyphRun, measuringMode, boundsLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region GetImageLocalBounds
+#region GetImageLocalBounds
         /// <inheritdoc cref="ID2D1DeviceContext.GetImageLocalBounds(ID2D1Image, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4598,9 +4462,9 @@ namespace Windows.Win32
                 @this.GetImageLocalBounds(image, localBoundsLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region GetImageWorldBounds
+#region GetImageWorldBounds
         /// <inheritdoc cref="ID2D1DeviceContext.GetImageWorldBounds(ID2D1Image, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4677,9 +4541,9 @@ namespace Windows.Win32
                 @this.GetImageWorldBounds(image, worldBoundsLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region GetPixelSize
+#region GetPixelSize
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.GetPixelSize(out D2D_SIZE_U)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4778,9 +4642,9 @@ namespace Windows.Win32
             @this.GetPixelSize(out var size);
             return size;
         }
-        #endregion
+#endregion
 
-        #region GetRenderingControls
+#region GetRenderingControls
         /// <inheritdoc cref="ID2D1DeviceContext.GetRenderingControls(Windows.Win32.Graphics.Direct2D.D2D1_RENDERING_CONTROLS*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4857,9 +4721,9 @@ namespace Windows.Win32
                 @this.GetRenderingControls(renderingControlsLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region GetSize
+#region GetSize
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.GetSize(out D2D_SIZE_F)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4958,9 +4822,9 @@ namespace Windows.Win32
             @this.GetSize(out var size);
             return size;
         }
-        #endregion
+#endregion
 
-        #region GetSvgGlyphImage
+#region GetSvgGlyphImage
         /// <inheritdoc cref="ID2D1DeviceContext4.GetSvgGlyphImage(D2D_POINT_2F, IDWriteFontFace, float, ushort, Foundation.BOOL, Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*, ID2D1Brush, ID2D1SvgGlyphStyle, uint, Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*, out ID2D1CommandList)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4996,9 +4860,9 @@ namespace Windows.Win32
                 @this.GetSvgGlyphImage(glyphOrigin, fontFace, fontEmSize, glyphIndex, isSideways, worldTransform.HasValue ? &worldTransformLocal : null, defaultFillBrush, svgGlyphStyle, colorPaletteIndex, glyphTransformLocal, out glyphImage);
             }
         }
-        #endregion
+#endregion
 
-        #region GetTransform
+#region GetTransform
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.GetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5119,9 +4983,9 @@ namespace Windows.Win32
                 @this.GetTransform(transformLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region InvalidateEffectInputRectangle
+#region InvalidateEffectInputRectangle
         /// <inheritdoc cref="ID2D1DeviceContext.InvalidateEffectInputRectangle(ID2D1Effect, uint, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5198,9 +5062,9 @@ namespace Windows.Win32
                 @this.InvalidateEffectInputRectangle(effect, input, inputRectangleLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region IsSupported
+#region IsSupported
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.IsSupported(Windows.Win32.Graphics.Direct2D.D2D1_RENDER_TARGET_PROPERTIES*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5332,9 +5196,9 @@ namespace Windows.Win32
                 return __result;
             }
         }
-        #endregion
+#endregion
 
-        #region PushAxisAlignedClip
+#region PushAxisAlignedClip
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.PushAxisAlignedClip(Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, D2D1_ANTIALIAS_MODE)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5455,9 +5319,9 @@ namespace Windows.Win32
                 @this.PushAxisAlignedClip(clipRectLocal, antialiasMode);
             }
         }
-        #endregion
+#endregion
 
-        #region SetRenderingControls
+#region SetRenderingControls
         /// <inheritdoc cref="ID2D1DeviceContext.SetRenderingControls(Windows.Win32.Graphics.Direct2D.D2D1_RENDERING_CONTROLS*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5534,18 +5398,9 @@ namespace Windows.Win32
                 @this.SetRenderingControls(renderingControlsLocal);
             }
         }
-        #endregion
+#endregion
 
-        #region SetTransform
-        /// <inheritdoc cref="ID2D1BitmapRenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows6.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1BitmapRenderTarget @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
-        }
-
+#region SetTransform
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5555,15 +5410,6 @@ namespace Windows.Win32
             {
                 @this.SetTransform(transformLocal);
             }
-        }
-
-        /// <inheritdoc cref="ID2D1RenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows6.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1RenderTarget @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
         }
 
         /// <inheritdoc cref="ID2D1RenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
@@ -5580,30 +5426,12 @@ namespace Windows.Win32
         /// <inheritdoc cref="ID2D1HwndRenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1HwndRenderTarget @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
-        }
-
-        /// <inheritdoc cref="ID2D1HwndRenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows6.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void SetTransform(this ID2D1HwndRenderTarget @this, in D2D_MATRIX_3X2_F transform)
         {
             fixed (D2D_MATRIX_3X2_F* transformLocal = &transform)
             {
                 @this.SetTransform(transformLocal);
             }
-        }
-
-        /// <inheritdoc cref="ID2D1DCRenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows6.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1DCRenderTarget @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
         }
 
         /// <inheritdoc cref="ID2D1DCRenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
@@ -5620,30 +5448,12 @@ namespace Windows.Win32
         /// <inheritdoc cref="ID2D1DeviceContext.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1DeviceContext @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows8.0")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void SetTransform(this ID2D1DeviceContext @this, in D2D_MATRIX_3X2_F transform)
         {
             fixed (D2D_MATRIX_3X2_F* transformLocal = &transform)
             {
                 @this.SetTransform(transformLocal);
             }
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext1.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows8.1")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1DeviceContext1 @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
         }
 
         /// <inheritdoc cref="ID2D1DeviceContext1.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
@@ -5660,30 +5470,12 @@ namespace Windows.Win32
         /// <inheritdoc cref="ID2D1DeviceContext2.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1DeviceContext2 @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext2.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void SetTransform(this ID2D1DeviceContext2 @this, in D2D_MATRIX_3X2_F transform)
         {
             fixed (D2D_MATRIX_3X2_F* transformLocal = &transform)
             {
                 @this.SetTransform(transformLocal);
             }
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext3.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1DeviceContext3 @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
         }
 
         /// <inheritdoc cref="ID2D1DeviceContext3.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
@@ -5700,30 +5492,12 @@ namespace Windows.Win32
         /// <inheritdoc cref="ID2D1DeviceContext4.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1DeviceContext4 @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext4.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void SetTransform(this ID2D1DeviceContext4 @this, in D2D_MATRIX_3X2_F transform)
         {
             fixed (D2D_MATRIX_3X2_F* transformLocal = &transform)
             {
                 @this.SetTransform(transformLocal);
             }
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext5.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1DeviceContext5 @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
         }
 
         /// <inheritdoc cref="ID2D1DeviceContext5.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
@@ -5740,15 +5514,6 @@ namespace Windows.Win32
         /// <inheritdoc cref="ID2D1DeviceContext6.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe void SetTransform(this ID2D1DeviceContext6 @this)
-        {
-            var identity = (D2D_MATRIX_3X2_F)Matrix3x2.Identity;
-            @this.SetTransform(&identity);
-        }
-
-        /// <inheritdoc cref="ID2D1DeviceContext6.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
-        [SupportedOSPlatform("windows10.0.10240")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void SetTransform(this ID2D1DeviceContext6 @this, in D2D_MATRIX_3X2_F transform)
         {
             fixed (D2D_MATRIX_3X2_F* transformLocal = &transform)
@@ -5756,269 +5521,8 @@ namespace Windows.Win32
                 @this.SetTransform(transformLocal);
             }
         }
-        #endregion
-        #endregion
-
-        #region Other API Shims
-        /// <summary>
-        /// Inverts a matrix.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static bool InvertMatrix(this ref Matrix3x2 matrix)
-        {
-            var m = matrix.ToD2D_MATRIX_3X2_F();
-            var t = PInvoke.D2D1InvertMatrix(ref m);
-            matrix = m.ToMatrix3x2();
-            return t;
-        }
-
-        /// <summary>
-        /// Inverts a matrix.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static bool InvertMatrix(this ref D2D_MATRIX_3X2_F matrix)
-        {
-            var t = PInvoke.D2D1InvertMatrix(ref matrix);
-            return t;
-        }
-
-        /// <summary>
-        /// Determines whether the specified matrix is invertible.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>
-        ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static bool IsMatrixInvertible(this ref Matrix3x2 matrix)
-        {
-            var m = matrix.ToD2D_MATRIX_3X2_F();
-            return PInvoke.D2D1IsMatrixInvertible(m);
-        }
-
-        /// <summary>
-        /// Determines whether the specified matrix is invertible.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>
-        ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static bool IsMatrixInvertible(this ref D2D_MATRIX_3X2_F matrix) => PInvoke.D2D1IsMatrixInvertible(matrix);
-
-        /// <summary>
-        /// Sets the maximum size of a text layout.
-        /// </summary>
-        /// <param name="textLayout">The text layout.</param>
-        /// <param name="maxSize">The max size.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static void SetMaxSize(this IDWriteTextLayout textLayout, SizeF maxSize)
-        {
-            textLayout.SetMaxHeight(maxSize.Height);
-            textLayout.SetMaxWidth(maxSize.Width);
-        }
-        #endregion
-
-        #region Type Conversion
-        /// <summary>
-        /// Converts a Vector2 to a D2D_POINT_2F.
-        /// </summary>
-        /// <param name="vector">The vector.</param>
-        /// <returns>A D2D_POINT_2F.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static D2D_POINT_2F ToD2D_POINT_F(this Vector2 vector) => Unsafe.As<Vector2, D2D_POINT_2F>(ref vector);
-
-        /// <summary>
-        /// Converts a D2D_POINT_2F to a Vector2.
-        /// </summary>
-        /// <param name="vector">The vector.</param>
-        /// <returns>A Vector2.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static Vector2 ToVector2(this D2D_POINT_2F vector) => Unsafe.As<D2D_POINT_2F, Vector2>(ref vector);
-
-        /// <summary>
-        /// Converts a PointF to a D2D_POINT_2F.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <returns>A D2D_POINT_2F.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static D2D_POINT_2F ToD2D_POINT_2F(this PointF point) => Unsafe.As<PointF, D2D_POINT_2F>(ref point);
-
-        /// <summary>
-        /// Converts a D2D_POINT_2F to a PointF.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <returns>A PointF.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static PointF ToPointF(this D2D_POINT_2F point) => Unsafe.As<D2D_POINT_2F, PointF>(ref point);
-
-        /// <summary>
-        /// Converts a Point to a D2D_POINT_2U.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <returns>A D2D_POINT_2U.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static D2D_POINT_2U ToD2D_POINT_2U(this Point point) => Unsafe.As<Point, D2D_POINT_2U>(ref point);
-
-        /// <summary>
-        /// Converts a D2D_POINT_2U to a Point.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <returns>A Point.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static Point ToPoint(this D2D_POINT_2U point) => Unsafe.As<D2D_POINT_2U, Point>(ref point);
-
-        /// <summary>
-        /// Converts a SizeF to a D2D_SIZE_F.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        /// <returns>A D2D_SIZE_F.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static D2D_SIZE_F ToD2D_SIZE_F(this SizeF size) => new(size.Width, size.Height);
-
-        /// <summary>
-        /// Converts a D2D_SIZE_F to a SizeF.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        /// <returns>A SizeF.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static SizeF ToSizeF(this D2D_SIZE_F size) => new(size.width, size.height);
-
-        /// <summary>
-        /// Converts a Size to a D2D_SIZE_U.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        /// <returns>A D2D_SIZE_U.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static D2D_SIZE_U ToD2D_SIZE_U(this Size size) => new((uint)size.Width, (uint)size.Height);
-
-        /// <summary>
-        /// Converts a D2D_SIZE_U to a Size.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        /// <returns>A Size.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static Size ToSize(this D2D_SIZE_U size) => new((int)size.width, (int)size.height);
-
-        /// <summary>
-        /// Converts a Color to a D2D1_COLOR_F.
-        /// </summary>
-        /// <param name="color">The color.</param>
-        /// <returns>A D2D1_COLOR_F.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static D2D1_COLOR_F ToD2D1_COLOR_F(this Color color) => new() { r = color.R / 255.0f, g = color.G / 255.0f, b = color.B / 255.0f, a = color.A / 255.0f };
-
-        /// <summary>
-        /// Converts a D2D1_COLOR_F to a Color.
-        /// </summary>
-        /// <param name="color">The color.</param>
-        /// <returns>A Color.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static Color ToColor(this D2D1_COLOR_F color) => Color.FromArgb((int)(color.a * 255), (int)(color.r * 255), (int)(color.g * 255), (int)(color.b * 255));
-
-        /// <summary>
-        /// Converts a RectangleF to a D2D_RECT_F.
-        /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <returns>A D2D_RECT_F.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static D2D_RECT_F ToD2D_RECT_F(this RectangleF rect) => new() { left = rect.Left, top = rect.Top, right = rect.Right, bottom = rect.Bottom };
-
-        /// <summary>
-        /// Converts a D2D_RECT_F to a RectangleF.
-        /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <returns>A RectangleF.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static RectangleF ToD2D_RECT_F(this D2D_RECT_F rect) => RectangleF.FromLTRB(rect.left, rect.top, rect.right, rect.bottom);
-
-        /// <summary>
-        /// Converts a Rectangle to a D2D_RECT_U.
-        /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <returns>A D2D_RECT_U.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static D2D_RECT_U ToD2D_RECT_F(this Rectangle rect) => new() { left = (uint)rect.Left, top = (uint)rect.Top, right = (uint)rect.Right, bottom = (uint)rect.Bottom };
-
-        /// <summary>
-        /// Converts a D2D_RECT_U to a Rectangle.
-        /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <returns>A Rectangle.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static Rectangle ToD2D_RECT_U(this D2D_RECT_U rect) => Rectangle.FromLTRB((int)rect.left, (int)rect.top, (int)rect.right, (int)rect.bottom);
-
-        /// <summary>
-        /// Converts a Rectangle to a RECT.
-        /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <returns>A Windows.Win32.Foundation.RECT.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static Foundation.RECT ToD2D_RECT(this Rectangle rect) => new() { left = rect.Left, top = rect.Top, right = rect.Right, bottom = rect.Bottom };
-
-        /// <summary>
-        /// Converts a D2D_MATRIX_3X2_F to a Matrix3x2.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>A Matrix3x2.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static Matrix3x2 ToMatrix3x2(this D2D_MATRIX_3X2_F matrix) => Unsafe.As<D2D_MATRIX_3X2_F, Matrix3x2>(ref matrix);
-
-        /// <summary>
-        /// Converts a Matrix3x2 to a D2D_MATRIX_3X2_F.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>A D2D_MATRIX_3X2_F.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static D2D_MATRIX_3X2_F ToD2D_MATRIX_3X2_F(this Matrix3x2 matrix) => Unsafe.As<Matrix3x2, D2D_MATRIX_3X2_F>(ref matrix);
-
-        /// <summary>
-        /// Converts a DWRITE_MATRIX to a Matrix3x2.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>A Matrix3x2.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static Matrix3x2 ToMatrix3x2(this DWRITE_MATRIX matrix) => Unsafe.As<DWRITE_MATRIX, Matrix3x2>(ref matrix);
-
-        /// <summary>
-        /// Converts a Matrix3x2 to a DWRITE_MATRIX.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>A DWRITE_MATRIX.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static DWRITE_MATRIX ToDWRITE_MATRIX(this Matrix3x2 matrix) => Unsafe.As<Matrix3x2, DWRITE_MATRIX>(ref matrix);
-
-        /// <summary>
-        /// Converts a D2D_MATRIX_3X2_F to a DWRITE_MATRIX.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>A DWRITE_MATRIX.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static DWRITE_MATRIX ToDWRITE_MATRIX(this D2D_MATRIX_3X2_F matrix) => Unsafe.As<D2D_MATRIX_3X2_F, DWRITE_MATRIX>(ref matrix);
-
-        /// <summary>
-        /// Converts a DWRITE_MATRIX to a D2D_MATRIX_3X2_F.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <returns>A D2D_MATRIX_3X2_F.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        // Using TTo As<TFrom, TTo>(ref TFrom source) to do the direct cast because the structures are the same shape and can be blited interchangeably.
-        public static D2D_MATRIX_3X2_F ToD2D_MATRIX_3X2_F(this DWRITE_MATRIX matrix) => Unsafe.As<DWRITE_MATRIX, D2D_MATRIX_3X2_F>(ref matrix);
-        #endregion
+#endregion
+#endregion
     }
 }
+#endif

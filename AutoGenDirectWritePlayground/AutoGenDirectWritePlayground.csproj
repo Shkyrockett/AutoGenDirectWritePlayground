@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
 		<VersionPrefix>0.0.0.1</VersionPrefix>
+		<OutputType>WinExe</OutputType>
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<Platforms>AnyCPU;ARM32;ARM64;x64;x86</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>

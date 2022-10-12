@@ -8,6 +8,7 @@
 // <summary></summary>
 // <remarks></remarks>
 
+#if !GenerateRenderTarget
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Windows.Win32.Foundation;
@@ -33,16 +34,16 @@ namespace Windows.Win32
         public interface ID2D1HwndRenderTarget
             : ID2D1Resource, ID2D1RenderTarget
         {
-            #region ID2D1Resource
+#region ID2D1Resource
             /// <summary>
             /// Gets the factory.
             /// </summary>
             /// <param name="factory">The factory.</param>
             [PreserveSig]
             new void GetFactory(out ID2D1Factory factory);
-            #endregion
+#endregion
 
-            #region ID2D1RenderTarget
+#region ID2D1RenderTarget
             /// <summary>
             /// Create a D2D bitmap by copying from memory, or create uninitialized.
             /// </summary>
@@ -545,7 +546,7 @@ namespace Windows.Win32
 
             // The AutoGen for this omits the HRESULT which is very useful in the drawing code to tell
             // if the draw failed and DirectX needs to be reinitialized because the display reset. See https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nn-d2d1-id2d1rendertarget#remarks
-            // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
+            // See CsWin32 Issue 720 on incorrect generation: https://github.com/microsoft/CsWin32/issues/720
             // Incorrect generated code:
             //new unsafe void EndDraw([Optional] ulong* tag1, [Optional] ulong* tag2);
             /// <summary>Ends drawing operations on the render target and indicates the current error state and associated tags.</summary>
@@ -609,7 +610,7 @@ namespace Windows.Win32
             new unsafe void GetDpi(float* dpiX, float* dpiY);
 
             // The AutoGen for GetSize throws an access violation when called. The version here with the HRESULT works correctly, and should use an extension to return the struct.
-            // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
+            // See CsWin32 Issue 720 on incorrect generation: https://github.com/microsoft/CsWin32/issues/720
             // Incorrect generated code:
             //new D2D_SIZE_F GetSize();
             /// <summary>Returns the size of the render target in device-independent pixels.</summary>
@@ -623,7 +624,7 @@ namespace Windows.Win32
             new unsafe HRESULT GetSize(out D2D_SIZE_F size);
 
             // The AutoGen for GetPixelSize throws an access violation when called. The version here with the HRESULT works correctly, and should use an extension to return the struct.
-            // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
+            // See CsWin32 Issue 720 on incorrect generation: https://github.com/microsoft/CsWin32/issues/720
             // Incorrect generated code:
             //new D2D_SIZE_U GetPixelSize();
             /// <summary>Returns the size of the render target in device pixels.</summary>
@@ -656,9 +657,9 @@ namespace Windows.Win32
             /// <returns></returns>
             [PreserveSig]
             new unsafe BOOL IsSupported(D2D1_RENDER_TARGET_PROPERTIES* renderTargetProperties);
-            #endregion
+#endregion
 
-            #region ID2D1HwndRenderTarget
+#region ID2D1HwndRenderTarget
             /// <summary>Indicates whether the HWND associated with this render target is occluded.</summary>
             /// <returns>
             /// <para>Type: <b><a href="/windows/win32/api/d2d1/ne-d2d1-d2d1_window_state">D2D1_WINDOW_STATE</a></b> A value that indicates whether the HWND associated with this render target is occluded.</para>
@@ -684,7 +685,8 @@ namespace Windows.Win32
             /// </remarks>
             [PreserveSig]
             HWND GetHwnd();
-            #endregion
+#endregion
         }
     }
 }
+#endif

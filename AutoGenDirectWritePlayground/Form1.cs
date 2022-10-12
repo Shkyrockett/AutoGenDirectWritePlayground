@@ -27,7 +27,7 @@ namespace AutoGenDirectWritePlayground;
 public partial class Form1
     : Form
 {
-    #region Fields
+#region Fields
     /// <summary>
     /// The text format.
     /// </summary>
@@ -89,9 +89,9 @@ public partial class Form1
     private readonly string[] worlds = { "🌎", "🌍", "🌏" };
 
     private bool updating;
-    #endregion
+#endregion
 
-    #region Constructors
+#region Constructors
     /// <summary>
     /// Initializes a new instance of the <see cref="Form1"/> class.
     /// </summary>
@@ -109,9 +109,9 @@ public partial class Form1
         // Start the world update timer if it isn't in design mode.
         timer.Start();
     }
-    #endregion
+#endregion
 
-    #region Properties
+#region Properties
     /// <summary>
     /// Gets the direct2d factory.
     /// </summary>
@@ -135,9 +135,9 @@ public partial class Form1
     /// The render target.
     /// </value>
     protected ID2D1RenderTarget? RenderTarget => dcRenderTarget;
-    #endregion
+#endregion
 
-    #region Events
+#region Events
     /// <summary>
     /// Form resize event.
     /// </summary>
@@ -180,9 +180,14 @@ public partial class Form1
             e.Graphics.ReleaseHdc(hdc);
             RenderTarget?.BeginDraw();
             DoDrawing(RenderTarget!);
+#if GenerateRenderTarget
+            RenderTarget?.EndDraw();
+#else
             var result = RenderTarget?.EndDraw();
+#endif
             Validate();
 
+#if !GenerateRenderTarget
             if (result == HRESULT.D2DERR_RECREATE_TARGET)
             {
                 DiscardDirect2DResources();
@@ -190,6 +195,7 @@ public partial class Form1
                 CreateResources(RenderTarget);
                 DoSizeLayout(ClientSize);
             }
+#endif
         }
 
         base.OnPaint(e);
@@ -221,9 +227,14 @@ public partial class Form1
             e.Graphics.ReleaseHdc(hdc);
             RenderTarget?.BeginDraw();
             RenderTarget?.Clear(BackColor);
+#if GenerateRenderTarget
+            RenderTarget?.EndDraw();
+#else
             var result = RenderTarget?.EndDraw();
+#endif
             Validate();
 
+#if !GenerateRenderTarget
             if (result == HRESULT.D2DERR_RECREATE_TARGET)
             {
                 DiscardDirect2DResources();
@@ -231,6 +242,7 @@ public partial class Form1
                 CreateResources(RenderTarget);
                 DoSizeLayout(ClientSize);
             }
+#endif
         }
 
         base.OnPaintBackground(e);
@@ -244,7 +256,7 @@ public partial class Form1
             }
         }
     }
-    #endregion
+#endregion
 
     /// <summary>
     /// Applied resizing to the text layout area.
@@ -370,10 +382,14 @@ public partial class Form1
         var (radiusX, radiusY) = (Math.Max(size.Width / 2f, size.Height / 2f), Math.Max(size.Width / 2f, size.Height / 2f));
         var radialBrushProperties = new D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES(center, gradientOriginOffset, radiusX, radiusY);
         if (gradientStops is not null) Marshal.ReleaseComObject(gradientStops);
+#pragma warning disable CS7036 // There is no argument given that corresponds to the required parameter 'gradientStopsCount' of 'ID2D1RenderTarget.CreateGradientStopCollection(D2D1_GRADIENT_STOP*, uint, D2D1_GAMMA, D2D1_EXTEND_MODE, out ID2D1GradientStopCollection)'
         gradientStops = renderTarget?.CreateGradientStopCollection(stops);
+#pragma warning restore CS7036 // There is no argument given that corresponds to the required parameter 'gradientStopsCount' of 'ID2D1RenderTarget.CreateGradientStopCollection(D2D1_GRADIENT_STOP*, uint, D2D1_GAMMA, D2D1_EXTEND_MODE, out ID2D1GradientStopCollection)'
 
         if (fillBrush is not null) Marshal.ReleaseComObject(fillBrush);
+#pragma warning disable CS7036 // There is no argument given that corresponds to the required parameter 'gradientStopCollection' of 'ID2D1RenderTarget.CreateRadialGradientBrush(D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*, D2D1_BRUSH_PROPERTIES*, ID2D1GradientStopCollection, out ID2D1RadialGradientBrush)'
         fillBrush = renderTarget?.CreateRadialGradientBrush(radialBrushProperties, gradientStops!);
+#pragma warning restore CS7036 // There is no argument given that corresponds to the required parameter 'gradientStopCollection' of 'ID2D1RenderTarget.CreateRadialGradientBrush(D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*, D2D1_BRUSH_PROPERTIES*, ID2D1GradientStopCollection, out ID2D1RadialGradientBrush)'
     }
 
     /// <summary>
@@ -386,9 +402,13 @@ public partial class Form1
         var world = worlds[worldIndex];
         var text = $"Hello World {world} from… \r\nDirectWrite \r\n…using only  C#!";
         if (blackBrush is not null) Marshal.ReleaseComObject(blackBrush);
+#pragma warning disable CS7036 // There is no argument given that corresponds to the required parameter 'solidColorBrush' of 'ID2D1RenderTarget.CreateSolidColorBrush(D2D1_COLOR_F*, D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)'
         blackBrush = renderTarget?.CreateSolidColorBrush(Color.Black);
+#pragma warning restore CS7036 // There is no argument given that corresponds to the required parameter 'solidColorBrush' of 'ID2D1RenderTarget.CreateSolidColorBrush(D2D1_COLOR_F*, D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)'
         if (greenBrush is not null) Marshal.ReleaseComObject(greenBrush);
+#pragma warning disable CS7036 // There is no argument given that corresponds to the required parameter 'solidColorBrush' of 'ID2D1RenderTarget.CreateSolidColorBrush(D2D1_COLOR_F*, D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)'
         greenBrush = renderTarget?.CreateSolidColorBrush(Color.Green);
+#pragma warning restore CS7036 // There is no argument given that corresponds to the required parameter 'solidColorBrush' of 'ID2D1RenderTarget.CreateSolidColorBrush(D2D1_COLOR_F*, D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)'
 
         if (textFormat is not null) Marshal.ReleaseComObject(textFormat);
         textFormat = DirectWriteFactory?.CreateTextFormat("Gabriola", fontSize: 64f);
