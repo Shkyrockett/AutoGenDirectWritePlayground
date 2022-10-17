@@ -34,16 +34,16 @@ namespace Windows.Win32
         public interface ID2D1DCRenderTarget
             : ID2D1Resource, ID2D1RenderTarget
         {
-#region ID2D1Resource
+            #region ID2D1Resource
             /// <summary>
             /// Gets the factory.
             /// </summary>
             /// <param name="factory">The factory.</param>
             [PreserveSig]
             new void GetFactory(out ID2D1Factory factory);
-#endregion
+            #endregion
 
-#region ID2D1RenderTarget
+            #region ID2D1RenderTarget
             /// <summary>
             /// Create a D2D bitmap by copying from memory, or create uninitialized.
             /// </summary>
@@ -657,9 +657,9 @@ namespace Windows.Win32
             /// <returns></returns>
             [PreserveSig]
             new unsafe BOOL IsSupported(D2D1_RENDER_TARGET_PROPERTIES* renderTargetProperties);
-#endregion
+            #endregion
 
-#region ID2D1DCRenderTarget
+            #region ID2D1DCRenderTarget
             /// <summary>Binds the render target to the device context to which it issues drawing commands.</summary>
             /// <param name="hDC">
             /// <para>Type: <b>const HDC</b> The device context to which the render target issues drawing commands.</para>
@@ -676,7 +676,7 @@ namespace Windows.Win32
             /// <para><see href="https://docs.microsoft.com/windows/win32/api//d2d1/nf-d2d1-id2d1dcrendertarget-binddc">Learn more about this API from docs.microsoft.com</see>.</para>
             /// </remarks>
             unsafe void BindDC(Gdi.HDC hDC, RECT* pSubRect);
-#endregion
+            #endregion
         }
     }
 }

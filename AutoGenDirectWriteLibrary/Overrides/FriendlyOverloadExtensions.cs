@@ -1,4 +1,4 @@
-﻿// <copyright file="FriendlyOverloadExtensions.RenderTarget.cs" company="Shkyrockett" >
+﻿// <copyright file="FriendlyOverloadExtensions.cs" company="Shkyrockett" >
 //     Copyright © 2020 - 2022 Shkyrockett. All rights reserved.
 // </copyright>
 // <author id="shkyrockett">Shkyrockett</author>
@@ -24,8 +24,9 @@ namespace Windows.Win32
     /// </summary>
     public static partial class FriendlyOverloadExtensions
     {
-#region RenderTarget Shims
-#region BindDC
+#pragma warning disable IDE0030 // Use coalesce expression
+        #region RenderTarget Shims
+        #region BindDC
         /// <inheritdoc cref="ID2D1DCRenderTarget.BindDC(HDC, Windows.Win32.Foundation.RECT*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -89,9 +90,9 @@ namespace Windows.Win32
             renderTarget.BindDC(dc, &rectangle);
             graphics.ReleaseHdc(dc); // Remember to clean up borrowed DC handle.
         }
-#endregion
+        #endregion
 
-#region BlendImage
+        #region BlendImage
         /// <inheritdoc cref="ID2D1DeviceContext6.BlendImage(ID2D1Image, D2D1_BLEND_MODE, Windows.Win32.Graphics.Direct2D.Common.D2D_POINT_2F*, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, D2D1_INTERPOLATION_MODE)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -101,9 +102,9 @@ namespace Windows.Win32
             var imageRectangleLocal = imageRectangle.HasValue ? imageRectangle.Value : default;
             @this.BlendImage(image, blendMode, targetOffset.HasValue ? &targetOffsetLocal : null, imageRectangle.HasValue ? &imageRectangleLocal : null, interpolationMode);
         }
-#endregion
+        #endregion
 
-#region CreateBitmap
+        #region CreateBitmap
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateBitmap(D2D_SIZE_U, void*, uint, Windows.Win32.Graphics.Direct2D.D2D1_BITMAP_PROPERTIES*, out ID2D1Bitmap)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -224,9 +225,9 @@ namespace Windows.Win32
                 @this.CreateBitmap(size, srcData, pitch, bitmapPropertiesLocal, out bitmap);
             }
         }
-#endregion
+        #endregion
 
-#region CreateBitmapBrush
+        #region CreateBitmapBrush
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateBitmapBrush(ID2D1Bitmap, Windows.Win32.Graphics.Direct2D.D2D1_BITMAP_BRUSH_PROPERTIES*, Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*, out ID2D1BitmapBrush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -336,9 +337,9 @@ namespace Windows.Win32
             var brushPropertiesLocal = brushProperties.HasValue ? brushProperties.Value : default;
             @this.CreateBitmapBrush(bitmap, bitmapBrushProperties.HasValue ? &bitmapBrushPropertiesLocal : null, brushProperties.HasValue ? &brushPropertiesLocal : null, out bitmapBrush);
         }
-#endregion
+        #endregion
 
-#region CreateBitmapFromDxgiSurface
+        #region CreateBitmapFromDxgiSurface
         /// <inheritdoc cref="ID2D1DeviceContext.CreateBitmapFromDxgiSurface(Graphics.Dxgi.IDXGISurface, in D2D1_BITMAP_PROPERTIES1, out ID2D1Bitmap1)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -401,9 +402,9 @@ namespace Windows.Win32
             var bitmapPropertiesLocal = bitmapProperties.HasValue ? bitmapProperties.Value : default;
             @this.CreateBitmapFromDxgiSurface(surface, bitmapProperties.HasValue ? bitmapPropertiesLocal : Unsafe.NullRef<D2D1_BITMAP_PROPERTIES1>(), out bitmap);
         }
-#endregion
+        #endregion
 
-#region CreateBitmapFromWicBitmap
+        #region CreateBitmapFromWicBitmap
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateBitmapFromWicBitmap(Graphics.Imaging.IWICBitmapSource, Windows.Win32.Graphics.Direct2D.D2D1_BITMAP_PROPERTIES*, out ID2D1Bitmap)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -502,9 +503,9 @@ namespace Windows.Win32
             var bitmapPropertiesLocal = bitmapProperties.HasValue ? bitmapProperties.Value : default;
             @this.CreateBitmapFromWicBitmap(wicBitmapSource, bitmapProperties.HasValue ? &bitmapPropertiesLocal : null, out bitmap);
         }
-#endregion
+        #endregion
 
-#region CreateColorContext
+        #region CreateColorContext
         /// <inheritdoc cref="ID2D1DeviceContext.CreateColorContext(D2D1_COLOR_SPACE, byte*, uint, out ID2D1ColorContext)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -581,9 +582,9 @@ namespace Windows.Win32
                 @this.CreateColorContext(space, profileLocal, (uint)profile.Length, out colorContext);
             }
         }
-#endregion
+        #endregion
 
-#region CreateColorContextFromFilename
+        #region CreateColorContextFromFilename
         /// <inheritdoc cref="ID2D1DeviceContext.CreateColorContextFromFilename(Foundation.PCWSTR, out ID2D1ColorContext)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -660,9 +661,9 @@ namespace Windows.Win32
                 @this.CreateColorContextFromFilename(filenameLocal, out colorContext);
             }
         }
-#endregion
+        #endregion
 
-#region CreateColorContextFromSimpleColorProfile
+        #region CreateColorContextFromSimpleColorProfile
         /// <inheritdoc cref="ID2D1DeviceContext5.CreateColorContextFromSimpleColorProfile(Windows.Win32.Graphics.Direct2D.D2D1_SIMPLE_COLOR_PROFILE*, out ID2D1ColorContext1)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -684,9 +685,9 @@ namespace Windows.Win32
                 @this.CreateColorContextFromSimpleColorProfile(simpleProfileLocal, out colorContext);
             }
         }
-#endregion
+        #endregion
 
-#region CreateCompatibleRenderTarget
+        #region CreateCompatibleRenderTarget
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateCompatibleRenderTarget(Windows.Win32.Graphics.Direct2D.Common.D2D_SIZE_F*, Windows.Win32.Graphics.Direct2D.Common.D2D_SIZE_U*, Windows.Win32.Graphics.Direct2D.Common.D2D1_PIXEL_FORMAT*, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS, out ID2D1BitmapRenderTarget)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -807,9 +808,9 @@ namespace Windows.Win32
             var desiredFormatLocal = desiredFormat.HasValue ? desiredFormat.Value : default;
             @this.CreateCompatibleRenderTarget(desiredSize.HasValue ? &desiredSizeLocal : null, desiredPixelSize.HasValue ? &desiredPixelSizeLocal : null, desiredFormat.HasValue ? &desiredFormatLocal : null, options, out bitmapRenderTarget);
         }
-#endregion
+        #endregion
 
-#region CreateEffect
+        #region CreateEffect
         /// <inheritdoc cref="ID2D1DeviceContext.CreateEffect(global::System.Guid*, out ID2D1Effect)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -886,9 +887,9 @@ namespace Windows.Win32
                 @this.CreateEffect(effectIdLocal, out effect);
             }
         }
-#endregion
+        #endregion
 
-#region CreateInk
+        #region CreateInk
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateInk(Windows.Win32.Graphics.Direct2D.D2D1_INK_POINT*, out ID2D1Ink)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -943,9 +944,9 @@ namespace Windows.Win32
                 @this.CreateInk(startPointLocal, out ink);
             }
         }
-#endregion
+        #endregion
 
-#region CreateInkStyle
+        #region CreateInkStyle
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateInkStyle(Windows.Win32.Graphics.Direct2D.D2D1_INK_STYLE_PROPERTIES*, out ID2D1InkStyle)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -990,9 +991,9 @@ namespace Windows.Win32
             var inkStylePropertiesLocal = inkStyleProperties.HasValue ? inkStyleProperties.Value : default;
             @this.CreateInkStyle(inkStyleProperties.HasValue ? &inkStylePropertiesLocal : null, out inkStyle);
         }
-#endregion
+        #endregion
 
-#region CreateImageSourceFromDxgi
+        #region CreateImageSourceFromDxgi
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateImageSourceFromDxgi(Windows.Win32.Graphics.Dxgi.IDXGISurface[], uint, Graphics.Dxgi.Common.DXGI_COLOR_SPACE_TYPE, D2D1_IMAGE_SOURCE_FROM_DXGI_OPTIONS, out ID2D1ImageSource)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1017,9 +1018,9 @@ namespace Windows.Win32
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void CreateImageSourceFromDxgi(this ID2D1DeviceContext6 @this, Graphics.Dxgi.IDXGISurface[] surfaces, Graphics.Dxgi.Common.DXGI_COLOR_SPACE_TYPE colorSpace, D2D1_IMAGE_SOURCE_FROM_DXGI_OPTIONS options, out ID2D1ImageSource imageSource) => @this.CreateImageSourceFromDxgi(surfaces, (uint)surfaces.Length, colorSpace, options, out imageSource);
-#endregion
+        #endregion
 
-#region CreateGradientMesh
+        #region CreateGradientMesh
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateGradientMesh(Windows.Win32.Graphics.Direct2D.D2D1_GRADIENT_MESH_PATCH*, uint, out ID2D1GradientMesh)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1074,9 +1075,9 @@ namespace Windows.Win32
                 @this.CreateGradientMesh(patchesLocal, (uint)patches.Length, out gradientMesh);
             }
         }
-#endregion
+        #endregion
 
-#region GetGradientMeshWorldBounds
+        #region GetGradientMeshWorldBounds
         /// <inheritdoc cref="ID2D1DeviceContext2.GetGradientMeshWorldBounds(ID2D1GradientMesh, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1131,9 +1132,9 @@ namespace Windows.Win32
                 @this.GetGradientMeshWorldBounds(gradientMesh, pBoundsLocal);
             }
         }
-#endregion
+        #endregion
 
-#region CreateGradientStopCollection
+        #region CreateGradientStopCollection
         /// <summary>
         /// Creates the gradient stop collection.
         /// </summary>
@@ -1477,9 +1478,9 @@ namespace Windows.Win32
                 @this.CreateGradientStopCollection(straightAlphaGradientStopsLocal, (uint)straightAlphaGradientStops.Length, preInterpolationSpace, postInterpolationSpace, bufferPrecision, extendMode, colorInterpolationMode, out gradientStopCollection1);
             }
         }
-#endregion
+        #endregion
 
-#region CreateImageBrush
+        #region CreateImageBrush
         /// <inheritdoc cref="ID2D1DeviceContext.CreateImageBrush(ID2D1Image, Windows.Win32.Graphics.Direct2D.D2D1_IMAGE_BRUSH_PROPERTIES*, Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*, out ID2D1ImageBrush)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1562,9 +1563,9 @@ namespace Windows.Win32
                 @this.CreateImageBrush(image, imageBrushPropertiesLocal, brushProperties.HasValue ? &brushPropertiesLocal : null, out imageBrush);
             }
         }
-#endregion
+        #endregion
 
-#region CreateLayer
+        #region CreateLayer
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateLayer(Windows.Win32.Graphics.Direct2D.Common.D2D_SIZE_F*, out ID2D1Layer)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1663,9 +1664,9 @@ namespace Windows.Win32
             var sizeLocal = size.HasValue ? size.Value : default;
             @this.CreateLayer(size.HasValue ? &sizeLocal : null, out layer);
         }
-#endregion
+        #endregion
 
-#region CreateLinearGradientBrush
+        #region CreateLinearGradientBrush
         /// <summary>
         /// Creates the linear gradient brush.
         /// </summary>
@@ -1874,9 +1875,9 @@ namespace Windows.Win32
                 @this.CreateLinearGradientBrush(linearGradientBrushPropertiesLocal, brushProperties.HasValue ? (&brushPropertiesLocal) : null, gradientStopCollection, out linearGradientBrush);
             }
         }
-#endregion
+        #endregion
 
-#region CreateLookupTable3D
+        #region CreateLookupTable3D
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateLookupTable3D(D2D1_BUFFER_PRECISION, uint*, byte*, uint, uint*, out ID2D1LookupTable3D)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -1971,9 +1972,9 @@ namespace Windows.Win32
                 }
             }
         }
-#endregion
+        #endregion
 
-#region CreateRadialGradientBrush
+        #region CreateRadialGradientBrush
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateRadialGradientBrush(Windows.Win32.Graphics.Direct2D.D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*, Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*, ID2D1GradientStopCollection, out ID2D1RadialGradientBrush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2105,9 +2106,9 @@ namespace Windows.Win32
                 @this.CreateRadialGradientBrush(radialGradientBrushPropertiesLocal, brushProperties.HasValue ? &brushPropertiesLocal : null, gradientStopCollection, out radialGradientBrush);
             }
         }
-#endregion
+        #endregion
 
-#region CreateSharedBitmap
+        #region CreateSharedBitmap
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateSharedBitmap(global::System.Guid*, void*, Windows.Win32.Graphics.Direct2D.D2D1_BITMAP_PROPERTIES*, out ID2D1Bitmap)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2239,9 +2240,9 @@ namespace Windows.Win32
                 @this.CreateSharedBitmap(riidLocal, data, bitmapProperties.HasValue ? &bitmapPropertiesLocal : null, out bitmap);
             }
         }
-#endregion
+        #endregion
 
-#region CreateSolidColorBrush
+        #region CreateSolidColorBrush
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.CreateSolidColorBrush(Windows.Win32.Graphics.Direct2D.Common.D2D1_COLOR_F*, Windows.Win32.Graphics.Direct2D.D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2373,9 +2374,9 @@ namespace Windows.Win32
                 @this.CreateSolidColorBrush(colorLocal, brushProperties.HasValue ? &brushPropertiesLocal : null, out solidColorBrush);
             }
         }
-#endregion
+        #endregion
 
-#region CreateTransformedImageSource
+        #region CreateTransformedImageSource
         /// <inheritdoc cref="ID2D1DeviceContext2.CreateTransformedImageSource(ID2D1ImageSource, Windows.Win32.Graphics.Direct2D.D2D1_TRANSFORMED_IMAGE_SOURCE_PROPERTIES*, out ID2D1TransformedImageSource)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2430,9 +2431,9 @@ namespace Windows.Win32
                 @this.CreateTransformedImageSource(imageSource, propertiesLocal, out transformedImageSource);
             }
         }
-#endregion
+        #endregion
 
-#region DrawBitmap
+        #region DrawBitmap
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawBitmap(ID2D1Bitmap, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, float, D2D1_BITMAP_INTERPOLATION_MODE, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2542,9 +2543,9 @@ namespace Windows.Win32
             var sourceRectangleLocal = sourceRectangle.HasValue ? sourceRectangle.Value : default;
             @this.DrawBitmap(bitmap, destinationRectangle.HasValue ? &destinationRectangleLocal : null, opacity, interpolationMode, sourceRectangle.HasValue ? &sourceRectangleLocal : null);
         }
-#endregion
+        #endregion
 
-#region DrawEllipse
+        #region DrawEllipse
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawEllipse(Windows.Win32.Graphics.Direct2D.D2D1_ELLIPSE*, ID2D1Brush, float, ID2D1StrokeStyle)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2665,9 +2666,9 @@ namespace Windows.Win32
                 @this.DrawEllipse(ellipseLocal, brush, strokeWidth, strokeStyle);
             }
         }
-#endregion
+        #endregion
 
-#region DrawGdiMetafile
+        #region DrawGdiMetafile
         /// <inheritdoc cref="ID2D1DeviceContext.DrawGdiMetafile(ID2D1GdiMetafile, Windows.Win32.Graphics.Direct2D.Common.D2D_POINT_2F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2730,9 +2731,9 @@ namespace Windows.Win32
             var targetOffsetLocal = targetOffset.HasValue ? targetOffset.Value : default;
             @this.DrawGdiMetafile(gdiMetafile, targetOffset.HasValue ? &targetOffsetLocal : null);
         }
-#endregion
+        #endregion
 
-#region DrawGdiMetafile
+        #region DrawGdiMetafile
         /// <inheritdoc cref="ID2D1DeviceContext2.DrawGdiMetafile(ID2D1GdiMetafile, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2782,9 +2783,9 @@ namespace Windows.Win32
             var sourceRectangleLocal = sourceRectangle.HasValue ? sourceRectangle.Value : default;
             @this.DrawGdiMetafile(gdiMetafile, destinationRectangle.HasValue ? &destinationRectangleLocal : null, sourceRectangle.HasValue ? &sourceRectangleLocal : null);
         }
-#endregion
+        #endregion
 
-#region DrawGlyphRun
+        #region DrawGlyphRun
         /// <inheritdoc cref="ID2D1DeviceContext.DrawGlyphRun(D2D_POINT_2F, in DWRITE_GLYPH_RUN, Windows.Win32.Graphics.DirectWrite.DWRITE_GLYPH_RUN_DESCRIPTION*, ID2D1Brush, DWRITE_MEASURING_MODE)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2847,9 +2848,9 @@ namespace Windows.Win32
             var glyphRunDescriptionLocal = glyphRunDescription.HasValue ? glyphRunDescription.Value : default;
             @this.DrawGlyphRun(baselineOrigin, in glyphRun, glyphRunDescription.HasValue ? &glyphRunDescriptionLocal : null, foregroundBrush, measuringMode);
         }
-#endregion
+        #endregion
 
-#region DrawImage
+        #region DrawImage
         /// <inheritdoc cref="ID2D1DeviceContext.DrawImage(ID2D1Image, Windows.Win32.Graphics.Direct2D.Common.D2D_POINT_2F*, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, D2D1_INTERPOLATION_MODE, D2D1_COMPOSITE_MODE)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -2919,9 +2920,9 @@ namespace Windows.Win32
             var imageRectangleLocal = imageRectangle.HasValue ? imageRectangle.Value : default;
             @this.DrawImage(image, targetOffset.HasValue ? &targetOffsetLocal : null, imageRectangle.HasValue ? &imageRectangleLocal : null, interpolationMode, compositeMode);
         }
-#endregion
+        #endregion
 
-#region DrawRectangle
+        #region DrawRectangle
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawRectangle(Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, ID2D1Brush, float, ID2D1StrokeStyle)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3042,9 +3043,9 @@ namespace Windows.Win32
                 @this.DrawRectangle(rectLocal, brush, strokeWidth, strokeStyle);
             }
         }
-#endregion
+        #endregion
 
-#region DrawRoundedRectangle
+        #region DrawRoundedRectangle
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawRoundedRectangle(Windows.Win32.Graphics.Direct2D.D2D1_ROUNDED_RECT*, ID2D1Brush, float, ID2D1StrokeStyle)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3165,9 +3166,9 @@ namespace Windows.Win32
                 @this.DrawRoundedRectangle(roundedRectLocal, brush, strokeWidth, strokeStyle);
             }
         }
-#endregion
+        #endregion
 
-#region DrawText
+        #region DrawText
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawText(Foundation.PCWSTR, uint, IDWriteTextFormat, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, ID2D1Brush, D2D1_DRAW_TEXT_OPTIONS, DWRITE_MEASURING_MODE)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3321,9 +3322,9 @@ namespace Windows.Win32
                 }
             }
         }
-#endregion
+        #endregion
 
-#region DrawTextLayout
+        #region DrawTextLayout
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.DrawTextLayout(D2D_POINT_2F, IDWriteTextLayout, ID2D1Brush, D2D1_DRAW_TEXT_OPTIONS)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3378,9 +3379,9 @@ namespace Windows.Win32
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public static unsafe void DrawTextLayout(this ID2D1DeviceContext6 @this, D2D_POINT_2F origin, IDWriteTextLayout textLayout, ID2D1Brush defaultFillBrush, D2D1_DRAW_TEXT_OPTIONS options = D2D1_DRAW_TEXT_OPTIONS.D2D1_DRAW_TEXT_OPTIONS_NONE) => @this.DrawTextLayout(origin, textLayout, defaultFillBrush, options);
-#endregion
+        #endregion
 
-#region FillEllipse
+        #region FillEllipse
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.FillEllipse(Windows.Win32.Graphics.Direct2D.D2D1_ELLIPSE*, ID2D1Brush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3501,9 +3502,9 @@ namespace Windows.Win32
                 @this.FillEllipse(ellipseLocal, brush);
             }
         }
-#endregion
+        #endregion
 
-#region FillOpacityMask
+        #region FillOpacityMask
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.FillOpacityMask(ID2D1Bitmap, ID2D1Brush, D2D1_OPACITY_MASK_CONTENT, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3613,9 +3614,9 @@ namespace Windows.Win32
             var sourceRectangleLocal = sourceRectangle.HasValue ? sourceRectangle.Value : default;
             @this.FillOpacityMask(opacityMask, brush, content, destinationRectangle.HasValue ? &destinationRectangleLocal : null, sourceRectangle.HasValue ? &sourceRectangleLocal : null);
         }
-#endregion
+        #endregion
 
-#region FillRectangle
+        #region FillRectangle
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.FillRectangle(Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*,ID2D1Brush)" />
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3736,9 +3737,9 @@ namespace Windows.Win32
                 @this.FillRectangle(rectLocal, brush);
             }
         }
-#endregion
+        #endregion
 
-#region FillRoundedRectangle
+        #region FillRoundedRectangle
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.FillRoundedRectangle(Windows.Win32.Graphics.Direct2D.D2D1_ROUNDED_RECT*, ID2D1Brush)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3859,9 +3860,9 @@ namespace Windows.Win32
                 @this.FillRoundedRectangle(roundedRectLocal, brush);
             }
         }
-#endregion
+        #endregion
 
-#region GetColorBitmapGlyphImage
+        #region GetColorBitmapGlyphImage
         /// <inheritdoc cref="ID2D1DeviceContext4.GetColorBitmapGlyphImage(DWRITE_GLYPH_IMAGE_FORMATS, D2D_POINT_2F, IDWriteFontFace, float, ushort, Foundation.BOOL, Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*, float, float, Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*, out ID2D1Image)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -3897,9 +3898,9 @@ namespace Windows.Win32
                 @this.GetColorBitmapGlyphImage(glyphImageFormat, glyphOrigin, fontFace, fontEmSize, glyphIndex, isSideways, worldTransform.HasValue ? &worldTransformLocal : null, dpiX, dpiY, glyphTransformLocal, out glyphImage);
             }
         }
-#endregion
+        #endregion
 
-#region GetDpi
+        #region GetDpi
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.GetDpi(float*, float*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4053,9 +4054,9 @@ namespace Windows.Win32
                 }
             }
         }
-#endregion
+        #endregion
 
-#region GetEffectInvalidRectangleCount
+        #region GetEffectInvalidRectangleCount
         /// <inheritdoc cref="ID2D1DeviceContext.GetEffectInvalidRectangleCount(ID2D1Effect, uint*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4132,9 +4133,9 @@ namespace Windows.Win32
                 @this.GetEffectInvalidRectangleCount(effect, rectangleCountLocal);
             }
         }
-#endregion
+        #endregion
 
-#region GetEffectInvalidRectangles
+        #region GetEffectInvalidRectangles
         /// <inheritdoc cref="ID2D1DeviceContext.GetEffectInvalidRectangles(ID2D1Effect, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, uint)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4211,9 +4212,9 @@ namespace Windows.Win32
                 @this.GetEffectInvalidRectangles(effect, rectanglesLocal, (uint)rectangles.Length);
             }
         }
-#endregion
+        #endregion
 
-#region GetEffectRequiredInputRectangles
+        #region GetEffectRequiredInputRectangles
         /// <inheritdoc cref="ID2D1DeviceContext.GetEffectRequiredInputRectangles(ID2D1Effect, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, Windows.Win32.Graphics.Direct2D.D2D1_EFFECT_INPUT_DESCRIPTION[], Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, uint)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4304,9 +4305,9 @@ namespace Windows.Win32
                 @this.GetEffectRequiredInputRectangles(renderEffect, renderImageRectangle.HasValue ? &renderImageRectangleLocal : null, inputDescriptions, requiredInputRectsLocal, (uint)requiredInputRects.Length);
             }
         }
-#endregion
+        #endregion
 
-#region GetGlyphRunWorldBounds
+        #region GetGlyphRunWorldBounds
         /// <inheritdoc cref="ID2D1DeviceContext.GetGlyphRunWorldBounds(D2D_POINT_2F, in DWRITE_GLYPH_RUN, DWRITE_MEASURING_MODE, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4383,9 +4384,9 @@ namespace Windows.Win32
                 @this.GetGlyphRunWorldBounds(baselineOrigin, in glyphRun, measuringMode, boundsLocal);
             }
         }
-#endregion
+        #endregion
 
-#region GetImageLocalBounds
+        #region GetImageLocalBounds
         /// <inheritdoc cref="ID2D1DeviceContext.GetImageLocalBounds(ID2D1Image, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4462,9 +4463,9 @@ namespace Windows.Win32
                 @this.GetImageLocalBounds(image, localBoundsLocal);
             }
         }
-#endregion
+        #endregion
 
-#region GetImageWorldBounds
+        #region GetImageWorldBounds
         /// <inheritdoc cref="ID2D1DeviceContext.GetImageWorldBounds(ID2D1Image, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4541,9 +4542,9 @@ namespace Windows.Win32
                 @this.GetImageWorldBounds(image, worldBoundsLocal);
             }
         }
-#endregion
+        #endregion
 
-#region GetPixelSize
+        #region GetPixelSize
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.GetPixelSize(out D2D_SIZE_U)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4642,9 +4643,9 @@ namespace Windows.Win32
             @this.GetPixelSize(out var size);
             return size;
         }
-#endregion
+        #endregion
 
-#region GetRenderingControls
+        #region GetRenderingControls
         /// <inheritdoc cref="ID2D1DeviceContext.GetRenderingControls(Windows.Win32.Graphics.Direct2D.D2D1_RENDERING_CONTROLS*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4721,9 +4722,9 @@ namespace Windows.Win32
                 @this.GetRenderingControls(renderingControlsLocal);
             }
         }
-#endregion
+        #endregion
 
-#region GetSize
+        #region GetSize
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.GetSize(out D2D_SIZE_F)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4822,9 +4823,9 @@ namespace Windows.Win32
             @this.GetSize(out var size);
             return size;
         }
-#endregion
+        #endregion
 
-#region GetSvgGlyphImage
+        #region GetSvgGlyphImage
         /// <inheritdoc cref="ID2D1DeviceContext4.GetSvgGlyphImage(D2D_POINT_2F, IDWriteFontFace, float, ushort, Foundation.BOOL, Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*, ID2D1Brush, ID2D1SvgGlyphStyle, uint, Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*, out ID2D1CommandList)"/>
         [SupportedOSPlatform("windows10.0.10240")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4860,9 +4861,9 @@ namespace Windows.Win32
                 @this.GetSvgGlyphImage(glyphOrigin, fontFace, fontEmSize, glyphIndex, isSideways, worldTransform.HasValue ? &worldTransformLocal : null, defaultFillBrush, svgGlyphStyle, colorPaletteIndex, glyphTransformLocal, out glyphImage);
             }
         }
-#endregion
+        #endregion
 
-#region GetTransform
+        #region GetTransform
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.GetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -4983,9 +4984,9 @@ namespace Windows.Win32
                 @this.GetTransform(transformLocal);
             }
         }
-#endregion
+        #endregion
 
-#region InvalidateEffectInputRectangle
+        #region InvalidateEffectInputRectangle
         /// <inheritdoc cref="ID2D1DeviceContext.InvalidateEffectInputRectangle(ID2D1Effect, uint, Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5062,9 +5063,9 @@ namespace Windows.Win32
                 @this.InvalidateEffectInputRectangle(effect, input, inputRectangleLocal);
             }
         }
-#endregion
+        #endregion
 
-#region IsSupported
+        #region IsSupported
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.IsSupported(Windows.Win32.Graphics.Direct2D.D2D1_RENDER_TARGET_PROPERTIES*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5196,9 +5197,9 @@ namespace Windows.Win32
                 return __result;
             }
         }
-#endregion
+        #endregion
 
-#region PushAxisAlignedClip
+        #region PushAxisAlignedClip
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.PushAxisAlignedClip(Windows.Win32.Graphics.Direct2D.Common.D2D_RECT_F*, D2D1_ANTIALIAS_MODE)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5319,9 +5320,9 @@ namespace Windows.Win32
                 @this.PushAxisAlignedClip(clipRectLocal, antialiasMode);
             }
         }
-#endregion
+        #endregion
 
-#region SetRenderingControls
+        #region SetRenderingControls
         /// <inheritdoc cref="ID2D1DeviceContext.SetRenderingControls(Windows.Win32.Graphics.Direct2D.D2D1_RENDERING_CONTROLS*)"/>
         [SupportedOSPlatform("windows8.0")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5398,9 +5399,9 @@ namespace Windows.Win32
                 @this.SetRenderingControls(renderingControlsLocal);
             }
         }
-#endregion
+        #endregion
 
-#region SetTransform
+        #region SetTransform
         /// <inheritdoc cref="ID2D1BitmapRenderTarget.SetTransform(Windows.Win32.Graphics.Direct2D.Common.D2D_MATRIX_3X2_F*)"/>
         [SupportedOSPlatform("windows6.1")]
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -5521,8 +5522,9 @@ namespace Windows.Win32
                 @this.SetTransform(transformLocal);
             }
         }
-#endregion
-#endregion
+        #endregion
+        #endregion
+#pragma warning restore IDE0030 // Use coalesce expression
     }
 }
 #endif

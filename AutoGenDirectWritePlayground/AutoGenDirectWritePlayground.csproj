@@ -1,26 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>0.0.0.1</VersionPrefix>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
 		<Platforms>AnyCPU;ARM32;ARM64;x64;x86</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>preview</LangVersion>
+		<VersionPrefix>0.0.0.1</VersionPrefix>
+		<VersionSuffix>Alpha</VersionSuffix>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<Authors>Shkyrockett</Authors>
-		<Copyright>Copyright (c) 2021 - 2022 $(Authors)</Copyright>
+		<Owners>Shkyrockett</Owners>
+		<Copyright>Copyright (c) 2021 - 2022 $(Owners)</Copyright>
 		<Description>Playground for experimenting with auto generating interop API for working with Direct Write.</Description>
 		<RepositoryType>git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<RepositoryUrl>https://github.com/Shkyrockett/AutoGenDirectWritePlayground</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Shkyrockett/AutoGenDirectWritePlayground</PackageProjectUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
 		<DocumentationFile>$(OutputPath)$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">

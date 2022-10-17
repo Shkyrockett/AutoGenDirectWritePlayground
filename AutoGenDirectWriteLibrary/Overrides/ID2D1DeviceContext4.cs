@@ -34,16 +34,16 @@ namespace Windows.Win32
         public interface ID2D1DeviceContext4
             : ID2D1Resource, ID2D1RenderTarget, ID2D1DeviceContext, ID2D1DeviceContext1, ID2D1DeviceContext2, ID2D1DeviceContext3
         {
-#region ID2D1Resource
+            #region ID2D1Resource
             /// <summary>
             /// Gets the factory.
             /// </summary>
             /// <param name="factory">The factory.</param>
             [PreserveSig]
             new void GetFactory(out ID2D1Factory factory);
-#endregion
+            #endregion
 
-#region ID2D1RenderTarget
+            #region ID2D1RenderTarget
             /// <summary>
             /// Create a D2D bitmap by copying from memory, or create uninitialized.
             /// </summary>
@@ -669,9 +669,9 @@ namespace Windows.Win32
             /// <returns></returns>
             [PreserveSig]
             new unsafe BOOL IsSupported(D2D1_RENDER_TARGET_PROPERTIES* renderTargetProperties);
-#endregion
+            #endregion
 
-#region ID2D1DeviceContext
+            #region ID2D1DeviceContext
             /// <summary>
             /// Creates the bitmap.
             /// </summary>
@@ -1211,9 +1211,9 @@ namespace Windows.Win32
             /// <param name="sourceRectangle">The source rectangle.</param>
             [PreserveSig]
             new unsafe void FillOpacityMask(ID2D1Bitmap opacityMask, ID2D1Brush brush, [Optional] D2D_RECT_F* destinationRectangle, [Optional] D2D_RECT_F* sourceRectangle);
-#endregion
+            #endregion
 
-#region ID2D1DeviceContext1
+            #region ID2D1DeviceContext1
             /// <summary>Creates a device-dependent representation of the fill of the geometry that can be subsequently rendered.</summary>
             /// <param name="geometry">
             /// <para>Type: <b><a href="https://docs.microsoft.com/windows/desktop/api/d2d1/nn-d2d1-id2d1geometry">ID2D1Geometry</a>*</b> The geometry to realize.</para>
@@ -1285,9 +1285,9 @@ namespace Windows.Win32
             /// </remarks>
             [PreserveSig]
             new void DrawGeometryRealization(ID2D1GeometryRealization geometryRealization, ID2D1Brush brush);
-#endregion
+            #endregion
 
-#region ID2D1DeviceContext2
+            #region ID2D1DeviceContext2
             /// <summary>
             /// Creates the ink.
             /// </summary>
@@ -1470,9 +1470,9 @@ namespace Windows.Win32
             /// <para><see href="https://docs.microsoft.com/windows/win32/api//d2d1_3/nf-d2d1_3-id2d1devicecontext2-createtransformedimagesource">Learn more about this API from docs.microsoft.com</see>.</para>
             /// </remarks>
             new unsafe void CreateTransformedImageSource(ID2D1ImageSource imageSource, D2D1_TRANSFORMED_IMAGE_SOURCE_PROPERTIES* properties, out ID2D1TransformedImageSource transformedImageSource);
-#endregion
+            #endregion
 
-#region ID2D1DeviceContext3
+            #region ID2D1DeviceContext3
             /// <summary>Creates a new, empty sprite batch. After creating a sprite batch, use ID2D1SpriteBatch::AddSprites to add sprites to it, then use ID2D1DeviceContext3::DrawSpriteBatch to draw it.</summary>
             /// <param name="spriteBatch">
             /// <para>Type: <b><a href="https://docs.microsoft.com/windows/desktop/api/d2d1_3/nn-d2d1_3-id2d1spritebatch">ID2D1SpriteBatch</a>**</b> When this method returns, contains a pointer to a new, empty sprite batch to be populated by the app.</para>
@@ -1497,9 +1497,9 @@ namespace Windows.Win32
             /// <param name="spriteOptions">The sprite options.</param>
             [PreserveSig]
             new void DrawSpriteBatch(ID2D1SpriteBatch spriteBatch, uint startIndex, uint spriteCount, ID2D1Bitmap bitmap, D2D1_BITMAP_INTERPOLATION_MODE interpolationMode, D2D1_SPRITE_OPTIONS spriteOptions);
-#endregion
+            #endregion
 
-#region ID2D1DeviceContext4
+            #region ID2D1DeviceContext4
             /// <summary>Creates an SVG glyph style object.</summary>
             /// <param name="svgGlyphStyle">
             /// <para>Type: <b><a href="https://docs.microsoft.com/windows/desktop/api/d2d1_3/nn-d2d1_3-id2d1svgglyphstyle">ID2D1SvgGlyphStyle</a>**</b> On completion points to the created <a href="https://docs.microsoft.com/windows/desktop/api/d2d1_3/nn-d2d1_3-id2d1svgglyphstyle">ID2D1SvgGlyphStyle</a> object.</para>
@@ -1723,7 +1723,7 @@ namespace Windows.Win32
             /// <para><see href="https://docs.microsoft.com/windows/win32/api//d2d1_3/nf-d2d1_3-id2d1devicecontext4-getsvgglyphimage">Learn more about this API from docs.microsoft.com</see>.</para>
             /// </remarks>
             unsafe void GetSvgGlyphImage(D2D_POINT_2F glyphOrigin, IDWriteFontFace fontFace, float fontEmSize, ushort glyphIndex, BOOL isSideways, [Optional] D2D_MATRIX_3X2_F* worldTransform, ID2D1Brush defaultFillBrush, ID2D1SvgGlyphStyle svgGlyphStyle, uint colorPaletteIndex, D2D_MATRIX_3X2_F* glyphTransform, out ID2D1CommandList glyphImage);
-#endregion
+            #endregion
         }
     }
 }
