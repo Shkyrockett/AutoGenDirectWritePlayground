@@ -27,102 +27,13 @@ namespace Windows.Win32
         /// <param name="debugLevel">The debug level.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Factory? CreateFactory(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory,
-            _ => throw new Exception("Unspecified Error")
-        };
-
-        /// <summary>
-        /// Creates the factory.
-        /// </summary>
-        /// <param name="factoryType">Type of the factory.</param>
-        /// <param name="debugLevel">The debug level.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Factory1? CreateFactory1(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory1).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory1,
-            _ => throw new Exception("Unspecified Error")
-        };
-
-        /// <summary>
-        /// Creates the factory.
-        /// </summary>
-        /// <param name="factoryType">Type of the factory.</param>
-        /// <param name="debugLevel">The debug level.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Factory2? CreateFactory2(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory2).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory2,
-            _ => throw new Exception("Unspecified Error")
-        };
-
-        /// <summary>
-        /// Creates the factory.
-        /// </summary>
-        /// <param name="factoryType">Type of the factory.</param>
-        /// <param name="debugLevel">The debug level.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Factory3? CreateFactory3(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory3).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory3,
-            _ => throw new Exception("Unspecified Error")
-        };
-
-        /// <summary>
-        /// Creates the factory.
-        /// </summary>
-        /// <param name="factoryType">Type of the factory.</param>
-        /// <param name="debugLevel">The debug level.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Factory4? CreateFactory4(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory4).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory4,
-            _ => throw new Exception("Unspecified Error")
-        };
-
-        /// <summary>
-        /// Creates the factory.
-        /// </summary>
-        /// <param name="factoryType">Type of the factory.</param>
-        /// <param name="debugLevel">The debug level.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Factory5? CreateFactory5(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory5).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory5,
-            _ => throw new Exception("Unspecified Error")
-        };
-
-        /// <summary>
-        /// Creates the factory.
-        /// </summary>
-        /// <param name="factoryType">Type of the factory.</param>
-        /// <param name="debugLevel">The debug level.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Factory6? CreateFactory6(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory6).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory6,
-            _ => throw new Exception("Unspecified Error")
-        };
-
-        /// <summary>
-        /// Creates the factory.
-        /// </summary>
-        /// <param name="factoryType">Type of the factory.</param>
-        /// <param name="debugLevel">The debug level.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        public static unsafe ID2D1Factory7? CreateFactory7(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE) => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1Factory7).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => factory as ID2D1Factory7,
-            _ => throw new Exception("Unspecified Error")
-        };
+        public static unsafe ID2D1FactoryType? CreateFactory<ID2D1FactoryType>(D2D1_FACTORY_TYPE factoryType = D2D1_FACTORY_TYPE.D2D1_FACTORY_TYPE_SINGLE_THREADED, D2D1_DEBUG_LEVEL debugLevel = D2D1_DEBUG_LEVEL.D2D1_DEBUG_LEVEL_NONE)
+            where ID2D1FactoryType : ID2D1Factory
+            => PInvoke.D2D1CreateFactory(factoryType, typeof(ID2D1FactoryType).GUID, new D2D1_FACTORY_OPTIONS(debugLevel), out var factory) switch
+            {
+                HRESULT h when h == HRESULT.S_OK => (ID2D1FactoryType)factory,
+                _ => throw new Exception("Unspecified Error")
+            };
 
         /// <summary>
         /// Makes a rotation matrix.

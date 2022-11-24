@@ -4,5 +4,31 @@
   "className": "PInvoke",
   "emitSingleFile": false,
   "public": true,
-  "wideCharOnly": true
+  "wideCharOnly": true,
+  "comInterop": {
+    "preserveSigMethods": [
+      "ID2D1RenderTarget.GetSize",
+      "ID2D1RenderTarget.GetPixelSize",
+      "ID2D1BitmapRenderTarget.GetSize",
+      "ID2D1BitmapRenderTarget.GetPixelSize",
+      "ID2D1DCRenderTarget.GetSize",
+      "ID2D1DCRenderTarget.GetPixelSize",
+      "ID2D1HwndRenderTarget.GetSize",
+      "ID2D1HwndRenderTarget.GetPixelSize",
+      "ID2D1DeviceContext.GetSize",
+      "ID2D1DeviceContext.GetPixelSize",
+      "ID2D1DeviceContext1.GetSize",
+      "ID2D1DeviceContext1.GetPixelSize",
+      "ID2D1DeviceContext2.GetSize",
+      "ID2D1DeviceContext2.GetPixelSize",
+      "ID2D1DeviceContext3.GetSize",
+      "ID2D1DeviceContext3.GetPixelSize",
+      "ID2D1DeviceContext4.GetSize",
+      "ID2D1DeviceContext4.GetPixelSize",
+      "ID2D1DeviceContext5.GetSize",
+      "ID2D1DeviceContext5.GetPixelSize",
+      "ID2D1DeviceContext6.GetSize",
+      "ID2D1DeviceContext6.GetPixelSize"
+    ]
+  }
 }

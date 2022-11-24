@@ -544,11 +544,6 @@ namespace Windows.Win32
             [PreserveSig]
             new void BeginDraw();
 
-            // The AutoGen for this omits the HRESULT which is very useful in the drawing code to tell
-            // if the draw failed and DirectX needs to be reinitialized because the display reset. See https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nn-d2d1-id2d1rendertarget#remarks
-            // See CsWin32 Issue 720 on incorrect generation: https://github.com/microsoft/CsWin32/issues/720
-            // Incorrect generated code:
-            //new unsafe void EndDraw([Optional] ulong* tag1, [Optional] ulong* tag2);
             /// <summary>Ends drawing operations on the render target and indicates the current error state and associated tags.</summary>
             /// <param name="tag1">
             /// <para>Type: <b><a href="https://docs.microsoft.com/windows/win32/Direct2D/d2d1-tag">D2D1_TAG</a>*</b> When this method returns, contains the tag for drawing operations that caused errors or 0 if there were no errors. This parameter is passed uninitialized.</para>
@@ -610,7 +605,7 @@ namespace Windows.Win32
             new unsafe void GetDpi(float* dpiX, float* dpiY);
 
             // The AutoGen for GetSize throws an access violation when called. The version here with the HRESULT works correctly, and should use an extension to return the struct.
-            // See CsWin32 Issue 720 on incorrect generation: https://github.com/microsoft/CsWin32/issues/720
+            // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
             // Incorrect generated code:
             //new D2D_SIZE_F GetSize();
             /// <summary>Returns the size of the render target in device-independent pixels.</summary>
@@ -624,7 +619,7 @@ namespace Windows.Win32
             new unsafe HRESULT GetSize(out D2D_SIZE_F size);
 
             // The AutoGen for GetPixelSize throws an access violation when called. The version here with the HRESULT works correctly, and should use an extension to return the struct.
-            // See CsWin32 Issue 720 on incorrect generation: https://github.com/microsoft/CsWin32/issues/720
+            // See CsWin32 Issue 167 on incorrect generation: https://github.com/microsoft/CsWin32/issues/167
             // Incorrect generated code:
             //new D2D_SIZE_U GetPixelSize();
             /// <summary>Returns the size of the render target in device pixels.</summary>

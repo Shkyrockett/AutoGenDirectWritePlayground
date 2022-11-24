@@ -8,6 +8,8 @@
 // <summary></summary>
 // <remarks></remarks>
 
+using System.Runtime.InteropServices;
+
 namespace AutoGenDirectWritePlayground
 {
     /// <summary>
@@ -34,6 +36,11 @@ namespace AutoGenDirectWritePlayground
             if (disposing && (components is not null))
             {
                 components.Dispose();
+            }
+
+            if (disposing && (DirectWriteFactory is not null))
+            {
+                Marshal.ReleaseComObject(DirectWriteFactory!);
             }
 
             base.Dispose(disposing);

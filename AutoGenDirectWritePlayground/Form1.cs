@@ -27,7 +27,7 @@ namespace AutoGenDirectWritePlayground;
 public partial class Form1
     : Form
 {
-#region Fields
+    #region Fields
     /// <summary>
     /// The text format.
     /// </summary>
@@ -89,9 +89,9 @@ public partial class Form1
     private readonly string[] worlds = { "🌎", "🌍", "🌏" };
 
     private bool updating;
-#endregion
+    #endregion
 
-#region Constructors
+    #region Constructors
     /// <summary>
     /// Initializes a new instance of the <see cref="Form1"/> class.
     /// </summary>
@@ -109,24 +109,16 @@ public partial class Form1
         // Start the world update timer if it isn't in design mode.
         timer.Start();
     }
-#endregion
+    #endregion
 
-#region Properties
-    /// <summary>
-    /// Gets the direct2d factory.
-    /// </summary>
-    /// <value>
-    /// The direct2d factory.
-    /// </value>
-    protected static ID2D1Factory7? Direct2dFactory { get; } = Direct2d.CreateFactory7();
-
+    #region Properties
     /// <summary>
     /// Gets the direct write factory.
     /// </summary>
     /// <value>
     /// The direct write factory.
     /// </value>
-    protected static IDWriteFactory7? DirectWriteFactory { get; } = DirectWrite.CreateFactory7();
+    protected static IDWriteFactory7? DirectWriteFactory { get; } = DirectWrite.CreateFactory<IDWriteFactory7>();
 
     /// <summary>
     /// Gets the render target.
@@ -135,9 +127,9 @@ public partial class Form1
     /// The render target.
     /// </value>
     protected ID2D1RenderTarget? RenderTarget => dcRenderTarget;
-#endregion
+    #endregion
 
-#region Events
+    #region Events
     /// <summary>
     /// Form resize event.
     /// </summary>
@@ -180,14 +172,9 @@ public partial class Form1
             e.Graphics.ReleaseHdc(hdc);
             RenderTarget?.BeginDraw();
             DoDrawing(RenderTarget!);
-#if GenerateRenderTarget
-            RenderTarget?.EndDraw();
-#else
             var result = RenderTarget?.EndDraw();
-#endif
             Validate();
 
-#if !GenerateRenderTarget
             if (result == HRESULT.D2DERR_RECREATE_TARGET)
             {
                 DiscardDirect2DResources();
@@ -195,7 +182,6 @@ public partial class Form1
                 CreateResources(RenderTarget);
                 DoSizeLayout(ClientSize);
             }
-#endif
         }
 
         base.OnPaint(e);
@@ -227,14 +213,9 @@ public partial class Form1
             e.Graphics.ReleaseHdc(hdc);
             RenderTarget?.BeginDraw();
             RenderTarget?.Clear(BackColor);
-#if GenerateRenderTarget
-            RenderTarget?.EndDraw();
-#else
             var result = RenderTarget?.EndDraw();
-#endif
             Validate();
 
-#if !GenerateRenderTarget
             if (result == HRESULT.D2DERR_RECREATE_TARGET)
             {
                 DiscardDirect2DResources();
@@ -242,7 +223,6 @@ public partial class Form1
                 CreateResources(RenderTarget);
                 DoSizeLayout(ClientSize);
             }
-#endif
         }
 
         base.OnPaintBackground(e);
@@ -256,7 +236,7 @@ public partial class Form1
             }
         }
     }
-#endregion
+    #endregion
 
     /// <summary>
     /// Applied resizing to the text layout area.
@@ -358,7 +338,9 @@ public partial class Form1
         const D2D1_RENDER_TARGET_USAGE usage = D2D1_RENDER_TARGET_USAGE.D2D1_RENDER_TARGET_USAGE_GDI_COMPATIBLE;
         const D2D1_FEATURE_LEVEL featureLevel = D2D1_FEATURE_LEVEL.D2D1_FEATURE_LEVEL_DEFAULT;
         var renderTargetProperties = new D2D1_RENDER_TARGET_PROPERTIES(type, pixelFormat, 0, 0, usage, featureLevel);
-        var dcRenderTarget = Direct2dFactory?.CreateDCRenderTarget(renderTargetProperties);
+        var direct2dFactory = Direct2d.CreateFactory<ID2D1Factory7>();
+        var dcRenderTarget = direct2dFactory?.CreateDCRenderTarget(renderTargetProperties);
+        Marshal.ReleaseComObject(direct2dFactory!);
         return dcRenderTarget!;
     }
 
