@@ -8,25 +8,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AutoGenDirectWritePlayground.Properties {
+namespace AutoGenDirectWritePlayground.Properties; 
 
+
+/// <summary>
+/// The settings.
+/// </summary>
+[global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
+internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    
+    private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
 
     /// <summary>
-    /// The settings.
+    /// Gets the default.
     /// </summary>
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        /// <summary>
-        /// Gets the default.
-        /// </summary>
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
+    public static Settings Default {
+        get {
+            return defaultInstance;
         }
     }
 }

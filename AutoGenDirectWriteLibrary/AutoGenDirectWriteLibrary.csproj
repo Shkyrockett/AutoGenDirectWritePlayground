@@ -2,7 +2,8 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
+		<TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 		<Platforms>AnyCPU;ARM32;ARM64;x64;x86</Platforms>
 		<UseWindowsForms>true</UseWindowsForms>
 		<LangVersion>preview</LangVersion>
@@ -13,8 +14,8 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<Authors>Shkyrockett</Authors>
-		<Owners>Shkyrockett</Owners>
-		<Copyright>Copyright (c) 2021 - 2022 $(Owners)</Copyright>
+		<Company>Shkyrockett</Company>
+		<Copyright>Copyright © 2021 - 2023 $(Company). All rights reserved.</Copyright>
 		<Description>Playground for experimenting with auto generating interop API for working with Direct Write.</Description>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -27,7 +28,6 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
 		<DocumentationFile>$(OutputPath)$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 		<PlatformTarget>$(Platform)</PlatformTarget>
 	</PropertyGroup>
 
@@ -70,11 +70,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.138-beta">
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.18-beta">
 			<PrivateAssets>all</PrivateAssets>
 			<!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
 		</PackageReference>
-		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="38.0.19-preview" />
+		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="54.0.44-preview" />
 	</ItemGroup>
 
 </Project>

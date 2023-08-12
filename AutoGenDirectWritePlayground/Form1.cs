@@ -1,13 +1,14 @@
 ﻿// <copyright file="Form1.cs" company="Shkyrockett" >
-//     Copyright © 2020 - 2022 Shkyrockett. All rights reserved.
+// Copyright © 2020 - 2023 Shkyrockett. All rights reserved.
 // </copyright>
 // <author id="shkyrockett">Shkyrockett</author>
 // <license>
-//     Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </license>
 // <summary></summary>
 // <remarks></remarks>
 
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.Win32;
@@ -23,6 +24,7 @@ namespace AutoGenDirectWritePlayground;
 /// <summary>
 /// The form1.
 /// </summary>
+/// <seealso cref="System.Windows.Forms.Form" />
 /// <seealso cref="Form" />
 public partial class Form1
     : Form
@@ -88,12 +90,15 @@ public partial class Form1
     /// </summary>
     private readonly string[] worlds = { "🌎", "🌍", "🌏" };
 
+    /// <summary>
+    /// The updating
+    /// </summary>
     private bool updating;
     #endregion
 
     #region Constructors
     /// <summary>
-    /// Initializes a new instance of the <see cref="Form1"/> class.
+    /// Initializes a new instance of the <see cref="Form1" /> class.
     /// </summary>
     public Form1()
     {
@@ -131,17 +136,17 @@ public partial class Form1
 
     #region Events
     /// <summary>
-    /// Form resize event.
+    /// Handles the Resize event of the Form1 control.
     /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="e">The e.</param>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
     private void Form1_Resize(object sender, EventArgs e) => DoSizeLayout((sender as Control)!.ClientSize!);
 
     /// <summary>
-    /// timer tick.
+    /// Handles the Tick event of the Timer control.
     /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="e">The e.</param>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
     private void Timer_Tick(object sender, EventArgs e)
     {
         Text = $"Auto Generated DirectWrite Playground {worlds[worldIndex]}";
@@ -164,17 +169,17 @@ public partial class Form1
         //dcRenderTarget ??= InitializeDirect2DDCRenderTarget();// Recreate resources if they have become invalid.
         if (dcRenderTarget is not null)
         {
-            var hdc = e.Graphics.GetHdc();
-
-            bindDc(dcRenderTarget!, new HDC(hdc), ClientRectangle);
-            //dcRenderTarget?.BindDC(new HDC(hdc), ClientRectangle);
-
-            e.Graphics.ReleaseHdc(hdc);
+            dcRenderTarget?.BindDC(e.Graphics, ClientRectangle);
             RenderTarget?.BeginDraw();
             DoDrawing(RenderTarget!);
-            var result = RenderTarget?.EndDraw();
+            var result = RenderTarget!.EndDraw(out var tag1, out var tag2);
             Validate();
 
+            if (tag1 != default | tag2 != default)
+            {
+                Debug.Print($"tag1={tag1}, tag2={tag2}");
+            }
+            
             if (result == HRESULT.D2DERR_RECREATE_TARGET)
             {
                 DiscardDirect2DResources();
@@ -185,15 +190,6 @@ public partial class Form1
         }
 
         base.OnPaint(e);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        static void bindDc(ID2D1DCRenderTarget dcRenderTarget, HDC hdc, in RECT rect)
-        {
-            fixed (RECT* r = &rect)
-            {
-                dcRenderTarget?.BindDC(hdc, r);
-            }
-        }
     }
 
     /// <summary>
@@ -205,16 +201,16 @@ public partial class Form1
         //dcRenderTarget ??= InitializeDirect2DDCRenderTarget();// Recreate resources if they have become invalid.
         if (dcRenderTarget is not null)
         {
-            var hdc = e.Graphics.GetHdc();
-
-            bindDc(dcRenderTarget!, new HDC(hdc), ClientRectangle);
-            //dcRenderTarget?.BindDC(new HDC(hdc), ClientRectangle);
-
-            e.Graphics.ReleaseHdc(hdc);
+            dcRenderTarget?.BindDC(e.Graphics, ClientRectangle);
             RenderTarget?.BeginDraw();
             RenderTarget?.Clear(BackColor);
-            var result = RenderTarget?.EndDraw();
+            var result = RenderTarget!.EndDraw(out var tag1, out var tag2);
             Validate();
+
+            if (tag1 != default | tag2 != default)
+            {
+                Debug.Print($"tag1={tag1}, tag2={tag2}");
+            }
 
             if (result == HRESULT.D2DERR_RECREATE_TARGET)
             {
@@ -226,15 +222,6 @@ public partial class Form1
         }
 
         base.OnPaintBackground(e);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        static void bindDc(ID2D1DCRenderTarget dcRenderTarget, HDC hdc, in RECT rect)
-        {
-            fixed (RECT* r = &rect)
-            {
-                dcRenderTarget?.BindDC(hdc, r);
-            }
-        }
     }
     #endregion
 
@@ -255,6 +242,7 @@ public partial class Form1
     /// <summary>
     /// Does the drawing.
     /// </summary>
+    /// <param name="renderTarget">The render target.</param>
     private void DoDrawing(ID2D1RenderTarget renderTarget)
     {
         renderTarget?.SetTransform();
@@ -329,6 +317,7 @@ public partial class Form1
     /// <summary>
     /// Initializes Direct2D for use with a GDI DC.
     /// </summary>
+    /// <returns></returns>
     private static unsafe ID2D1DCRenderTarget? InitializeDirect2DDCRenderTarget()
     {
         const D2D1_RENDER_TARGET_TYPE type = D2D1_RENDER_TARGET_TYPE.D2D1_RENDER_TARGET_TYPE_DEFAULT;
@@ -348,12 +337,12 @@ public partial class Form1
     /// Creates the gradient.
     /// </summary>
     /// <param name="renderTarget">The render target.</param>
-    /// <param name="size"></param>
+    /// <param name="size">The size.</param>
+    /// <returns></returns>
     private unsafe void CreateResizedResources(ID2D1RenderTarget? renderTarget, Size size)
     {
         // Gradient brush
-        ReadOnlySpan<D2D1_GRADIENT_STOP> stops = stackalloc[]
-        {
+        ReadOnlySpan<D2D1_GRADIENT_STOP> stops = stackalloc[] {
             new D2D1_GRADIENT_STOP(0.0f, Color.Gold),
             new D2D1_GRADIENT_STOP(0.85f, Color.FromArgb((int)(255f * 0.8f), Color.Orange)),
             new D2D1_GRADIENT_STOP(1.0f, Color.FromArgb((int)(255f * 0.7f), Color.OrangeRed))
@@ -364,19 +353,16 @@ public partial class Form1
         var (radiusX, radiusY) = (Math.Max(size.Width / 2f, size.Height / 2f), Math.Max(size.Width / 2f, size.Height / 2f));
         var radialBrushProperties = new D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES(center, gradientOriginOffset, radiusX, radiusY);
         if (gradientStops is not null) Marshal.ReleaseComObject(gradientStops);
-#pragma warning disable CS7036 // There is no argument given that corresponds to the required parameter 'gradientStopsCount' of 'ID2D1RenderTarget.CreateGradientStopCollection(D2D1_GRADIENT_STOP*, uint, D2D1_GAMMA, D2D1_EXTEND_MODE, out ID2D1GradientStopCollection)'
         gradientStops = renderTarget?.CreateGradientStopCollection(stops);
-#pragma warning restore CS7036 // There is no argument given that corresponds to the required parameter 'gradientStopsCount' of 'ID2D1RenderTarget.CreateGradientStopCollection(D2D1_GRADIENT_STOP*, uint, D2D1_GAMMA, D2D1_EXTEND_MODE, out ID2D1GradientStopCollection)'
-
         if (fillBrush is not null) Marshal.ReleaseComObject(fillBrush);
-#pragma warning disable CS7036 // There is no argument given that corresponds to the required parameter 'gradientStopCollection' of 'ID2D1RenderTarget.CreateRadialGradientBrush(D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*, D2D1_BRUSH_PROPERTIES*, ID2D1GradientStopCollection, out ID2D1RadialGradientBrush)'
         fillBrush = renderTarget?.CreateRadialGradientBrush(radialBrushProperties, gradientStops!);
-#pragma warning restore CS7036 // There is no argument given that corresponds to the required parameter 'gradientStopCollection' of 'ID2D1RenderTarget.CreateRadialGradientBrush(D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*, D2D1_BRUSH_PROPERTIES*, ID2D1GradientStopCollection, out ID2D1RadialGradientBrush)'
     }
 
     /// <summary>
     /// Initializes Direct2D for use with a GDI DC.
     /// </summary>
+    /// <param name="renderTarget">The render target.</param>
+    /// <returns></returns>
     private unsafe void CreateResources(ID2D1RenderTarget? renderTarget)
     {
         if (updating) return;
@@ -384,14 +370,9 @@ public partial class Form1
         var world = worlds[worldIndex];
         var text = $"Hello World {world} from… \r\nDirectWrite \r\n…using only  C#!";
         if (blackBrush is not null) Marshal.ReleaseComObject(blackBrush);
-#pragma warning disable CS7036 // There is no argument given that corresponds to the required parameter 'solidColorBrush' of 'ID2D1RenderTarget.CreateSolidColorBrush(D2D1_COLOR_F*, D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)'
         blackBrush = renderTarget?.CreateSolidColorBrush(Color.Black);
-#pragma warning restore CS7036 // There is no argument given that corresponds to the required parameter 'solidColorBrush' of 'ID2D1RenderTarget.CreateSolidColorBrush(D2D1_COLOR_F*, D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)'
         if (greenBrush is not null) Marshal.ReleaseComObject(greenBrush);
-#pragma warning disable CS7036 // There is no argument given that corresponds to the required parameter 'solidColorBrush' of 'ID2D1RenderTarget.CreateSolidColorBrush(D2D1_COLOR_F*, D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)'
         greenBrush = renderTarget?.CreateSolidColorBrush(Color.Green);
-#pragma warning restore CS7036 // There is no argument given that corresponds to the required parameter 'solidColorBrush' of 'ID2D1RenderTarget.CreateSolidColorBrush(D2D1_COLOR_F*, D2D1_BRUSH_PROPERTIES*, out ID2D1SolidColorBrush)'
-
         if (textFormat is not null) Marshal.ReleaseComObject(textFormat);
         textFormat = DirectWriteFactory?.CreateTextFormat("Gabriola", fontSize: 64f);
         textFormat?.SetTextAlignment(DWRITE_TEXT_ALIGNMENT.DWRITE_TEXT_ALIGNMENT_CENTER);

@@ -1,21 +1,35 @@
 ﻿// <copyright file="D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES.cs" company="Shkyrockett" >
-//     Copyright © 2020 - 2022 Shkyrockett. All rights reserved.
+// Copyright © 2020 - 2023 Shkyrockett. All rights reserved.
 // </copyright>
 // <author id="shkyrockett">Shkyrockett</author>
 // <license>
-//     Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </license>
 // <summary></summary>
 // <remarks></remarks>
 
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Windows.Win32.Graphics.Direct2D.Common;
 
 namespace Windows.Win32
 {
     namespace Graphics.Direct2D
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
         public partial struct D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES"/> struct.
+            /// </summary>
+            [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+            public D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES()
+                : this(new D2D_POINT_2F(), new D2D_POINT_2F(), default, default)
+            { }
+
             /// <summary>
             /// Initializes a new instance of the <see cref="D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES"/> class.
             /// </summary>
@@ -23,6 +37,7 @@ namespace Windows.Win32
             /// <param name="gradientOriginOffset">The gradient origin offset.</param>
             /// <param name="radiusX">The radius x.</param>
             /// <param name="radiusY">The radius y.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
             public D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES(PointF center, PointF gradientOriginOffset, float radiusX, float radiusY)
             {
                 this.center = center.ToD2D_POINT_2F();
@@ -38,6 +53,7 @@ namespace Windows.Win32
             /// <param name="gradientOriginOffset">The gradient origin offset.</param>
             /// <param name="radiusX">The radius x.</param>
             /// <param name="radiusY">The radius y.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
             public D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES(D2D_POINT_2F center, D2D_POINT_2F gradientOriginOffset, float radiusX, float radiusY)
             {
                 this.center = center;
@@ -45,6 +61,22 @@ namespace Windows.Win32
                 this.radiusX = radiusX;
                 this.radiusY = radiusY;
             }
+
+            /// <summary>
+            /// Converts to string.
+            /// </summary>
+            /// <returns>
+            /// The fully qualified type name.
+            /// </returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+            public override readonly string? ToString() => $"D2D_POINT_2F({center}), D2D_POINT_2F({gradientOriginOffset}), {radiusX}, {radiusY}";
+
+            /// <summary>
+            /// Gets the debugger display.
+            /// </summary>
+            /// <returns></returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+            private readonly string? GetDebuggerDisplay() => ToString();
         }
     }
 }
