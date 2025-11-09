@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>$(TargetFramework)-windows$(SupportedOSPlatformVersion)</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Title>DirectXInteropLibrary</Title>
+		<Description>Playground for experimenting with auto generating interop API for working with Direct Write.</Description>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+		<CsWin32RunAsBuildTask>true</CsWin32RunAsBuildTask>
+		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
+		<!--<PublishAot>true</PublishAot>-->
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link="Properties\.editorconfig" />
+		<None Include="..\LICENSE.md" Link="Properties\LICENSE.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\README.md" Link="Properties\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.242">
+			<PrivateAssets>all</PrivateAssets>
+			<!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
+		</PackageReference>
+		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="67.0.4-preview" />
+	</ItemGroup>
+
+</Project>

@@ -1,8 +1,79 @@
 <Project>
-	
-    <PropertyGroup>
-		<!--Check whether HRETURNS have been fixed-->
-        <!--<DefineConstants>$(DefineConstants);GenerateRenderTarget</DefineConstants>-->
-    </PropertyGroup>
+
+	<!-- Since .props files are imported early in the build order, set reliant properties here where individual projects can pick up and can override customizations. -->
+
+	<PropertyGroup Label="Basic Build">
+		<TargetFramework>net10.0</TargetFramework>
+		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+		<Platforms>AnyCPU;ARM32;ARM64;x64;x86</Platforms>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<NeutralResourcesLanguage>en-US</NeutralResourcesLanguage>
+		<LangVersion>preview</LangVersion>
+		<AnalysisLevel>preview</AnalysisLevel>
+		<EnablePreviewFeatures>true</EnablePreviewFeatures>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<TieredCompilation>true</TieredCompilation>
+		<Deterministic>true</Deterministic>
+		<VersionPrefix>0.0.0.1</VersionPrefix>
+		<VersionSuffix>Alpha</VersionSuffix>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Label="NuGet Package">
+		<Authors>Shkyrockett</Authors>
+		<Company>$(Authors)</Company>
+		<Version>$(VersionPrefix)-$(VersionSuffix)</Version>
+		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+		<FileVersion>$(VersionPrefix)</FileVersion>
+		<RepositoryType>git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Copyright © 2021 - 2025 $(Company). All rights reserved.</Copyright>
+		<RepositoryUrl>https://github.com/Shkyrockett/AutoGenDirectWritePlayground</RepositoryUrl>
+		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+		<PackageReleaseNotes>$(RepositoryUrl)/releases</PackageReleaseNotes>
+		<PackageIcon></PackageIcon>
+		<PackageTags></PackageTags>
+		<Description></Description>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Symbols, docs">
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<IlcGenerateMstatFile>true</IlcGenerateMstatFile>
+		<IlcGenerateDgmlFile>true</IlcGenerateDgmlFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebugType>None</DebugType>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Target Frameworks">
+		<TargetsUap Condition="$(TargetFramework.StartsWith('uap'))">true</TargetsUap>
+		<TargetsNetStandard Condition="$(TargetFramework.StartsWith('netstandard'))">true</TargetsNetStandard>
+		<!-- Hack condition to select .NET framework target framework monikers. -->
+		<TargetsNetFx Condition="$(TargetFramework.StartsWith('net')) And !$(TargetFramework.Contains('.'))">true</TargetsNetFx>
+		<TargetsNetCoreApp Condition="$(TargetFramework.StartsWith('netcoreapp.'))">true</TargetsNetCoreApp>
+		<!-- Hack condition to select .NET 5+ target framework monikers. -->
+		<TargetsNetCoreApp Condition="$(TargetFramework.StartsWith('net')) And $(TargetFramework.Contains('.'))">true</TargetsNetCoreApp>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Intrinsics">
+		<!-- Intrinsics support started in .NET Core. -->
+		<HasIntrinsics Condition="'$(TargetsNetCoreApp)'=='true'">true</HasIntrinsics>
+		<!-- Add compiler deffine for Intrinsics. -->
+		<DefineConstants Condition="'$(HasIntrinsics)'=='true'">$(DefineConstants);HAS_INTRINSICS</DefineConstants>
+	</PropertyGroup>
 	
 </Project>

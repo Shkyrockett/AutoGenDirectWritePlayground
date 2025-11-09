@@ -2,41 +2,19 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
-		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-		<Platforms>AnyCPU;ARM32;ARM64;x64;x86</Platforms>
+		<TargetFramework>$(TargetFramework)-windows$(SupportedOSPlatformVersion)</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
-		<LangVersion>preview</LangVersion>
-		<VersionPrefix>0.0.0.1</VersionPrefix>
-		<VersionSuffix>Alpha</VersionSuffix>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<NeutralLanguage>en-US</NeutralLanguage>
-		<Authors>Shkyrockett</Authors>
-		<Company>Shkyrockett</Company>
-		<Copyright>Copyright © 2021 - 2023 $(Company). All rights reserved.</Copyright>
 		<Description>Playground for experimenting with auto generating interop API for working with Direct Write.</Description>
-		<RepositoryType>git</RepositoryType>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<RepositoryUrl>https://github.com/Shkyrockett/AutoGenDirectWritePlayground</RepositoryUrl>
-		<PackageProjectUrl>https://github.com/Shkyrockett/AutoGenDirectWritePlayground</PackageProjectUrl>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-		<DocumentationFile>$(OutputPath)$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-		<PlatformTarget>$(Platform)</PlatformTarget>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<Optimize>true</Optimize>
+		<ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+		<ApplicationVisualStyles>true</ApplicationVisualStyles>
+		<ApplicationUseCompatibleTextRendering>false</ApplicationUseCompatibleTextRendering>
+		<ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+		<EnableWindowsFormsHighDpiAutoResizing>true</EnableWindowsFormsHighDpiAutoResizing>
+		<!--<PublishAot>true</PublishAot>-->
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -70,7 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AutoGenDirectWriteLibrary\AutoGenDirectWriteLibrary.csproj" />
+		<ProjectReference Include="..\DirectXInteropLibrary\DirectXInteropLibrary.csproj" />
 	</ItemGroup>
 
 </Project>

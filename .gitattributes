@@ -6,11 +6,12 @@
 ###############################################################################
 # Set default behavior for command prompt diff.
 #
-# This is need for earlier builds of msysgit that does not have it on by
+# This is needed for earlier builds of msysgit that does not have it on by
 # default for csharp files.
 # Note: This is only used by command line
 ###############################################################################
 #*.cs     diff=csharp
+*.vb           text eol=crlf
 
 ###############################################################################
 # Set the merge driver for project and solution files
@@ -22,27 +23,38 @@
 # these files as binary and thus will always conflict and require user
 # intervention with every merge. To do so, just uncomment the entries below
 ###############################################################################
-#*.sln       merge=binary
-#*.csproj    merge=binary
-#*.vbproj    merge=binary
-#*.vcxproj   merge=binary
-#*.vcproj    merge=binary
-#*.dbproj    merge=binary
-#*.fsproj    merge=binary
-#*.lsproj    merge=binary
-#*.wixproj   merge=binary
-#*.modelproj merge=binary
-#*.sqlproj   merge=binary
-#*.wwaproj   merge=binary
-
-###############################################################################
-# behavior for image files
-#
-# image files are treated as binary by default.
-###############################################################################
-#*.jpg   binary
-#*.png   binary
-#*.gif   binary
+#*.sln          merge=binary
+*.sln          text eol=crlf merge=union
+*.slnx         text eol=crlf merge=union
+#*.csproj       merge=binary
+*.csproj       text eol=crlf merge=union
+#*.dbproj       merge=binary
+*.dbproj       text eol=crlf merge=union
+*.filters      text eol=crlf merge=union
+#*.fsproj       merge=binary
+*.fsproj       text eol=crlf merge=union
+#*.lsproj       merge=binary
+*.lsproj       text eol=crlf merge=union
+#*.modelproj    merge=binary
+*.modelproj    text eol=crlf merge=union
+*.props        text eol=crlf merge=union
+#*.sqlproj      merge=binary
+*.sqlproj      text eol=crlf merge=union
+#*.vbproj       merge=binary
+*.vbproj       text eol=crlf merge=union
+*.vcxitems     text eol=crlf merge=union
+#*.vcxproj      merge=binary
+*.vcxproj      text eol=crlf merge=union
+#*.vcproj       merge=binary
+*.vcproj       text eol=crlf merge=union
+#*.wixproj      merge=binary
+*.wixproj      text eol=crlf merge=union
+#*.wwaproj      merge=binary
+*.wwaproj      text eol=crlf merge=union
+*.xproj        text eol=crlf merge=union
+*.project      text
+*.classpath    text
+*.prefs
 
 ###############################################################################
 # diff behavior for common document formats
@@ -51,13 +63,36 @@
 # is only available from the command line. Turn it on by uncommenting the 
 # entries below.
 ###############################################################################
-#*.doc   diff=astextplain
-#*.DOC   diff=astextplain
-#*.docx  diff=astextplain
-#*.DOCX  diff=astextplain
-#*.dot   diff=astextplain
-#*.DOT   diff=astextplain
-#*.pdf   diff=astextplain
-#*.PDF   diff=astextplain
-#*.rtf   diff=astextplain
-#*.RTF   diff=astextplain
+*.bibtex       text diff=bibtex
+*.{doc,[dD][oO][cC]} diff=astextplain
+*.{docx,[dD][oO][cC][xX]} diff=astextplain
+*.{dot,[dD][oO][tT]} diff=astextplain
+*.{pdf,[pP][dD][fF]} diff=astextplain
+*.{rtf,[rR][tT][fF]} diff=astextplain
+*.md           markdown diff=markdown
+*.markdown     markdown diff=markdown
+*.tex          text diff=tex
+*.adoc         text
+*.textile      text
+*.mustache     text
+*.csv          text
+*.tab          text
+*.tsv          text
+*.txt          text
+*.sql          text
+*.{xls,[xX][lL][sS]} binary diff=astextplain
+*.{xlsx,[xX][lL][sS][xX]} binary diff=astextplain
+
+###############################################################################
+# behavior for image files
+#
+# Image files are treated as binary by default.
+###############################################################################
+*.bmp          binary
+*.eps          binary
+*.gif          binary
+*.ico          binary
+*.jpg          binary
+*.jpeg         binary
+*.{pdf,[pP][dD][fF]} binary diff=astextplain
+*.{png,[pP][nN][gG]} binary
