@@ -20,72 +20,70 @@ namespace Windows.Win32;
 /// </summary>
 public static partial class FriendlyOverloadExtensions
 {
-    #region API Shims
-    /// <summary>
-    /// Inverts a matrix.
-    /// </summary>
-    /// <param name="matrix">The matrix.</param>
-    /// <returns>
-    ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static bool InvertMatrix(this ref Matrix3x2 matrix)
+    extension(ref Matrix3x2 matrix)
     {
-        var m = matrix.ToD2D_MATRIX_3X2_F();
-        var t = PInvoke.D2D1InvertMatrix(ref m);
-        matrix = m.ToMatrix3x2();
-        return t;
+        /// <summary>
+        /// Inverts a matrix.
+        /// </summary>
+        /// <returns>
+        ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public bool InvertMatrix()
+        {
+            var m = matrix.ToD2D_MATRIX_3X2_F();
+            var t = PInvoke.D2D1InvertMatrix(ref m);
+            matrix = m.ToMatrix3x2();
+            return t;
+        }
+
+        /// <summary>
+        /// Determines whether the specified matrix is invertible.
+        /// </summary>
+        /// <returns>
+        ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public bool IsMatrixInvertible()
+        {
+            var m = matrix.ToD2D_MATRIX_3X2_F();
+            return PInvoke.D2D1IsMatrixInvertible(m);
+        }
     }
 
-    /// <summary>
-    /// Inverts a matrix.
-    /// </summary>
-    /// <param name="matrix">The matrix.</param>
-    /// <returns>
-    ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static bool InvertMatrix(this ref D2D_MATRIX_3X2_F matrix)
+    extension(ref D2D_MATRIX_3X2_F matrix)
     {
-        var t = PInvoke.D2D1InvertMatrix(ref matrix);
-        return t;
+        /// <summary>
+        /// Inverts a matrix.
+        /// </summary>
+        /// <returns>
+        ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public bool InvertMatrix() => PInvoke.D2D1InvertMatrix(ref matrix);
+
+        /// <summary>
+        /// Determines whether the specified matrix is invertible.
+        /// </summary>
+        /// <returns>
+        ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public bool IsMatrixInvertible() => PInvoke.D2D1IsMatrixInvertible(matrix);
     }
 
-    /// <summary>
-    /// Determines whether the specified matrix is invertible.
-    /// </summary>
-    /// <param name="matrix">The matrix.</param>
-    /// <returns>
-    ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static bool IsMatrixInvertible(this ref Matrix3x2 matrix)
+    extension(IDWriteTextLayout textLayout)
     {
-        var m = matrix.ToD2D_MATRIX_3X2_F();
-        return PInvoke.D2D1IsMatrixInvertible(m);
+        /// <summary>
+        /// Sets the maximum size of a text layout.
+        /// </summary>
+        /// <param name="maxSize">The max size.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public void SetMaxSize(SizeF maxSize)
+        {
+            textLayout.SetMaxHeight(maxSize.Height);
+            textLayout.SetMaxWidth(maxSize.Width);
+        }
     }
-
-    /// <summary>
-    /// Determines whether the specified matrix is invertible.
-    /// </summary>
-    /// <param name="matrix">The matrix.</param>
-    /// <returns>
-    ///   <see langword="true" /> if the specified matrix is invertible; otherwise, <see langword="false" />.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static bool IsMatrixInvertible(this ref D2D_MATRIX_3X2_F matrix) => PInvoke.D2D1IsMatrixInvertible(matrix);
-
-    /// <summary>
-    /// Sets the maximum size of a text layout.
-    /// </summary>
-    /// <param name="textLayout">The text layout.</param>
-    /// <param name="maxSize">The max size.</param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static void SetMaxSize(this IDWriteTextLayout textLayout, SizeF maxSize)
-    {
-        textLayout.SetMaxHeight(maxSize.Height);
-        textLayout.SetMaxWidth(maxSize.Width);
-    }
-    #endregion
 }

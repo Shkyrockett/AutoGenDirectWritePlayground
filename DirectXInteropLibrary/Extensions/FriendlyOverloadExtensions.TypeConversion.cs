@@ -1,5 +1,5 @@
 ﻿// <copyright file="FriendlyOverloadExtensions.TypeConversions.cs" company="Shkyrockett" >
-// Copyright © 2020 - 2025 Shkyrockett. All rights reserved.
+// Copyright © 2020 - 2026 Shkyrockett. All rights reserved.
 // </copyright>
 // <author id="shkyrockett">Shkyrockett</author>
 // <license>

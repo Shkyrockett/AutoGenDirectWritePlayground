@@ -9,7 +9,6 @@
 // <remarks></remarks>
 
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.Direct2D;
@@ -167,7 +166,7 @@ public partial class MainForm
     /// Paints the form.
     /// </summary>
     /// <param name="e">The e.</param>
-    protected override unsafe void OnPaint(PaintEventArgs e)
+    protected override void OnPaint(PaintEventArgs e)
     {
         //dcRenderTarget ??= InitializeDirect2DDCRenderTarget();// Recreate resources if they have become invalid.
         if (dcRenderTarget is not null)
@@ -199,7 +198,7 @@ public partial class MainForm
     /// Paints the background.
     /// </summary>
     /// <param name="e">The e.</param>
-    protected override unsafe void OnPaintBackground(PaintEventArgs e)
+    protected override void OnPaintBackground(PaintEventArgs e)
     {
         //dcRenderTarget ??= InitializeDirect2DDCRenderTarget();// Recreate resources if they have become invalid.
         if (dcRenderTarget is not null)
@@ -265,62 +264,51 @@ public partial class MainForm
     /// <summary>
     /// Discards the device resources.
     /// </summary>
-    private unsafe void DiscardDirect2DResources()
+    private void DiscardDirect2DResources()
     {
         if (blackBrush is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(blackBrush!));
-            blackBrush = null;
+            Common.SafeRelease(ref blackBrush!);
         }
         if (greenBrush is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(greenBrush!));
-            greenBrush = null;
+            Common.SafeRelease(ref greenBrush!);
         }
         if (csWin32Brush is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(csWin32Brush!));
-            csWin32Brush = null;
+            Common.SafeRelease(ref csWin32Brush!);
         }
         //if (outlineBrush is not null)
         //{
-        //    Marshal.Release(Marshal.GetIUnknownForObject(outlineBrush!));
-        //    outlineBrush = null;
+        //    SafeRelease(ref outlineBrush!);
         //}
         if (fillBrush is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(fillBrush!));
-            fillBrush = null;
+            Common.SafeRelease(ref fillBrush!);
         }
         if (gradientStops is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(gradientStops!));
-            gradientStops = null;
+            Common.SafeRelease(ref gradientStops!);
         }
         if (textFormat is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(textFormat!));
-            textFormat = null;
+            Common.SafeRelease(ref textFormat!);
         }
         if (typography is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(typography!));
-            typography = null;
+            Common.SafeRelease(ref typography!);
         }
         if (typography2 is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(typography2!));
-            typography2 = null;
+            Common.SafeRelease(ref typography2!);
         }
         if (textLayout is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(textLayout!));
-            textLayout = null;
+            Common.SafeRelease(ref textLayout!);
         }
         if (dcRenderTarget is not null)
         {
-            Marshal.Release(Marshal.GetIUnknownForObject(dcRenderTarget!));
-            dcRenderTarget = null;
+            Common.SafeRelease(ref dcRenderTarget!);
         }
     }
 
@@ -328,7 +316,7 @@ public partial class MainForm
     /// Initializes Direct2D for use with a GDI DC.
     /// </summary>
     /// <returns></returns>
-    private static unsafe ID2D1DCRenderTarget? InitializeDirect2DDCRenderTarget()
+    private static ID2D1DCRenderTarget? InitializeDirect2DDCRenderTarget()
     {
         const D2D1_RENDER_TARGET_TYPE type = D2D1_RENDER_TARGET_TYPE.D2D1_RENDER_TARGET_TYPE_DEFAULT;
         const DXGI_FORMAT format = DXGI_FORMAT.DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -340,7 +328,7 @@ public partial class MainForm
         var direct2dFactory = Direct2d.CreateFactory<ID2D1Factory7>();
         ID2D1DCRenderTarget? dcRenderTarget = default;
         direct2dFactory?.CreateDCRenderTarget(renderTargetProperties, out dcRenderTarget);
-        Marshal.Release(Marshal.GetIUnknownForObject(direct2dFactory!));
+        if (direct2dFactory is not null) Common.SafeRelease(ref direct2dFactory!);
         return dcRenderTarget!;
     }
 
@@ -350,7 +338,7 @@ public partial class MainForm
     /// <param name="renderTarget">The render target.</param>
     /// <param name="size">The size.</param>
     /// <returns></returns>
-    private unsafe void CreateResizedResources(ID2D1RenderTarget? renderTarget, Size size)
+    private void CreateResizedResources(ID2D1RenderTarget? renderTarget, Size size)
     {
         // Gradient brush
         ReadOnlySpan<D2D1_GRADIENT_STOP> stops = [
@@ -363,10 +351,10 @@ public partial class MainForm
         var gradientOriginOffset = new PointF(size.Width / 4f, size.Height / 4f);
         var (radiusX, radiusY) = (Math.Max(size.Width / 2f, size.Height / 2f), Math.Max(size.Width / 2f, size.Height / 2f));
         var radialBrushProperties = new D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES(center, gradientOriginOffset, radiusX, radiusY);
-        if (gradientStops is not null) Marshal.Release(Marshal.GetIUnknownForObject(gradientStops));
+        if (gradientStops is not null) Common.SafeRelease(ref gradientStops);
         var result = renderTarget?.CreateGradientStopCollection(stops, D2D1_GAMMA.D2D1_GAMMA_2_2, D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP, out gradientStops);
-        if (fillBrush is not null) Marshal.Release(Marshal.GetIUnknownForObject(fillBrush));
-        fillBrush = renderTarget?.CreateRadialGradientBrush(radialBrushProperties, gradientStops!);
+        if (fillBrush is not null) Common.SafeRelease(ref fillBrush);
+        fillBrush = renderTarget?.TryCreateRadialGradientBrush(radialBrushProperties, gradientStops!);
     }
 
     /// <summary>
@@ -374,33 +362,33 @@ public partial class MainForm
     /// </summary>
     /// <param name="renderTarget">The render target.</param>
     /// <returns></returns>
-    private unsafe void CreateResources(ID2D1RenderTarget? renderTarget)
+    private void CreateResources(ID2D1RenderTarget? renderTarget)
     {
         if (updating) return;
         updating = true;
         var world = worlds[worldIndex];
         var text = $"Hello World {world} from… \r\nDirectWrite \r\n…using CsWin32 in C#!";
-        if (greenBrush is not null) Marshal.Release(Marshal.GetIUnknownForObject(greenBrush));
-        greenBrush = renderTarget?.CreateSolidColorBrush(Color.Green);
-        if (blackBrush is not null) Marshal.Release(Marshal.GetIUnknownForObject(blackBrush));
-        blackBrush = renderTarget?.CreateSolidColorBrush(Color.Black);
-        if (textFormat is not null) Marshal.Release(Marshal.GetIUnknownForObject(textFormat));
-        if (csWin32Brush is not null) Marshal.Release(Marshal.GetIUnknownForObject(csWin32Brush));
-        csWin32Brush = renderTarget?.CreateSolidColorBrush(Color.Teal);
-        textFormat = DirectWriteFactory?.CreateTextFormat("Gabriola", fontSize: 64f);
+        if (greenBrush is not null) Common.SafeRelease(ref greenBrush);
+        greenBrush = renderTarget?.TryCreateSolidColorBrush(Color.Green);
+        if (blackBrush is not null) Common.SafeRelease(ref blackBrush);
+        blackBrush = renderTarget?.TryCreateSolidColorBrush(Color.Black);
+        if (textFormat is not null) Common.SafeRelease(ref textFormat);
+        if (csWin32Brush is not null) Common.SafeRelease(ref csWin32Brush);
+        csWin32Brush = renderTarget?.TryCreateSolidColorBrush(Color.Teal);
+        textFormat = DirectWriteFactory?.TryCreateTextFormat("Gabriola", fontSize: 64f);
         textFormat?.SetTextAlignment(DWRITE_TEXT_ALIGNMENT.DWRITE_TEXT_ALIGNMENT_CENTER);
         textFormat?.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT.DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
-        if (typography is not null) Marshal.Release(Marshal.GetIUnknownForObject(typography));
-        typography = DirectWriteFactory?.CreateTypography();
+        if (typography is not null) Common.SafeRelease(ref typography);
+        typography = DirectWriteFactory?.TryCreateTypography();
         typography?.AddFontFeature(new DWRITE_FONT_FEATURE(DWRITE_FONT_FEATURE_TAG.DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_7, 1));
 
-        if (typography2 is not null) Marshal.Release(Marshal.GetIUnknownForObject(typography2));
-        typography2 = DirectWriteFactory?.CreateTypography();
+        if (typography2 is not null) Common.SafeRelease(ref typography2);
+        typography2 = DirectWriteFactory?.TryCreateTypography();
         typography2?.AddFontFeature(new DWRITE_FONT_FEATURE(DWRITE_FONT_FEATURE_TAG.DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_6, 1));
 
-        if (textLayout is not null) Marshal.Release(Marshal.GetIUnknownForObject(textLayout));
-        textLayout = DirectWriteFactory?.CreateTextLayout(text, textFormat, renderTarget?.GetSize() ?? default);
+        if (textLayout is not null) Common.SafeRelease(ref textLayout);
+        textLayout = DirectWriteFactory?.TryCreateTextLayout(text, textFormat, renderTarget?.GetSize() ?? default);
 
         // (0, ^) is the entire string.
         var textTypographyRange = new DWRITE_TEXT_RANGE(0u, (uint)text.Length);

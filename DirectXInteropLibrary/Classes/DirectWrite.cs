@@ -8,7 +8,9 @@
 // <summary></summary>
 // <remarks></remarks>
 
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.DirectWrite;
 
@@ -26,10 +28,6 @@ public static class DirectWrite
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
     public static IDWriteFactoryType? CreateFactory<IDWriteFactoryType>(DWRITE_FACTORY_TYPE factoryType = DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED)
-        where IDWriteFactoryType : IDWriteFactory
-        => PInvoke.DWriteCreateFactory(factoryType, typeof(IDWriteFactoryType).GUID, out var factory) switch
-        {
-            HRESULT h when h == HRESULT.S_OK => (IDWriteFactoryType)factory,
-            _ => throw new Exception("Unspecified Error")
-        };
+        where IDWriteFactoryType : class, IDWriteFactory => PInvoke.DWriteCreateFactory(factoryType, out IDWriteFactoryType factory).Succeeded
+        ? factory : throw new Win32Exception(Marshal.GetLastWin32Error(), "CreateFactory faild to initialize.");
 }

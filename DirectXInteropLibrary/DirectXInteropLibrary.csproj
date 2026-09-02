@@ -12,8 +12,8 @@
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-		<CsWin32RunAsBuildTask>true</CsWin32RunAsBuildTask>
-		<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
+		<!--<CsWin32RunAsBuildTask>true</CsWin32RunAsBuildTask>-->
+		<!--<DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>-->
 		<!--<PublishAot>true</PublishAot>-->
 	</PropertyGroup>
 
@@ -48,11 +48,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.242">
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.321">
 			<PrivateAssets>all</PrivateAssets>
 			<!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
 		</PackageReference>
-		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="67.0.4-preview" />
+		<PackageReference Include="Microsoft.Windows.SDK.Win32Metadata" Version="71.0.25-preview" />
 	</ItemGroup>
 
 </Project>

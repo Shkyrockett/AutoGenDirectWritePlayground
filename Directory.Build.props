@@ -3,7 +3,7 @@
 	<!-- Since .props files are imported early in the build order, set reliant properties here where individual projects can pick up and can override customizations. -->
 
 	<PropertyGroup Label="Basic Build">
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFramework>net11.0</TargetFramework>
 		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 		<Platforms>AnyCPU;ARM32;ARM64;x64;x86</Platforms>
 		<NeutralLanguage>en-US</NeutralLanguage>
@@ -29,7 +29,8 @@
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Copyright>Copyright © 2021 - 2025 $(Company). All rights reserved.</Copyright>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<Copyright>Copyright © 2021 - 2026 $(Company). All rights reserved.</Copyright>
 		<RepositoryUrl>https://github.com/Shkyrockett/AutoGenDirectWritePlayground</RepositoryUrl>
 		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
 		<PackageReleaseNotes>$(RepositoryUrl)/releases</PackageReleaseNotes>

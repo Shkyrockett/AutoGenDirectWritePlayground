@@ -1,12 +1,12 @@
 ﻿{
   "$schema": "https://aka.ms/CsWin32.schema.json",
-  "allowMarshaling": true,
+  "allowMarshaling": true, // We need interfaces because we use polymorphism with generics.
   "className": "PInvoke",
   "comInterop": {
     "preserveSig": true,
-    "preserveSigMethods": ["*"],
-    "useIntPtrForComOutPointers": false//,
-    //"useComSourceGenerators": false // Sadly, creates structs instead of interfaces so polymorphism doesn't work.
+    "preserveSigMethods": [ "*" ], // DirectX has so many methods that need HRESULT is is best to just return them for all.
+    "useIntPtrForComOutPointers": false,
+    "useComSourceGenerators": null // Sadly, setting this to true or false creates structs instead of interfaces so polymorphism doesn't work.
   },
   "emitSingleFile": false,
   "friendlyOverloads": {
@@ -14,6 +14,6 @@
   },
   "multiTargetingFriendlyAPIs": true,
   "public": true,
-  "useSafeHandles": false,
-  "wideCharOnly": true
+  "useSafeHandles": false, // Sadly SafeHandles get in the way more often than they are useful. I do wish we could have Hhandles and SafeHandles with all of the friendly API.
+  "wideCharOnly": true // Modern applications should only use Unicode. 
 }

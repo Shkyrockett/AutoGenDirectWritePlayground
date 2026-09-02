@@ -11,7 +11,7 @@
 namespace AutoGenDirectWritePlayground;
 
 /// <summary>
-/// The program.
+/// The program class.
 /// </summary>
 internal static class Program
 {
